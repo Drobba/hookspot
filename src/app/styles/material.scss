@@ -8,7 +8,7 @@ $custom-theme: mat.define-theme(
     ),
     typography: (
       plain-family: 'Inter, "Helvetica Neue", sans-serif',
-      // Anpassa typsnitt
+      use-system-variables: true,
     ),
   )
 );
@@ -32,3 +32,7 @@ html {
   // Tillämpa Material-kärninställningar (grundläggande styling)
   @include mat.core();
 }
+
+
+
+

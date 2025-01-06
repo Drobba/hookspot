@@ -1,4 +1,3 @@
-@import "../../../definitions.scss";
 
 :host {
   position: fixed;
@@ -9,7 +8,6 @@
 
 .bottom-header {
   width: 100%; // Gör den lika bred som fönstret
-  background-color: $grey-light; // Ljusgrå bakgrund
   text-align: center; // Centrerar texten
   padding: 10px 0; // Lite inre marginal
   display: flex; // Använd flex
