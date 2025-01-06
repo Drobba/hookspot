@@ -1,0 +1,22 @@
+@import "../../../definitions.scss";
+
+:host {
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+  bottom: 0;
+}
+
+.bottom-header {
+  width: 100%; // Gör den lika bred som fönstret
+  background-color: $grey-light; // Ljusgrå bakgrund
+  text-align: center; // Centrerar texten
+  padding: 10px 0; // Lite inre marginal
+  display: flex; // Använd flex
+  justify-content: flex-end;
+  gap: 10px; // Mellanrum mellan flex-items
+
+  .right {
+    margin-right: 3%;
+  }
+}

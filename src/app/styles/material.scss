@@ -1,0 +1,34 @@
+@use "@angular/material" as mat;
+
+// Definiera ett anpassat tema
+$custom-theme: mat.define-theme(
+  (
+    color: (
+      use-system-variables: true,
+    ),
+    typography: (
+      plain-family: 'Inter, "Helvetica Neue", sans-serif',
+      // Anpassa typsnitt
+    ),
+  )
+);
+
+// Globala stilar för html och body
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Helvetica Neue", sans-serif;
+}
+
+// Omslut Material-mixins i en CSS-selektor
+html {
+  // Tillämpa temat på alla Material-komponenter
+  @include mat.all-component-themes($custom-theme);
+
+  // Tillämpa Material-kärninställningar (grundläggande styling)
+  @include mat.core();
+}
