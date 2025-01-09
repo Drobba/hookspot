@@ -1,14 +1,19 @@
 <div class="container">
   <div class="headline">
-    Layout
-    <div class="links">
-      <a routerLink="/map">Map</a>
+    @if (authService.currentUserSig() == null) {
+    <div class="flex space-x-4">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
     </div>
+    } @if (authService.currentUserSig()) {
+    <div class="flex space-x-4">
+      <span (click)="logout()">Logga ut</span>
+    </div>
+    }
   </div>
 
-  <div class="main">
+  <div class="main mt-6">
     <router-outlet />
   </div>
-  <button mat-raised-button color="primary">Välj</button>
 </div>
 <app-header></app-header>

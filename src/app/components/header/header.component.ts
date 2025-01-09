@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthSerivce } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'], // Ändrat till styleUrls
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  authService = inject(AuthSerivce);
+}
