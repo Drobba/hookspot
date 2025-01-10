@@ -1,5 +1,7 @@
-<div class="bottom-header bg-tertiary">
-  <div class="right text-white">
-    {{ authService.currentUserSig()?.userName }}
-  </div>
+<div
+  class="bg-tertiary text-white fixed bottom-0 left-0 w-full h-12 z-100 flex items-center justify-end pr-5"
+>
+  <ng-container>
+    <span>{{ userName }}</span>
+  </ng-container>
 </div>

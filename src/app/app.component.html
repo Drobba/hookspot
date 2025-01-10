@@ -16,4 +16,4 @@
     <router-outlet />
   </div>
 </div>
-<app-header></app-header>
+<app-header *ngIf="authService.currentUserSig()"></app-header>

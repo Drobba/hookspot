@@ -5,9 +5,16 @@ import { AuthSerivce } from '../../services/auth.service';
   selector: 'app-header',
   standalone: true,
   imports: [],
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'], // Ändrat till styleUrls
+  templateUrl: './header.component.html', // Ändrat till styleUrls
 })
 export class HeaderComponent {
   authService = inject(AuthSerivce);
+
+  userName: string | null = null;
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      this.userName = user?.displayName || null;
+    });
+  }
 }

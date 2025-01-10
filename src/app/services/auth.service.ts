@@ -20,20 +20,19 @@ export class AuthSerivce {
   currentUserSig = signal<User | null | undefined>(undefined); //current user kan antingen vara en user, ej inloggad (null) och undefined innan vi vet.
 
   //Firebase returnerar Promises och inte Observables. Vill konvertera det som returneras till Observables för att hålla intakt med att vi jobbar med observables i angular.
-  register(
-    email: string,
-    userName: string,
-    password: string
-  ): Observable<void> {
+  register(email: string, userName: string, password: string): Observable<void> {
     const promise = createUserWithEmailAndPassword(
       this.firebaseAuth,
       email,
       password
     ).then((response) =>
-      updateProfile(response.user, { displayName: userName })
+      updateProfile(response.user, { displayName: userName }).then(() => 
+        response.user.reload() // Ladda om användardata
+      )
     );
     return from(promise);
   }
+  
 
   login(email: string, password: string): Observable<void> {
     const promise = signInWithEmailAndPassword(
