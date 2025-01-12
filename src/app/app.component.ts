@@ -4,6 +4,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthSerivce } from './services/auth.service';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { LoginComponent } from './components/login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +17,9 @@ import { CommonModule } from '@angular/common';
     HeaderComponent,
     MatButtonModule,
     CommonModule,
+    MatCardModule,
+    MatTabsModule,
+    LoginComponent,
   ], // Lägg till HeaderComponent här
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'], // Ändrat till styleUrls
