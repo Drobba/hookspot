@@ -6,6 +6,7 @@ import { AuthSerivce } from '../../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
+    MatButtonModule
   ],
   templateUrl: './login.component.html',
 })
@@ -25,12 +27,21 @@ export class LoginComponent {
   router = inject(Router);
 
   form = this.fb.nonNullable.group({
-    email: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
   errorMessage: string | null = null;
+  isSubmitted = false;
 
   onSubmit(): void {
+    this.isSubmitted = true;
+
+    this.form.markAllAsTouched();
+
+    if (this.form.invalid) {
+      console.log('Form is invalid');
+      return;
+    }
     const rawForm = this.form.getRawValue();
     this.authService.login(rawForm.email, rawForm.password).subscribe({
       next: () => {
@@ -40,5 +51,11 @@ export class LoginComponent {
         this.errorMessage = err.code;
       },
     });
+  }
+
+  showErrorMessage(fieldName: keyof typeof this.form.controls, errorType: string): boolean {
+    const control = this.form.get(fieldName);
+    console.log('control', control);
+    return !!control && control.hasError(errorType) && (control.touched || this.isSubmitted);
   }
 }

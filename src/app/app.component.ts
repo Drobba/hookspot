@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ import { LoginComponent } from './components/login/login.component';
     MatCardModule,
     MatTabsModule,
     LoginComponent,
+    RegisterComponent
   ], // Lägg till HeaderComponent här
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'], // Ändrat till styleUrls

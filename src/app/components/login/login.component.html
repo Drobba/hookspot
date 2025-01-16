@@ -2,8 +2,9 @@
 <div>{{ errorMessage }}</div>
 }
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col w-[100%]">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col w-[100%] gap-2">
   <mat-form-field>
+    <mat-label class="text-sm">Enter your email</mat-label>
     <input
       matInput
       type="text"
@@ -11,15 +12,37 @@
       formControlName="email"
       class="w-[80%]"
     />
-    <mat-error></mat-error>
+    @if (showErrorMessage('email', 'required')) {
+      <mat-error class="ml-[-1%] text-sm">
+        Email is required
+      </mat-error>
+    }
+
+    @if (showErrorMessage('email', 'email')) {
+      <mat-error class="ml-[-1%] text-sm">
+        Not a valid email
+      </mat-error>
+    }
+
   </mat-form-field>
   <mat-form-field>
+    <mat-label class="text-sm">Enter your password</mat-label>
     <input
       matInput
       type="password"
       placeholder="Password"
       formControlName="password"
     />
+    @if (showErrorMessage('password', 'required')) {
+      <mat-error class="ml-[-1%] text-sm" >
+        Password is required.
+      </mat-error>
+    }
+
   </mat-form-field>
-  <button type="submit">Sign In</button>
+
+  <div class="flex justify-center w-full">
+    <button mat-flat-button type="submit" class="w-[100%] mt-[11%]">Sign in</button>
+  </div>
 </form>
+

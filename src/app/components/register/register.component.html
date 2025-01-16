@@ -1,20 +1,59 @@
-<h1>Register</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col w-[100%] gap-1">
 
-@if (errorMessage) {
-<div>{{ errorMessage }}</div>
-}
+  <mat-form-field>
+    <mat-label class="text-sm">Enter username</mat-label>
+    <input
+      matInput
+      type="username"
+      placeholder="Username"
+      formControlName="username"
+    />
+    @if (showErrorMessage('username', 'required')) {
+      <mat-error class="ml-[-1%] text-sm" >
+        Username is required.
+      </mat-error>
+    }
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div>
-    <input type="text" placeholder="Username" formControlName="username" />
-  </div>
-  <div>
-    <input type="text" placeholder="Email" formControlName="email" />
-  </div>
-  <div>
-    <input type="password" placeholder="Password" formControlName="password" />
-  </div>
-  <div>
-    <button type="submit">Sign Up</button>
-  </div>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label class="text-sm">Enter email</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Email"
+      formControlName="email"
+      class="w-[80%]"
+    />
+    @if (showErrorMessage('email', 'required')) {
+      <mat-error class="ml-[-1%] text-sm">
+        Email is required
+      </mat-error>
+    }
+
+    @if (showErrorMessage('email', 'email')) {
+      <mat-error class="ml-[-1%] text-sm">
+        Not a valid email
+      </mat-error>
+    }
+
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label class="text-sm">Enter password</mat-label>
+    <input
+      matInput
+      type="password"
+      placeholder="Password"
+      formControlName="password"
+    />
+    @if (showErrorMessage('password', 'required')) {
+      <mat-error class="ml-[-1%] text-sm" >
+        Password is required.
+      </mat-error>
+    }
+
+  </mat-form-field>
+<div class="flex justify-center w-full">
+  <button mat-flat-button type="submit" class="w-[100%]">Registrera</button>
+</div>
+ 
 </form>

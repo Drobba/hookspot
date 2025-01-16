@@ -8,3 +8,11 @@
   flex-direction: column;
   align-items: center;
 }
+
+.mat-tab-body-content { overflow: hidden!important}
+
+
+::ng-deep .mat-mdc-tab-header .mdc-tab__text-label {
+  font-size: larger;
+  font-weight: 400;
+}
