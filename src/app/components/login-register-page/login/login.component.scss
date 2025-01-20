@@ -1,0 +1,14 @@
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #e0e0e0; /* Grå färg */
+  }
+
+  .custom-button {
+    height: 50px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }

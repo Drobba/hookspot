@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
-import { MatButtonModule } from '@angular/material/button';
 import { AuthSerivce } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { MatButtonModule } from '@angular/material/button';
+import { LoginRegisterPageComponent } from './components/login-register-page/login-register-page.component';
+
 
 @Component({
   selector: 'app-root',
@@ -20,8 +20,7 @@ import { RegisterComponent } from './components/register/register.component';
     CommonModule,
     MatCardModule,
     MatTabsModule,
-    LoginComponent,
-    RegisterComponent
+    LoginRegisterPageComponent
   ], // Lägg till HeaderComponent här
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'], // Ändrat till styleUrls

@@ -1,0 +1,16 @@
+<div class="login-container h-full flex justify-center items-center bg-login-bg bg-cover bg-center">
+    <!-- <div class="login-form w-[50%] h-[50%] bg-slate-200"></div> -->
+    <mat-card class="w-[25%] h-[50%] bg-slate-100 flex flex-col items-center overflow-auto min-h-[55%]">
+      <mat-tab-group dynamicHeight class="w-[80%] mt-[6%]">
+        <mat-tab class="text-lg" label="Logga in"
+          ><mat-card-content class="mt-[6%]">
+            <app-login class="w-[100%]"></app-login> </mat-card-content
+        ></mat-tab>
+        <mat-tab label="Registrera">
+          <mat-card-content class="mt-[6%]">
+            <app-register class="w-[100%]"></app-register>
+          </mat-card-content>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>

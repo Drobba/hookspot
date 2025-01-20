@@ -1,24 +1,10 @@
 <div class="main-container flex flex-col h-screen">
-  <div class="login-container flex-grow flex justify-center items-center">
-    <!-- <div class="login-form w-[50%] h-[50%] bg-slate-200"></div> -->
-    <mat-card class="w-[30%] h-[50%] bg-slate-100 flex flex-col items-center overflow-auto min-h-[55%]">
-      <mat-tab-group dynamicHeight class="w-[80%]">
-        <mat-tab class="text-lg" label="Logga in"
-          ><mat-card-content class="mt-[6%]">
-            <app-login class="w-[100%]"></app-login> </mat-card-content
-        ></mat-tab>
-        <mat-tab label="Registrera">
-          <mat-card-content class="mt-[6%]">
-            <app-register class="w-[100%]"></app-register>
-          </mat-card-content>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card>
+  <div class="router-container h-full">
+    <router-outlet></router-outlet>
   </div>
   <div class="flex space-x-4 mb-[20px]">
     <span (click)="logout()">Logga ut</span>
   </div>
-
   <app-header
     *ngIf="authService.currentUserSig()"
     class="w-full bg-gray-200 py-4 text-center"

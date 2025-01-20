@@ -52,8 +52,11 @@
     }
 
   </mat-form-field>
-<div class="flex justify-center w-full">
-  <button mat-flat-button type="submit" class="w-[100%]">Registrera</button>
-</div>
+  <div class="flex justify-center w-full">
+    <button mat-flat-button type="submit" [disabled]="spinnerService.isLoading$ | async" class="w-[100%]">
+      <mat-spinner *ngIf="isLoading() | async" [diameter]="20"></mat-spinner>
+      <span *ngIf="!(isLoading() | async)">Register</span>
+    </button>
+  </div>
  
 </form>

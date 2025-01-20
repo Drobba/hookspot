@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { MapComponent } from './components/map/map.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginRegisterPageComponent } from './components/login-register-page/login-register-page.component';
+
 
 export const routes: Routes = [
   // {
@@ -13,6 +13,11 @@ export const routes: Routes = [
   // },
 
   {
+    path: 'login',
+    component: LoginRegisterPageComponent,
+  },
+
+  {
     path: 'map',
     component: MapComponent,
   },
@@ -21,13 +26,13 @@ export const routes: Routes = [
     path: 'leaderboard',
     component: LeaderboardComponent,
   },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
+  // {
+  //   path: 'login',
+  //   component: LoginComponent,
+  // },
 
-  {
-    path: 'register',
-    component: RegisterComponent,
-  },
+  // {
+  //   path: 'register',
+  //   component: RegisterComponent,
+  // },
 ];

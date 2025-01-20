@@ -53,6 +53,10 @@ module.exports = {
         surfaceContainerHigh: "var(--sys-surface-container-high)",
         surfaceContainerHighest: "var(--sys-surface-container-highest)",
       },
+      backgroundImage: {
+        // 'login-bg': "url('/loginPageBackground.jpg')",
+        'login-bg': "url('/loginPageBackground.jpg')",
+      },
     },
   },
   plugins: [],
