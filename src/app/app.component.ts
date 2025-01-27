@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
-import { AuthSerivce } from './services/auth.service';
+import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -34,7 +34,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class AppComponent {
   title = 'hookspot';
 
-  authService = inject(AuthSerivce);
+  authService = inject(AuthService);
   private firestore = inject(Firestore);
   fiskArt = '';
   vikt = '';

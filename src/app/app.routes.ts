@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MapComponent } from './components/map/map.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { LoginRegisterPageComponent } from './components/login-register-page/login-register-page.component';
+import { AddCatchComponent } from './components/add-catch/add-catch.component';
 
 
 export const routes: Routes = [
@@ -25,6 +26,10 @@ export const routes: Routes = [
   {
     path: 'leaderboard',
     component: LeaderboardComponent,
+  },
+  {
+    path: 'addCatch',
+    component: AddCatchComponent,
   },
   // {
   //   path: 'login',

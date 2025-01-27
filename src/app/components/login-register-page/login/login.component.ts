@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthSerivce } from '../../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
@@ -32,7 +32,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 export class LoginComponent {
   fb = inject(FormBuilder);
   http = inject(HttpClient);
-  authService = inject(AuthSerivce);
+  authService = inject(AuthService);
   router = inject(Router);
   spinnerService = inject(SpinnerService);
   faGoogle = faGoogle;

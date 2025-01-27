@@ -16,7 +16,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthSerivce {
+export class AuthService {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
   private currentUserSubject = new BehaviorSubject<User | null | undefined>(undefined);

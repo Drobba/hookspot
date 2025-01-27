@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthSerivce } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -11,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './header.component.html', // Ändrat till styleUrls
 })
 export class HeaderComponent {
-  authService = inject(AuthSerivce);
+  authService = inject(AuthService);
   router = inject(Router);
 
   user: User | undefined | null = undefined;

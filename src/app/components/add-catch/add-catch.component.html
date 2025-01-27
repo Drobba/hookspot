@@ -1,0 +1,27 @@
+<div class="container p-4">
+    <h2 class="text-lg font-bold mb-4">Lägg till en fångst</h2>
+    <form (ngSubmit)="addItem()" class="mb-4">
+      <input
+        [(ngModel)]="fiskArt"
+        name="Fiskart"
+        placeholder="Fiskart"
+        class="border p-2 rounded w-full mb-2"
+      />
+      <input
+        [(ngModel)]="vikt"
+        name="Vikt"
+        placeholder="Vikt"
+        class="border p-2 rounded w-full mb-2"
+      />
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+        Lägg till
+      </button>
+    </form>
+
+    <h2 class="text-lg font-bold">Items</h2>
+    <ul>
+      <li *ngFor="let catch of catches">
+        <strong>{{ catch.fishType }}</strong>: {{ catch.fishWeight  }} : {{ catch.user.userName}}
+      </li>
+    </ul>
+  </div>
