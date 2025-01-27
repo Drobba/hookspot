@@ -2,7 +2,9 @@ import { Injectable, inject, signal } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   user,
@@ -18,6 +20,12 @@ export class AuthSerivce {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
   currentUserSig = signal<User | null | undefined>(undefined); //current user kan antingen vara en user, ej inloggad (null) och undefined innan vi vet.
+
+  loginWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    const promise = signInWithPopup(this.firebaseAuth, provider).then(() => {});
+    return from(promise);
+  }
 
   //Firebase returnerar Promises och inte Observables. Vill konvertera det som returneras till Observables för att hålla intakt med att vi jobbar med observables i angular.
   register(email: string, userName: string, password: string): Observable<void> {

@@ -5,12 +5,12 @@ import { LoginRegisterPageComponent } from './components/login-register-page/log
 
 
 export const routes: Routes = [
-  // {
-  //     path: '',
-  //     redirectTo: 'map',
-  //     pathMatch: 'full'
+  {
+      path: '',
+      redirectTo: 'map',
+      pathMatch: 'full'
 
-  // },
+  },
 
   {
     path: 'login',

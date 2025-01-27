@@ -10,6 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerService } from '../../../services/spinner.service';
 import { Observable } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+
 
 @Component({
   selector: 'app-login',
@@ -20,7 +23,8 @@ import { Observable } from 'rxjs';
     MatInputModule,
     CommonModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FontAwesomeModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -31,6 +35,7 @@ export class LoginComponent {
   authService = inject(AuthSerivce);
   router = inject(Router);
   spinnerService = inject(SpinnerService);
+  faGoogle = faGoogle;
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -70,5 +75,19 @@ export class LoginComponent {
     const control = this.form.get(fieldName);
     console.log('control', control);
     return !!control && control.hasError(errorType) && (control.touched || this.isSubmitted);
+  }
+
+  onGoogleLogin(): void {
+    this.spinnerService.showSpinner();
+    this.authService.loginWithGoogle().subscribe({
+      next: () => {
+        this.router.navigateByUrl('/');
+        this.spinnerService.hideSpinner();
+      },
+      error: (err) => {
+        this.errorMessage = err.code;
+        this.spinnerService.hideSpinner();
+      },
+    });
   }
 }
