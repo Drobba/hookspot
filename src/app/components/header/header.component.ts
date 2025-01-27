@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { AuthSerivce } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../../models/user';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +14,20 @@ export class HeaderComponent {
   authService = inject(AuthSerivce);
   router = inject(Router);
 
-  userName: string | null = null;
+  user: User | undefined | null = undefined;
 
-  ngOnInit(): void {
-    this.authService.user$.subscribe((user) => {
-      this.userName = user?.displayName || null;
-    });
+  /**
+   *
+   */
+  constructor() {
+    this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => this.user = user);
   }
+
+  // ngOnInit(): void {
+  //   this.authService.user$.subscribe((user) => {
+  //     this.userName = user?.displayName || null;
+  //   });
+  // }
 
   logOut() {
     this.authService.logout();

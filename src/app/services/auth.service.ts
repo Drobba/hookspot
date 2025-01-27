@@ -9,9 +9,9 @@ import {
   updateProfile,
   user,
 } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
 import { from } from 'rxjs';
 import { User } from '../models/user';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,8 @@ import { User } from '../models/user';
 export class AuthSerivce {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
-  currentUserSig = signal<User | null | undefined>(undefined); //current user kan antingen vara en user, ej inloggad (null) och undefined innan vi vet.
+  private currentUserSubject = new BehaviorSubject<User | null | undefined>(undefined);
+  currentUser$ = this.currentUserSubject.asObservable();
 
   loginWithGoogle() {
     const provider = new GoogleAuthProvider();
@@ -52,7 +53,13 @@ export class AuthSerivce {
   }
 
   logout(): Observable<void> {
-    const promise = signOut(this.firebaseAuth);
+    const promise = signOut(this.firebaseAuth).then(() => {
+      this.currentUserSubject.next(null); 
+    });
     return from(promise);
+  }
+
+  setCurrentUser(user: User | null): void {
+    this.currentUserSubject.next(user);
   }
 }

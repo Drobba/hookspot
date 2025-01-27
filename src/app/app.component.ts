@@ -11,6 +11,8 @@ import { Firestore, collection, addDoc, collectionData, query, where, getDoc, ge
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CrtCatchInput } from './models/catch';
+import { User } from './models/user';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -37,8 +39,22 @@ export class AppComponent {
   fiskArt = '';
   vikt = '';
   items$: Observable<any[]> = new Observable<any[]>();
+  user?: User | null;
 
   constructor() {
+    this.authService.user$.subscribe((user) => {
+      if (user) {
+        this.authService.setCurrentUser({
+          email: user.email!,
+          userName: user.displayName!,
+          userId: user.uid!,
+        });
+      } else {
+        this.authService.setCurrentUser(null); //Sätter till null om vi inte har loggat in än. Vill bara spara värdet av en user om vi loggat in.
+      }
+    });
+    this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => this.user = user);
+    console.log('Här är user!', this.user);
     this.authService.user$.subscribe((user) => {
       if (user) {
         const itemsCollection = collection(this.firestore, 'catches');
@@ -49,32 +65,24 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe((user) => {
-      if (user) {
-        this.authService.currentUserSig.set({
-          email: user.email!,
-          userName: user.displayName!,
-          userId: user.uid!,
-        });
-      } else {
-        this.authService.currentUserSig.set(null); //Sätter till null om vi inte har loggat in än. Vill bara spara värdet av en user om vi loggat in.
-      }
-      console.log(this.authService.currentUserSig());
-    });
+
   }
 
+
+
+
   async addItem(): Promise<void> {
-    const user = this.authService.currentUserSig();
-    if (!user) {
+    console.log('Här är user igen:', this.user);
+    if (!this.user) {
       return;
     }
     const newCatch: CrtCatchInput = {
       fishType: this.fiskArt,
       fishWeight: parseFloat(this.vikt),
       user: {
-        email: user.email,
-        userName: user.userName,
-        userId: user.userId
+        email: this.user.email,
+        userName: this.user.userName,
+        userId: this.user.userId
       }
     }
     try {
