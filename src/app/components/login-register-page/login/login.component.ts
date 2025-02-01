@@ -73,7 +73,6 @@ export class LoginComponent {
 
   showErrorMessage(fieldName: keyof typeof this.form.controls, errorType: string): boolean {
     const control = this.form.get(fieldName);
-    console.log('control', control);
     return !!control && control.hasError(errorType) && (control.touched || this.isSubmitted);
   }
 

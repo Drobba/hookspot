@@ -3,13 +3,14 @@ import { MapComponent } from './components/map/map.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { LoginRegisterPageComponent } from './components/login-register-page/login-register-page.component';
 import { AddCatchComponent } from './components/add-catch/add-catch.component';
+import { authGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
   {
       path: '',
       redirectTo: 'map',
-      pathMatch: 'full'
+      pathMatch: 'full',
 
   },
 
@@ -21,11 +22,13 @@ export const routes: Routes = [
   {
     path: 'map',
     component: MapComponent,
+    canActivate: [authGuard]
   },
 
   {
     path: 'leaderboard',
     component: LeaderboardComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'addCatch',
