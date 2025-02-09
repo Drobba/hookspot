@@ -6,8 +6,8 @@ html {
   --sys-on-primary-container: rgb(16 32 0);
   --sys-secondary: rgb(88 98 73);
   --sys-on-secondary: rgb(255 255 255);
-  --sys-secondary-container: rgb(220 231 200);
-  --sys-on-secondary-container: rgb(21 30 11);
+  --sys-secondary-container: rgb(0 75 73);
+  --sys-on-secondary-container: rgb(255, 255, 255);
   --sys-tertiary: rgb(56 102 99);
   --sys-on-tertiary: rgb(255 255 255);
   --sys-tertiary-container: rgb(188 236 231);
@@ -34,7 +34,7 @@ html {
   --sys-on-primary-fixed: rgb(16 32 0);
   --sys-primary-fixed-dim: rgb(177 209 138);
   --sys-on-primary-fixed-variant: rgb(53 78 22);
-  --sys-secondary-fixed: rgb(220 231 200);
+  --sys-secondary-fixed: rgb(0 75 73);
   --sys-on-secondary-fixed: rgb(21 30 11);
   --sys-secondary-fixed-dim: rgb(191 203 173);
   --sys-on-secondary-fixed-variant: rgb(64 74 51);
@@ -46,7 +46,7 @@ html {
   --sys-surface-bright: rgb(249 250 239);
   --sys-surface-container-lowest: rgb(255 255 255);
   --sys-surface-container-low: rgb(243 244 233);
-  --sys-surface-container: rgb(238 239 227);
+  --sys-surface-container: rgb(255, 255, 255);
   --sys-surface-container-high: rgb(232 233 222);
   --sys-surface-container-highest: rgb(226 227 216);
 }
@@ -60,7 +60,7 @@ html {
   --sys-secondary: rgb(191 203 173);
   --sys-on-secondary: rgb(42 51 30);
   --sys-secondary-container: rgb(64 74 51);
-  --sys-on-secondary-container: rgb(220 231 200);
+  --sys-on-secondary-container: rgb(0 75 73);
   --sys-tertiary: rgb(160 208 203);
   --sys-on-tertiary: rgb(0 55 53);
   --sys-tertiary-container: rgb(31 78 75);

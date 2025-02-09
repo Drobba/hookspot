@@ -9,11 +9,17 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+
 
 @Component({
   selector: 'app-add-catch',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule],
   templateUrl: './add-catch.component.html',
   styleUrls: ['./add-catch.component.scss'],
 })
@@ -24,58 +30,58 @@ export class AddCatchComponent {
 
   user?: User | null;
   catches: Catch[] = [];
-  fiskArt = '';
-  vikt = '';
+  availableFishes: string[] = ['Gädda', 'Abborre', 'Gös', 'Regnbågslax', 'Röding', 'Lax', 'Öring'];
 
-  constructor() {
-    // Prenumerera på `catches$` och uppdatera lokala fångster
+  // Reactive Form
+  catchForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.catchForm = this.fb.group({
+      fishType: ['', Validators.required],
+      weight: ['', [Validators.required, Validators.min(0.1)]],
+    });
+
     this.catchService.catches$
       .pipe(takeUntilDestroyed())
       .subscribe((catches) => (this.catches = catches));
 
-      this.authService.currentUser$
+    this.authService.currentUser$
       .pipe(takeUntilDestroyed())
       .subscribe((user) => (this.user = user));
   }
 
-  /**
-   * Lägg till en ny fångst via CatchService
-   */
   async addItem(): Promise<void> {
-    if (!this.fiskArt || !this.vikt) {
-      console.error('Fiskart och vikt måste anges.');
+    if (this.catchForm.invalid) {
+      console.error('Formuläret är ogiltigt.');
       return;
     }
 
-    if(!this.user) {
-
+    if (!this.user) {
       return;
     }
 
     const position = await this.getCurrentLocation();
-
-    if(!position) {
+    if (!position) {
       return;
     }
 
     const newCatch: CrtCatchInput = {
-      fishType: this.fiskArt,
-      fishWeight: parseFloat(this.vikt),
+      fishType: this.catchForm.value.fishType,
+      fishWeight: parseFloat(this.catchForm.value.weight),
       user: {
         userId: this.user.userId,
-        email: this.user.email, 
-        userName: this.user.userName, 
+        email: this.user.email,
+        userName: this.user.userName,
       },
       location: {
         lat: position.latitude,
-        lng: position.longitude
-      }
+        lng: position.longitude,
+      },
     };
 
     try {
-      await this.catchService.addCatch(newCatch); // Lägg till fångsten via tjänsten
-      this.fiskArt = ''; // Rensa formulärfält
-      this.vikt = '';
+      await this.catchService.addCatch(newCatch);
+      this.catchForm.reset(); // Återställ formuläret
       this.closeDialog();
     } catch (error) {
       console.error('Error adding catch:', error);
@@ -99,8 +105,9 @@ export class AddCatchComponent {
             console.error('Geolocation error:', error);
             resolve(null);
           }
-        )
+        );
       }
-    })
+    });
   }
 }
+

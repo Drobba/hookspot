@@ -1,19 +1,32 @@
 <div class="container p-4 flex flex-col items-center bg-white">
   <img src="/fish-register-catch.svg" alt="Fish Register" class="h-32 mt-4">
   <h2 class="text-lg font-bold mb-8">Lägg till en fångst</h2>
-  <form (ngSubmit)="addItem()" class="mb-5">
-    <input
-      [(ngModel)]="fiskArt"
-      name="Fiskart"
-      placeholder="Fiskart"
-      class="border p-2 rounded w-full mb-2"
-    />
-    <input
-      [(ngModel)]="vikt"
-      name="Vikt"
-      placeholder="Vikt"
-      class="border p-2 rounded w-full mb-2"
-    />
+
+  <form [formGroup]="catchForm" (ngSubmit)="addItem()" class="mb-5">
+    
+    <!-- Välj fiskart -->
+    <mat-form-field class="w-full">
+      <mat-label>Fiskart</mat-label>
+      <mat-select formControlName="fishType" required panelClass="custom-overlay-panel">
+        <mat-option *ngFor="let fish of availableFishes" [value]="fish">
+          {{ fish }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Viktinput -->
+    <mat-form-field class="w-full">
+      <mat-label>Vikt (kg)</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="weight"
+        required
+        placeholder="Vikt i kg"
+      />
+    </mat-form-field>
+
+    <!-- Knappar -->
     <div class="flex justify-end gap-4 mt-4">
       <button mat-flat-button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded">Lägg till</button>
       <button mat-flat-button type="button" (click)="closeDialog()" class="bg-gray-500 text-white px-4 py-2 rounded">Avbryt</button>
