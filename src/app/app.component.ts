@@ -42,19 +42,7 @@ export class AppComponent {
   user?: User | null;
 
   constructor() {
-    this.authService.user$.subscribe((user) => {
-      if (user) {
-        this.authService.setCurrentUser({
-          email: user.email!,
-          userName: user.displayName!,
-          userId: user.uid!,
-        });
-      } else {
-        this.authService.setCurrentUser(null); //Sätter till null om vi inte har loggat in än. Vill bara spara värdet av en user om vi loggat in.
-      }
-    });
     this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => this.user = user);
-    console.log('Här är user!', this.user);
     this.authService.user$.subscribe((user) => {
       if (user) {
         const itemsCollection = collection(this.firestore, 'catches');

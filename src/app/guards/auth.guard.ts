@@ -1,21 +1,38 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { take, map, filter } from 'rxjs';
+import { take, map, filter, tap } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  // return authService.currentUser$.pipe(
+  //   filter((currentUser) => currentUser !== undefined),
+  //   map((currentUser) => {
+  //     if (!currentUser) {
+  //       router.navigate(['/login']);
+  //       return false;
+  //     }
+
+  //     return true;
+  //   })
+  // )
+
   return authService.currentUser$.pipe(
-    filter(user => user !== undefined), // ignorerar alla värden som är undefined och väntar tills vi får ett definitivt tillstånd (antingen null eller en användare).
-    take(1), //vid första definitiva värdet (antingen null eller en användare) avslutas observablen. Detta gör att guarden inte fortsätter lyssna och slösar resurser.
-    map(user => { // använder map för att omvandla det råa värdet från observablen (user) till en boolean (true eller false), som används för att besluta om användaren får gå vidare till sidan eller inte.
-      if (user === null) {
+    tap(user => console.log('1. Initial stream value:', user)),
+    filter((currentUser) => currentUser !== undefined),
+    tap(user => console.log('2. After filter:', user)),
+    map((currentUser) => {
+      console.log('3. Inside map, deciding on:', currentUser);
+      if (!currentUser) {
+        console.log('4. No user, redirecting to login');
         router.navigate(['/login']);
         return false;
       }
+      console.log('4. User exists, allowing navigation');
       return true;
-    })
+    }),
+    tap(result => console.log('5. Final guard decision:', result))
   );
 };

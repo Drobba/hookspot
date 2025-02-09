@@ -22,9 +22,35 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null | undefined>(undefined);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  loginWithGoogle() {
+  constructor() {
+    // Prenumerera på långsiktiga förändringar i användartillståndet
+    this.user$.subscribe((firebaseUser) => {
+      if (firebaseUser) {
+        this.setCurrentUser({
+          email: firebaseUser.email!,
+          userName: firebaseUser.displayName!,
+          userId: firebaseUser.uid!,
+        });
+      } else {
+        this.setCurrentUser(null);
+      }
+    });
+  }
+
+  loginWithGoogle(): Observable<void> {
     const provider = new GoogleAuthProvider();
-    const promise = signInWithPopup(this.firebaseAuth, provider).then(() => {});
+    const promise = signInWithPopup(this.firebaseAuth, provider)
+      .then((response) => {
+        const user = response.user;
+        if (user) {
+          this.setCurrentUser({
+            email: user.email!,
+            userName: user.displayName!,
+            userId: user.uid!,
+          });
+        }
+      });
+  
     return from(promise);
   }
 
@@ -43,14 +69,22 @@ export class AuthService {
   }
   
 
-  login(email: string, password: string): Observable<void> {
-    const promise = signInWithEmailAndPassword(
-      this.firebaseAuth,
-      email,
-      password
-    ).then(() => {});
+  login(email: string, password: string): Observable<void> {  
+    const promise = signInWithEmailAndPassword(this.firebaseAuth, email, password)
+      .then((response) => {
+        const user = response.user;
+        if (user) {
+          this.setCurrentUser({
+            email: user.email!,
+            userName: user.displayName!,
+            userId: user.uid!,
+          });
+        }
+      });
+  
     return from(promise);
   }
+  
 
   logout(): Observable<void> {
     const promise = signOut(this.firebaseAuth).then(() => {

@@ -1,8 +1,15 @@
-<div
-  class="bg-primary text-white fixed bottom-0 left-0 w-full h-[6%] z-100 flex items-center justify-end pr-5"
->
-  <ng-container>
+<div class="text-white fixed bottom-0 left-0 w-full h-[6%] z-100 flex items-center justify-between px-5" style="background: linear-gradient(135deg, rgba(68, 160, 141, 0.9), rgba(0, 75, 73, 0.9), rgba(9, 54, 55, 0.9));
+">
+  <div class="flex-1"></div>
+  
+  <div class="flex gap-14 justify-center flex-1">
+    <fa-icon [icon]="locationIcon" class="text-white text-2xl"></fa-icon>
+    <fa-icon [icon]="fishIcon" (click)="openFishRegisterDialog()" class="text-white text-2xl cursor-pointer"></fa-icon>
+    <fa-icon [icon]="peopleIcon" class="text-white text-2xl"></fa-icon>
+  </div>
+  
+  <div class="flex items-center justify-end flex-1">
     <span>{{ user?.userName}}</span>
     <span class="ml-6" (click)="logOut()">Logga ut</span>
-  </ng-container>
+  </div>
 </div>

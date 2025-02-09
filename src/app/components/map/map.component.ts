@@ -26,25 +26,19 @@ export class MapComponent implements OnInit {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.map);
 
-    // Marker 1: Första platsen i Färnebofjärden
-    const marker1 = L.marker([60.212664, 16.811447]); // Första marker-positionen
-    marker1.addTo(this.map).bindPopup('Felix, Gädda 5.4 kg').openPopup();
-
-    // // Marker 2: Andra platsen i Färnebofjärden
-    // const marker2 = L.marker([60.212102, 16.832443]); // Andra marker-positionen
-    // marker2.addTo(this.map).bindPopup('Andreas, Gädda 3.2 kg').openPopup();
-
-    const redIcon = L.icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-      iconSize: [25, 41], // Standardstorlek för Leaflet-markörer
-      iconAnchor: [12, 41], // Förankra ikonen vid basen
-      popupAnchor: [1, -34], // Popup-förankring
-      shadowSize: [41, 41], // Storlek på skuggan
+    const customIcon = L.icon({
+      iconUrl: '/map-marker.svg',
+      iconSize: [40, 40], // Anpassa storleken
+      iconAnchor: [20, 40], // Basens förankring
+      popupAnchor: [0, -40], // Position för popup-fönstret
     });
 
-    // Marker 2: Andra platsen i Färnebofjärden med röd ikon
-    const marker2 = L.marker([60.212102, 16.832443], { icon: redIcon }); // Andra marker-positionen
-    marker2.addTo(this.map).bindPopup('Andreas, Gädda 3.2 kg').openPopup();
+    // Marker 1 med anpassad SVG-ikon
+    const marker1 = L.marker([60.212664, 16.811447], { icon: customIcon });
+    marker1.addTo(this.map).bindPopup('Felix, Gädda 5.4 kg');
+
+    // Marker 2 med samma SVG-ikon
+    const marker2 = L.marker([60.212102, 16.832443], { icon: customIcon });
+    marker2.addTo(this.map).bindPopup('Andreas, Gädda 3.2 kg');
   }
 }
