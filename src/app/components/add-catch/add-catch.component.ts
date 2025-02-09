@@ -52,6 +52,12 @@ export class AddCatchComponent {
       return;
     }
 
+    const position = await this.getCurrentLocation();
+
+    if(!position) {
+      return;
+    }
+
     const newCatch: CrtCatchInput = {
       fishType: this.fiskArt,
       fishWeight: parseFloat(this.vikt),
@@ -60,18 +66,41 @@ export class AddCatchComponent {
         email: this.user.email, 
         userName: this.user.userName, 
       },
+      location: {
+        lat: position.latitude,
+        lng: position.longitude
+      }
     };
 
     try {
       await this.catchService.addCatch(newCatch); // Lägg till fångsten via tjänsten
       this.fiskArt = ''; // Rensa formulärfält
       this.vikt = '';
+      this.closeDialog();
     } catch (error) {
       console.error('Error adding catch:', error);
+      this.closeDialog();
     }
   }
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  private getCurrentLocation(): Promise<GeolocationCoordinates | null> {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) {
+        console.error('Geolocation stöds inte av webbläsaren.');
+        resolve(null);
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          (position) => resolve(position.coords),
+          (error) => {
+            console.error('Geolocation error:', error);
+            resolve(null);
+          }
+        )
+      }
+    })
   }
 }
