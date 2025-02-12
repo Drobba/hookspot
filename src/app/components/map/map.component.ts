@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
 
@@ -48,7 +47,7 @@ export class MapComponent implements OnInit {
     });
 
     const customIcon = L.icon({
-      iconUrl: '/map-marker.svg',
+      iconUrl: 'assets/map-marker.svg',
       iconSize: [40, 40],
       iconAnchor: [20, 40],
       popupAnchor: [0, -40],
