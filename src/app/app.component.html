@@ -1,11 +1,11 @@
-<div class="main-container relative flex flex-col h-[100dvh]">
+<div class="main-container relative flex flex-col h-[100dvh] overflow-hidden">
   <div class="router-container flex-1">
     <router-outlet></router-outlet>
   </div>
   
   <app-header
     *ngIf="user"
-    class="w-full bg-gray-200 py-4 text-center h-[5.5%] min-h-[50px] fixed bottom-0 left-0 z-[1000]"
+    class="w-full text-center h-[7.5%] md:h-[5.5%] min-h-[50px] fixed bottom-0 left-0 z-[9999]"
   >
   </app-header>
 </div>
