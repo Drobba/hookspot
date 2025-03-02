@@ -14,12 +14,12 @@ import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-
-
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @Component({
   selector: 'app-add-catch',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, FontAwesomeModule],
   templateUrl: './add-catch.component.html',
   styleUrls: ['./add-catch.component.scss'],
 })
@@ -27,6 +27,7 @@ export class AddCatchComponent {
   private catchService = inject(CatchService);
   private authService = inject(AuthService);
   private dialogRef = inject(MatDialogRef<AddCatchComponent>);
+  closeIcon = faTimes;
 
   user?: User | null;
   catches: Catch[] = [];
