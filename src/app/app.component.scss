@@ -1,6 +1,8 @@
 .router-container {
   display: block;
   position: relative;
+  height: calc(100% - 50px); // Account for fixed header
+  overflow: hidden;
 }
 
 ::ng-deep .router-container > * {
@@ -8,4 +10,3 @@
   width: 100%;
   height: 100%;
 }
-
