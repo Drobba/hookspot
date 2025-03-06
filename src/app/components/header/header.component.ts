@@ -7,11 +7,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLocationDot, faCirclePlus, faPeopleGroup, faUser, faTrophy  } from '@fortawesome/free-solid-svg-icons';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { AddCatchComponent } from '../add-catch/add-catch.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FontAwesomeModule, MatDialogModule, AddCatchComponent],
+  imports: [FontAwesomeModule, MatDialogModule, AddCatchComponent, RouterLink],
   templateUrl: './header.component.html', // Ändrat till styleUrls
 })
 export class HeaderComponent {

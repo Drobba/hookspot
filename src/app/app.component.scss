@@ -2,7 +2,7 @@
   display: block;
   position: relative;
   height: calc(100% - 50px); // Account for fixed header
-  overflow: hidden;
+  overflow: auto;
 }
 
 ::ng-deep .router-container > * {
