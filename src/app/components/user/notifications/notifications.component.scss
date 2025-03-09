@@ -1,0 +1,79 @@
+.notifications-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.invitations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 400px;
+    padding-right: 10px;
+}
+
+/* 🔹 Se till att varje inbjudningskort har en horisontell layout */
+/* 🔹 Se till att kortet har en horisontell layout */
+.invite-card {
+    display: flex;
+    flex-direction: row; /* 🔥 Tvingar texten och knapparna att vara i en rad */
+    align-items: center;
+    justify-content: space-between; /* 🔥 Tvingar knapparna till höger */
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Håller ihop text och knappar i en rad */
+.invite-content {
+    display: flex;
+    flex-direction: row; /* 🔥 Håll text & knappar i en rad */
+    align-items: center;
+    width: 100%;
+    gap: 1rem
+}
+
+/* 🔹 Gör att texten fyller vänstra delen */
+.invite-text {
+    flex-grow: 1; /* 🔥 Låter texten expandera och trycker knapparna till höger */
+}
+
+/* 🔹 Knapparna ligger i en rad */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* 🔥 Avstånd mellan knapparna */
+}
+
+/* 🔹 Storlek på Accept-knappen */
+.action-item, .action-item-accept {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 🔥 Tvingar texten att börja på samma höjd */
+    min-height: 3.2rem; /* 🔥 Se till att båda elementen har samma höjd */
+}
+
+.action-item {
+    padding-bottom: 1px;
+}
+
+/* 🔹 Se till att texten under knapparna ligger rätt */
+.text-label {
+    text-align: center;
+    line-height: 1rem;
+}
+
+

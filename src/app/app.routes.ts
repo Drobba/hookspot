@@ -5,6 +5,9 @@ import { LoginRegisterPageComponent } from './components/login-register-page/log
 import { AddCatchComponent } from './components/add-catch/add-catch.component';
 import { UserComponent } from './components/user/user.component';
 import { authGuard } from './guards/auth.guard';
+import { UserSettingsComponent } from './components/user/user-settings/user-settings.component';
+import { TeamsComponent } from './components/user/teams/teams.component';
+import { NotificationsComponent } from './components/user/notifications/notifications.component';
 
 
 export const routes: Routes = [
@@ -37,7 +40,12 @@ export const routes: Routes = [
   },
   {
     path: 'user',
-    component: UserComponent
+    component: UserComponent,
+    children: [
+      {path: 'profile', component: UserSettingsComponent},
+      {path: 'teams', component: TeamsComponent},
+      {path: 'notifications', component: NotificationsComponent},
+    ]
   }
   // {
   //   path: 'login',

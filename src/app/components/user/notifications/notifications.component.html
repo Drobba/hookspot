@@ -1,0 +1,37 @@
+<div class="bg-gray-100 min-h-screen flex flex-col items-center p-6 w-full">
+
+    <!-- 🔥 Title & Back Button -->
+    <div class="w-full max-w-md flex items-center justify-center mb-4 relative">
+        <a routerLink="/user" class="absolute left-0 text-gray-700 hover:text-gray-900 cursor-pointer">
+            <fa-icon [icon]="backIcon" class="text-lg"></fa-icon>
+        </a>
+        <h2 class="text-lg font-semibold text-gray-700">Group Invitations</h2>
+    </div>
+
+    <!-- 🔥 Invitations List -->
+    <div class="invitations-list w-full max-w-md flex flex-col gap-4 mt-4">
+        <mat-card *ngFor="let invite of invitations" class="invite-card">
+            <div class="invite-content">
+                <!-- 🔹 Text till vänster -->
+                <div class="invite-text">
+                    <p><strong>{{ invite.inviter }}</strong> has invited you to join <strong>{{ invite.group }}</strong>.</p>
+                </div>
+        
+                <!-- 🔹 Ikoner till höger -->
+                <div class="action-buttons">
+                    <div class="action-item-accept">
+                        <img src="assets/accept.svg" alt="Accept" class= "h-[3rem]">
+                        <p class="text-xs text-gray-400 text-label mt-[1px]">Accept</p>
+                    </div>
+                    <div class="action-item">
+                        <img src="assets/cross-circle.svg" alt="Decline" class="decline-icon h-[3.1rem]">
+                        <p class="text-xs text-gray-400 text-label">Decline</p>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+        
+        
+    </div>
+
+</div>
