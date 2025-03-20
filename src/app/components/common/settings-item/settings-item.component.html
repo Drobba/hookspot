@@ -1,0 +1,7 @@
+<div *ngIf="routePath" class="w-full max-w-md bg-white flex items-center justify-between px-4 py-3 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" [routerLink]="routePath">
+    <div class="flex items-center gap-4">
+        <fa-icon *ngIf="icon" [icon]="icon" class="text-gray-600 text-xl"></fa-icon>
+        <span *ngIf="label" class="text-gray-700 font-medium">{{label}}</span>
+    </div>
+    <fa-icon [icon]="angleRightIcon" class="text-gray-400 text-lg"></fa-icon>
+</div>

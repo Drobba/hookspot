@@ -34,12 +34,6 @@ export class HeaderComponent {
     this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => this.user = user);
   }
 
-  // ngOnInit(): void {
-  //   this.authService.user$.subscribe((user) => {
-  //     this.userName = user?.displayName || null;
-  //   });
-  // }
-
   openFishRegisterDialog() {
     this.dialog.open(AddCatchComponent, {
       width: '400px',

@@ -1,31 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router'; // ✅ Importera Router och NavigationEnd
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faUser, faPeopleGroup, faBell, faArrowRightFromBracket, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPeopleGroup, faBell, faArrowRightFromBracket, faAngleRight, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SettingsItemComponent } from '../common/settings-item/settings-item.component';
+import { UserProfileHeaderComponent } from '../common/user-profile-header/user-profile-header.component';
+import { SettingMenuItem } from '../../models/setting-menu-item';
+import { AuthService } from '../../services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { User } from '../../models/user';
+
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [FontAwesomeModule, RouterOutlet, RouterLink, CommonModule],
+  imports: [FontAwesomeModule, RouterOutlet, RouterLink, CommonModule, SettingsItemComponent, UserProfileHeaderComponent],
   templateUrl: './user.component.html',
 })
 export class UserComponent {
-  public userIcon = faUser;
-  public teamsIcon = faPeopleGroup;
-  public notificationIcon = faBell;
-  public logoutIcon = faArrowRightFromBracket;
-  public angleRightIcon = faAngleRight;
+  public readonly userIcon = faUser;
+  public readonly teamsIcon = faPeopleGroup;
+  public readonly notificationIcon = faBell;
+  public readonly logoutIcon = faArrowRightFromBracket;
+  public readonly angleRightIcon = faAngleRight;
 
-  showSettings: boolean = true; // ✅ Börjar med att settings-menyn är synlig
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
-  constructor(private router: Router) {
-    this.router.events.subscribe(event => {
+  user?: User | null;
+
+  showSettings: boolean = true;
+
+  public readonly title = 'Settings';
+
+  public settingsMenuItems: SettingMenuItem[] = [
+    { icon: this.userIcon, label: 'User', path: 'profile'},
+    { icon: this.teamsIcon, label: 'Teams', path: 'teams'},
+    { icon: this.notificationIcon, label: 'Notifications', path: 'notifications'},
+  ]
+
+  constructor() {
+    this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => this.user = user);
+    
+    this.router.events.pipe(takeUntilDestroyed()).subscribe(event => {
       if (event instanceof NavigationEnd) {
-        // ✅ Om path INTE är "/user" -> Dölj settings
         this.showSettings = event.url === '/user';
       }
     });
   }
+
+  logOut() {
+    // this.authService.logout();
+    // this.router.navigateByUrl('/login');
+  }
+
+
+
+
 }

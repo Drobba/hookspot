@@ -1,0 +1,9 @@
+<div class="bg-primary flex flex-col justify-center items-center py-10">
+    <img [src]="avatarUrl" [alt]="userName" 
+        class="h-32 mt-2 rounded-full border-2 border-white shadow-lg">
+    
+    <div class="text-white text-center mt-4">
+        <h2 *ngIf="userName" class="text-2xl font-semibold">{{userName}}</h2>
+        <p *ngIf="email" class="text-lg">{{email}}</p>
+    </div>
+  </div>

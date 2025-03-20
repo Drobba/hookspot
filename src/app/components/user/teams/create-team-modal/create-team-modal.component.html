@@ -1,0 +1,30 @@
+<div class="container p-4 flex flex-col items-center bg-white">
+    <button 
+      (click)="closeDialog()" 
+      class="absolute top-2 right-5 text-gray-500 hover:text-gray-700"
+    >
+      <fa-icon [icon]="closeIcon" class="text-xl"></fa-icon>
+    </button>
+    
+    <!-- <img src="assets/team.svg" alt="Create Team" class="h-32 mt-2"> -->
+    <h2 class="text-lg font-bold mb-8">Create New Team</h2>
+
+    <form [formGroup]="teamForm" (ngSubmit)="createTeam()" class="w-full">
+      <mat-form-field class="w-full">
+        <mat-label>Team Name</mat-label>
+        <input matInput formControlName="name" required placeholder="Enter team name">
+      </mat-form-field>
+
+      <div class="mt-5 flex justify-end">
+        <button 
+          mat-flat-button 
+          type="submit" 
+          color="primary"
+          class="px-6 py-2 rounded-xl"
+          [disabled]="teamForm.invalid"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </div>

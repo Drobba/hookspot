@@ -1,1 +1,52 @@
-<p>teams works!</p>
+<div class="w-full max-w-2xl mx-auto p-4">
+  <div class="flex justify-between items-start mb-2">
+    <div class="flex flex-col">
+      <h2 class="text-2xl font-semibold">Member Directory</h2>
+      <mat-form-field appearance="fill" class="w-48">
+        <mat-label>Select Team</mat-label>
+        <mat-select 
+          [value]="selectedTeamId" 
+          (selectionChange)="onTeamChange($event.value)"
+          class="text-sm">
+          <mat-option *ngFor="let team of teams" [value]="team.id">
+            {{ team.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button   mat-flat-button 
+    color="primary" 
+    class="mt-2 rounded-xl"
+    (click)="createTeam()">New team</button>
+  </div>
+  <div class="max-h-[320px] overflow-auto shadow-lg">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full rounded-lg overflow-hidden shadow-lg">
+      
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="text-left p-4"> Name </th>
+        <td mat-cell *matCellDef="let member" class="p-4"> {{member.name}} </td>
+      </ng-container>
+  
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef class="text-left p-4"> Role </th>
+        <td mat-cell *matCellDef="let member" class="p-4">
+          <span [ngClass]="{'text-primary font-bold': member.role === 'Admin', 'text-gray-600': member.role === 'Member'}">
+            {{member.role}}
+          </span>
+        </td>
+      </ng-container>
+  
+      <!-- Join Date Column -->
+      <ng-container matColumnDef="joinDate">
+        <th mat-header-cell *matHeaderCellDef class="text-left p-4"> Joined </th>
+        <td mat-cell *matCellDef="let member" class="p-4 text-gray-500"> {{member.joinDate}} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50 transition"></tr>
+    </table>
+</div>
+  </div>
+  
