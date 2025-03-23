@@ -6,26 +6,49 @@
         <mat-label>Select Team</mat-label>
         <mat-select 
           [value]="selectedTeamId" 
-          (selectionChange)="onTeamChange($event.value)"
-          class="text-sm">
-          <mat-option *ngFor="let team of teams" [value]="team.id">
+          (selectionChange)="onTeamChange($event.value)">
+          <mat-option *ngFor="let team of teams" [value]="team.teamId">
             {{ team.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <button   mat-flat-button 
-    color="primary" 
-    class="mt-2 rounded-xl"
-    (click)="createTeam()">New team</button>
+  
+    <button mat-flat-button color="primary" class="rounded-xl mt-2" (click)="createTeam()">
+      New team
+    </button>
   </div>
+  
+  <div class="flex items-center gap-4 mb-2">
+    <mat-form-field appearance="fill" class="w-full max-w-xs">
+      <mat-label class="!text-sm">Search user</mat-label>
+      <input class="!text-sm"
+        type="text"
+        matInput
+        [formControl]="userSearchControl"
+        [matAutocomplete]="auto"
+        placeholder="Enter username or email"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let user of filteredOptions | async" [value]="user.userName">
+          {{ user.userName }} <span class="text-xs text-gray-500 ml-2">({{ user.email }})</span>
+        </mat-option>
+        
+      </mat-autocomplete>
+    </mat-form-field>
+  
+    <button mat-flat-button color="primary" class="rounded-xl !h-10  !text-sm">
+      Send invite
+    </button>
+  </div>
+  
   <div class="max-h-[320px] overflow-auto shadow-lg">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full rounded-lg overflow-hidden shadow-lg">
       
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef class="text-left p-4"> Name </th>
-        <td mat-cell *matCellDef="let member" class="p-4"> {{member.name}} </td>
+        <td mat-cell *matCellDef="let member" class="p-4"> {{member.userName}} </td>
       </ng-container>
   
       <!-- Role Column -->
@@ -41,7 +64,7 @@
       <!-- Join Date Column -->
       <ng-container matColumnDef="joinDate">
         <th mat-header-cell *matHeaderCellDef class="text-left p-4"> Joined </th>
-        <td mat-cell *matCellDef="let member" class="p-4 text-gray-500"> {{member.joinDate}} </td>
+        <td mat-cell *matCellDef="let member" class="p-4 text-gray-500"> {{member.joinedAt}} </td>
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></tr>

@@ -31,7 +31,7 @@ export class CreateTeamModalComponent {
 
   createTeam(): void {
     if (this.teamForm.valid) {
-      this.dialogRef.close(this.teamForm.value);
+      this.dialogRef.close(this.teamForm.value.name);
     }
   }
 
