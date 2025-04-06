@@ -1,6 +1,20 @@
 <div *ngIf="routePath" class="w-full max-w-md bg-white flex items-center justify-between px-4 py-3 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition" [routerLink]="routePath">
     <div class="flex items-center gap-4">
-        <fa-icon *ngIf="icon" [icon]="icon" class="text-gray-600 text-xl"></fa-icon>
+        <!-- settings-item.component.html -->
+<!-- ✅ Wrappa ikonen i en span som matBadge appliceras på -->
+<!-- Wrappa i en relativ container -->
+<span class="badge-wrapper"
+      [matBadge]="(badgeCount || 0) > 0 ? badgeCount : ''"
+      [matBadgeHidden]="!badgeCount || badgeCount === 0"
+      matBadgeColor="warn"
+      matBadgeOverlap="true">
+  <fa-icon *ngIf="icon" [icon]="icon" class="text-gray-600 text-xl"></fa-icon>
+</span>
+
+
+
+
+
         <span *ngIf="label" class="text-gray-700 font-medium">{{label}}</span>
     </div>
     <fa-icon [icon]="angleRightIcon" class="text-gray-400 text-lg"></fa-icon>

@@ -1,0 +1,21 @@
+.badge-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+::ng-deep .badge-wrapper .mat-badge-content {
+  position: absolute !important;
+  top: 0px !important;
+  right: -5px !important;
+  height: 18px !important;
+  width: 18px !important;
+  font-size: 12px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  line-height: 18px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+  

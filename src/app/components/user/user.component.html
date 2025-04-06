@@ -13,7 +13,8 @@
         class="w-full max-w-md"
         [icon]="item.icon"
         [label]="item.label"
-        [routePath]="item.path">
+        [routePath]="item.path"
+        [badgeCount]="item.label === 'Notifications' ? pendingInviteCount : undefined">
        </app-settings-item>
 
        <div class="w-full  max-w-md bg-white flex items-center gap-4 px-4 py-3 rounded-xl shadow-sm cursor-pointer hover:bg-red-50 transition">

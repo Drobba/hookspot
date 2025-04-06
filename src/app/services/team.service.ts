@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Firestore, collection, addDoc, doc, setDoc, collectionGroup, getDocs, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, setDoc, collectionGroup, getDocs, getDoc, updateDoc, query, where } from '@angular/fire/firestore';
 import { AuthService } from "./auth.service";
 import { User } from "../models/user";
 import { BehaviorSubject } from "rxjs";
@@ -8,6 +8,9 @@ import { Auth } from "@angular/fire/auth";
 import { Team } from "../models/team";
 import { TeamRole } from "../enums/team-role";
 import { DateService } from "./date.service";
+import { Invite } from "../models/invite";
+import { InviteStatus } from "../enums/invite-status";
+import { UserService } from "./user.service";
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +22,7 @@ export class TeamSerivce {
     private user?: User | null;
     private teamsSubject = new BehaviorSubject<Team[]>([]);
     teams$ = this.teamsSubject.asObservable();
+    private userService = inject(UserService);
 
     constructor() {
         this.authService.currentUser$
@@ -107,8 +111,96 @@ export class TeamSerivce {
           this.teamsSubject.next([]);
         }
       }
-      
-      
-      
 
+    private async checkExistingInvite(userId: string, teamId: string): Promise<boolean> {
+        const invitesRef = collection(this.firestore, `users/${userId}/invites`);
+        const q = query(invitesRef, 
+            where('teamId', '==', teamId),
+            where('status', '==', InviteStatus.Pending)
+        );
+        
+        const snapshot = await getDocs(q);
+        return !snapshot.empty;
+    }
+
+    async sendInvite(toUser: User, team: Team): Promise<void> {
+        if (!this.user) {
+            throw new Error('No user is logged in.');
+        }
+
+        // Check if user is trying to invite themselves
+        if (toUser.userId === this.user.userId) {
+            throw new Error('You cannot invite yourself to a team.');
+        }
+
+        // Check if an invite already exists
+        const hasExistingInvite = await this.checkExistingInvite(toUser.userId, team.teamId);
+        if (hasExistingInvite) {
+            throw new Error('An invite for this team already exists for this user.');
+        }
+
+        const invite: Invite = {
+            userId: toUser.userId,
+            teamId: team.teamId,
+            teamName: team.name,
+            invitedByUserId: this.user.userId,
+            invitedByUserName: this.user.userName,
+            status: InviteStatus.Pending,
+            createdAt: this.dateService.getTodayAsIsoDate(),
+        };
+
+        try {
+            const inviteRef = doc(collection(this.firestore, `users/${toUser.userId}/invites`));
+            await setDoc(inviteRef, invite);
+            console.log('Invite sent successfully');
+        } catch (error) {
+            console.error('Error sending invite:', error);
+            throw error;
+        }
+    }
+      
+      async acceptInvite(invite: Invite): Promise<void> {
+        if (!this.user) {
+          throw new Error('No user is logged in.');
+        }
+
+        try {
+          // Update invite status to accepted
+          const inviteRef = doc(this.firestore, `users/${this.user.userId}/invites/${invite.inviteId}`);
+          await updateDoc(inviteRef, {
+            status: InviteStatus.Accepted
+          });
+
+          // Add user as member to the team
+          const memberRef = doc(this.firestore, `teams/${invite.teamId}/members/${this.user.userId}`);
+          await setDoc(memberRef, {
+            userName: this.user.userName,
+            role: TeamRole.Member,
+            joinedAt: this.dateService.getTodayAsIsoDate()
+          });
+
+          await this.updateTeams();
+          await this.userService.updateInvites();
+        } catch (error) {
+          console.error('Error accepting invite:', error);
+          throw error;
+        }
+      }
+
+      async declineInvite(invite: Invite): Promise<void> {
+        if (!this.user) {
+          throw new Error('No user is logged in.');
+        }
+
+        try {
+          const inviteRef = doc(this.firestore, `users/${this.user.userId}/invites/${invite.inviteId}`);
+          await updateDoc(inviteRef, {
+            status: InviteStatus.Declined
+          });
+          await this.userService.updateInvites();
+        } catch (error) {
+          console.error('Error declining invite:', error);
+          throw error;
+        }
+      }
 }

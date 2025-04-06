@@ -10,6 +10,7 @@ import { SettingMenuItem } from '../../models/setting-menu-item';
 import { AuthService } from '../../services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -27,6 +28,8 @@ export class UserComponent {
 
   private router = inject(Router);
   private authService = inject(AuthService);
+  private userService = inject(UserService);
+  public pendingInviteCount = 0;
 
   user?: User | null;
 
@@ -47,6 +50,12 @@ export class UserComponent {
       if (event instanceof NavigationEnd) {
         this.showSettings = event.url === '/user';
       }
+    });
+
+    this.userService.invites$
+    .pipe(takeUntilDestroyed())
+    .subscribe(invites => {
+      this.pendingInviteCount = invites.length;
     });
   }
 

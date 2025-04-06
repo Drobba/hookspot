@@ -1,43 +1,29 @@
 <div class="w-full max-w-2xl mx-auto p-4">
-  <div class="flex justify-between items-start mb-2">
+  <div class="flex justify-between items-start mb-6">
     <div class="flex flex-col">
-      <h2 class="text-2xl font-semibold">Member Directory</h2>
-      <mat-form-field appearance="fill" class="w-48">
-        <mat-label>Select Team</mat-label>
-        <mat-select 
-          [value]="selectedTeamId" 
-          (selectionChange)="onTeamChange($event.value)">
-          <mat-option *ngFor="let team of teams" [value]="team.teamId">
-            {{ team.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <h2 class="text-2xl font-semibold">{{ currentTeam?.name }}</h2>
+      <p class="text-gray-600 text-sm">Team Members</p>
     </div>
-  
-    <button mat-flat-button color="primary" class="rounded-xl mt-2" (click)="createTeam()">
-      New team
-    </button>
   </div>
   
-  <div class="flex items-center gap-4 mb-2">
+  <div class="flex items-center gap-4 mb-4">
     <mat-form-field appearance="fill" class="w-full max-w-xs">
-      <mat-label class="!text-sm">Search user</mat-label>
+      <mat-label class="!text-sm">Add new member</mat-label>
       <input class="!text-sm"
         type="text"
         matInput
         [formControl]="userSearchControl"
         [matAutocomplete]="auto"
-        placeholder="Enter username or email"
+        placeholder="Search by username or email"
       />
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let user of filteredOptions | async" [value]="user.userName">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserFn">
+        <mat-option *ngFor="let user of filteredOptions | async" [value]="user">
           {{ user.userName }} <span class="text-xs text-gray-500 ml-2">({{ user.email }})</span>
         </mat-option>
-        
       </mat-autocomplete>
     </mat-form-field>
   
-    <button mat-flat-button color="primary" class="rounded-xl !h-10  !text-sm">
+    <button mat-flat-button color="primary" class="rounded-xl !h-10 !text-sm" (click)="sendInvite()">
       Send invite
     </button>
   </div>
@@ -70,6 +56,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50 transition"></tr>
     </table>
-</div>
   </div>
+</div>
   

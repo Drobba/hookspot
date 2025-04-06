@@ -6,8 +6,9 @@ import { AddCatchComponent } from './components/add-catch/add-catch.component';
 import { UserComponent } from './components/user/user.component';
 import { authGuard } from './guards/auth.guard';
 import { UserSettingsComponent } from './components/user/user-settings/user-settings.component';
-import { TeamsComponent } from './components/user/teams/teams.component';
+import { TeamComponent } from './components/user/team-list/team/team.component';
 import { NotificationsComponent } from './components/user/notifications/notifications.component';
+import { TeamListComponent } from './components/user/team-list/team-list.component';
 
 
 export const routes: Routes = [
@@ -43,7 +44,13 @@ export const routes: Routes = [
     component: UserComponent,
     children: [
       {path: 'profile', component: UserSettingsComponent},
-      {path: 'teams', component: TeamsComponent},
+      {
+        path: 'teams',
+        children: [
+          {path: '', component: TeamListComponent},
+          {path: ':teamId', component: TeamComponent}
+        ]
+      },
       {path: 'notifications', component: NotificationsComponent},
     ]
   }

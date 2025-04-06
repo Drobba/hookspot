@@ -9,29 +9,26 @@
     </div>
 
     <!-- 🔥 Invitations List -->
-    <div class="invitations-list w-full max-w-md flex flex-col gap-4 mt-4">
-        <mat-card *ngFor="let invite of invitations" class="invite-card">
-            <div class="invite-content">
-                <!-- 🔹 Text till vänster -->
-                <div class="invite-text">
-                    <p><strong>{{ invite.inviter }}</strong> has invited you to join <strong>{{ invite.group }}</strong>.</p>
+    <mat-card *ngFor="let invite of invitations" class="invite-card invitations-list w-full max-w-md mt-4">
+        <div class="invite-content">
+            <div class="invite-text">
+                <p>
+                    <span class="font-semibold text-gray-700">{{ invite.invitedByUserName }}</span>
+                    has invited you to join
+                    <span class="font-semibold text-gray-700">{{ invite.teamName }}</span>.
+                </p>
+            </div>
+    
+            <div class="action-buttons">
+                <div class="action-item-accept cursor-pointer" (click)="onAcceptInvite(invite)">
+                    <img src="assets/accept.svg" alt="Accept" class="h-[3rem]">
+                    <p class="text-xs text-gray-400 text-label mt-[1px]">Accept</p>
                 </div>
-        
-                <!-- 🔹 Ikoner till höger -->
-                <div class="action-buttons">
-                    <div class="action-item-accept">
-                        <img src="assets/accept.svg" alt="Accept" class= "h-[3rem]">
-                        <p class="text-xs text-gray-400 text-label mt-[1px]">Accept</p>
-                    </div>
-                    <div class="action-item">
-                        <img src="assets/cross-circle.svg" alt="Decline" class="decline-icon h-[3.1rem]">
-                        <p class="text-xs text-gray-400 text-label">Decline</p>
-                    </div>
+                <div class="action-item cursor-pointer" (click)="onDeclineInvite(invite)">
+                    <img src="assets/cross-circle.svg" alt="Decline" class="decline-icon h-[3.1rem]">
+                    <p class="text-xs text-gray-400 text-label">Decline</p>
                 </div>
             </div>
-        </mat-card>
-        
-        
-    </div>
-
+        </div>
+    </mat-card>
 </div>

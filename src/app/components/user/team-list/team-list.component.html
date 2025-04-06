@@ -1,0 +1,43 @@
+<div class="bg-gray-100 min-h-screen flex flex-col items-center p-6 w-full">
+
+    <!-- Title, Back Button & New Team -->
+    <div class="w-full max-w-md mb-4">
+      <div class="relative flex items-center mb-4">
+        <!-- Back button (positioned left) -->
+        <a routerLink="/user" class="text-gray-700 hover:text-gray-900 cursor-pointer absolute left-0">
+          <fa-icon [icon]="backIcon" class="text-lg"></fa-icon>
+        </a>
+    
+        <!-- Title and New team button container -->
+        <div class="w-full flex items-center px-8">
+          <!-- Title -->
+          <h2 class="text-lg font-semibold text-gray-700 flex-grow text-center">My Teams</h2>
+
+          <!-- New team button -->
+          <button mat-flat-button color="primary" class="rounded-full px-4 py-2" (click)="createTeam()">
+            New team
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Teams List -->
+    <div class="teams-list custom-scrollbar">
+      <mat-card *ngFor="let team of teams" 
+                [routerLink]="[team.teamId]"
+                class="team-card cursor-pointer hover:bg-gray-50 transition-colors">
+        <div class="team-content">
+          <div class="team-text">
+            <p>
+              <span class="font-semibold text-gray-700">{{ team.name }}</span>
+            </p>
+            <p class="text-sm text-gray-500">
+              {{ memberCount(team) }}
+            </p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  
+  </div>
+  
