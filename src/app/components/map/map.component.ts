@@ -38,29 +38,35 @@ export class MapComponent implements OnInit {
       console.error('Kartan är inte initialiserad.');
       return;
     }
-
-    // Rensa tidigare markörer (valfritt, om du inte vill duplicera markörer vid uppdateringar)
+  
+    // Rensa gamla markörer
     this.map.eachLayer((layer) => {
       if (layer instanceof L.Marker) {
         this.map?.removeLayer(layer);
       }
     });
-
+  
     const customIcon = L.icon({
-      iconUrl: 'assets/map-marker.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -40],
+      iconUrl: 'assets/Esox_lucius.png',
+      iconSize: [60, 24],       // anpassa
+      iconAnchor: [30, 12],     // anpassa
+      popupAnchor: [0, -12],
+      className: ''
     });
-
-    // Skapa en markör för varje fångst
+    
+  
     catches.forEach((catchItem) => {
-      const marker = L.marker([catchItem.location.lat, catchItem.location.lng], { icon: customIcon });
-      marker
-        .addTo(this.map!)
-        .bindPopup(
-          `<b>${catchItem.user.userName}</b><br>Fiskart: ${catchItem.fishType}<br>Vikt: ${catchItem.fishWeight} kg`
-        );
+      const marker = L.marker(
+        [catchItem.location.lat, catchItem.location.lng],
+        { icon: customIcon }
+      );
+      marker.addTo(this.map!).bindPopup(`
+        <img src="assets/Esox_lucius.png"/>
+        <b>${catchItem.user.userName}</b><br>
+        Fiskart: ${catchItem.fishType}<br>
+        Vikt: ${catchItem.fishWeight} kg
+      `);
     });
   }
+  
 }
