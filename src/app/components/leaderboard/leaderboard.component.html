@@ -1,2 +1,147 @@
-<p>leaderboard works!</p>
-<h2>Leaderboard - {{leaderboardId()}} - {{limit()}}</h2>
+<div class="w-full max-w-5xl mx-auto p-4 space-y-6">
+  <!-- Header Section -->
+  <div class="flex flex-col space-y-2">
+    <h1 class="text-3xl font-bold text-primary flex items-center gap-2">
+      <fa-icon [icon]="trophyIcon"></fa-icon>
+      Leaderboard
+    </h1>
+    <p class="text-gray-600">Track the most impressive catches from our community</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+      <div class="flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-gray-500 text-sm">Most Active Angler</p>
+          <p class="text-lg font-bold text-primary">{{mostCatches.userName}}</p>
+          <p class="text-sm text-gray-600">{{mostCatches.value}}</p>
+        </div>
+        <fa-icon [icon]="crownIcon" class="text-2xl text-amber-500"></fa-icon>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+      <div class="flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-gray-500 text-sm">Heaviest Average</p>
+          <p class="text-lg font-bold text-primary">{{heaviestAvg.userName}}</p>
+          <p class="text-sm text-gray-600">{{heaviestAvg.value}}</p>
+        </div>
+        <fa-icon [icon]="medalIcon" class="text-2xl text-primary opacity-80"></fa-icon>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-xl p-4 shadow-md border border-gray-100">
+      <div class="flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-gray-500 text-sm">Longest Average</p>
+          <p class="text-lg font-bold text-primary">{{longestAvg.userName}}</p>
+          <p class="text-sm text-gray-600">{{longestAvg.value}}</p>
+        </div>
+        <fa-icon [icon]="awardIcon" class="text-2xl text-primary opacity-80"></fa-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex gap-4 items-center bg-white rounded-xl p-4 shadow-md border border-gray-100">
+    <fa-icon [icon]="filterIcon" class="text-xl text-primary"></fa-icon>
+    <mat-form-field>
+      <mat-label>Select Team</mat-label>
+      <mat-select [(ngModel)]="selectedTeam" (ngModelChange)="onFilterChange()">
+        <mat-option [value]="">All Teams</mat-option>
+        <mat-option *ngFor="let team of teams" [value]="team.teamId">
+          {{team.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Select Species</mat-label>
+      <mat-select [(ngModel)]="selectedSpecies" (ngModelChange)="onFilterChange()">
+        <mat-option [value]="">All Species</mat-option>
+        <mat-option *ngFor="let type of species" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Select Year</mat-label>
+      <mat-select [(ngModel)]="selectedYear" (ngModelChange)="onFilterChange()">
+        <mat-option [value]="">All Years</mat-option>
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{year}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+    <div class="max-h-[500px] overflow-auto">
+      <table mat-table [dataSource]="filteredData" class="w-full">
+        <!-- Name Column -->
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> Angler </th>
+          <td mat-cell *matCellDef="let catch" class="p-4"> 
+            <div class="flex items-center gap-2">
+              <fa-icon [icon]="fishIcon" class="text-primary text-sm"></fa-icon>
+              {{catch.user.userName}}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Fish Type Column -->
+        <ng-container matColumnDef="fishType">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> Species </th>
+          <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishType}} </td>
+        </ng-container>
+
+        <!-- Length Column -->
+        <ng-container matColumnDef="fishLength">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> 
+            <div class="flex items-center gap-1">
+              <fa-icon [icon]="rulerIcon" class="text-sm"></fa-icon>
+              Length
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishLength}} cm </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="fishWeight">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600">
+            <div class="flex items-center gap-1">
+              <fa-icon [icon]="scaleIcon" class="text-sm"></fa-icon>
+              Weight
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishWeight}} kg </td>
+        </ng-container>
+
+        <!-- Bait Column -->
+        <ng-container matColumnDef="bait">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> Bait </th>
+          <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.bait}} </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600">
+            <div class="flex items-center gap-1">
+              <fa-icon [icon]="calendarIcon" class="text-sm"></fa-icon>
+              Date
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let catch" class="p-4 text-gray-500"> {{catch.date | date:'MMM d, y'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-gray-50"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+            class="border-t border-gray-100 hover:bg-gray-50 transition-colors duration-150"></tr>
+      </table>
+    </div>
+  </div>
+</div>

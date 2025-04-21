@@ -8,3 +8,79 @@
     height: 100%;
     width: 100%;
   }
+
+  ::ng-deep {
+    .leaflet-popup {
+      margin-bottom: 0;
+    }
+
+    .leaflet-popup-content-wrapper {
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .leaflet-popup-content {
+      margin: 0;
+      width: 300px !important;
+    }
+
+    .catch-popup {
+      .catch-header {
+        background-color: white;
+        padding: 16px;
+        text-align: center;
+
+        .fish-image {
+          width: 100%;
+          height: auto;
+          object-fit: contain;
+          margin-bottom: 12px;
+        }
+
+        .user-name {
+          font-size: 1.25rem;
+          font-weight: 500;
+          color: #1f2937;
+          margin: 0;
+        }
+      }
+
+      .catch-details {
+        padding: 16px;
+        background-color: white;
+
+        .detail-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0;
+          border-bottom: 1px solid #f3f4f6;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .label {
+            color: #6b7280;
+            font-size: 0.875rem;
+          }
+
+          .value {
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+
+    .leaflet-popup-tip-container {
+      display: none;
+    }
+
+    .fish-marker {
+      filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1));
+    }
+  }

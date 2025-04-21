@@ -16,7 +16,7 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.initMap();
 
-    // Prenumerera på fångster från CatchService
+    // Subscribe to catches from CatchService
     this.catchService.catches$.subscribe((catches: Catch[]) => {
       this.addMarkers(catches);
     });
@@ -35,38 +35,69 @@ export class MapComponent implements OnInit {
 
   private addMarkers(catches: Catch[]): void {
     if (!this.map) {
-      console.error('Kartan är inte initialiserad.');
+      console.error('Map is not initialized.');
       return;
     }
   
-    // Rensa gamla markörer
+    // Clear old markers
     this.map.eachLayer((layer) => {
       if (layer instanceof L.Marker) {
         this.map?.removeLayer(layer);
       }
     });
-  
+
+    const iconUrl = 'assets/Esox_lucius.png';
     const customIcon = L.icon({
-      iconUrl: 'assets/Esox_lucius.png',
-      iconSize: [60, 24],       // anpassa
-      iconAnchor: [30, 12],     // anpassa
+      iconUrl: iconUrl,
+      iconSize: [60, 24],
+      iconAnchor: [30, 12],
       popupAnchor: [0, -12],
-      className: ''
+      className: 'fish-marker'
     });
     
-  
     catches.forEach((catchItem) => {
       const marker = L.marker(
         [catchItem.location.lat, catchItem.location.lng],
         { icon: customIcon }
       );
-      marker.addTo(this.map!).bindPopup(`
-        <img src="assets/Esox_lucius.png"/>
-        <b>${catchItem.user.userName}</b><br>
-        Fiskart: ${catchItem.fishType}<br>
-        Vikt: ${catchItem.fishWeight} kg
-      `);
+
+      const popupContent = `
+        <div class="catch-popup">
+          <div class="catch-header">
+            <img src="${iconUrl}" alt="${catchItem.fishType}" class="fish-image"/>
+            <h3 class="user-name">${catchItem.user.userName}</h3>
+          </div>
+          <div class="catch-details">
+            <div class="detail-row">
+              <span class="label">Fiskart</span>
+              <span class="value">${catchItem.fishType}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Vikt</span>
+              <span class="value">${catchItem.fishWeight} kg</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Längd</span>
+              <span class="value">${catchItem.fishLength} cm</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Bete</span>
+              <span class="value">${catchItem.bait}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Datum</span>
+              <span class="value">${catchItem.date}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      marker.addTo(this.map!).bindPopup(popupContent, {
+        closeButton: false,
+        className: 'custom-popup',
+        maxWidth: 300,
+        minWidth: 300
+      });
     });
   }
-  
 }

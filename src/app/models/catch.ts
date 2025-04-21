@@ -6,6 +6,9 @@ export interface Catch {
     catchId: string,
     fishType: string,
     fishWeight: number,
+    fishLength: number,
+    bait: string,
+    date: string,
     location: Location,
 }
 

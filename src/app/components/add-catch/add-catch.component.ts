@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Catch, CrtCatchInput } from '../../models/catch';
 import { CatchService } from '../../services/catch.service';
+import { DateService } from '../../services/date.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
@@ -16,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 @Component({
   selector: 'app-add-catch',
   standalone: true,
@@ -26,6 +28,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class AddCatchComponent {
   private catchService = inject(CatchService);
   private authService = inject(AuthService);
+  private dateService = inject(DateService);
   private dialogRef = inject(MatDialogRef<AddCatchComponent>);
   closeIcon = faTimes;
 
@@ -40,6 +43,8 @@ export class AddCatchComponent {
     this.catchForm = this.fb.group({
       fishType: ['', Validators.required],
       weight: ['', [Validators.required, Validators.min(0.1)]],
+      length: ['', [Validators.required, Validators.min(1)]],
+      bait: ['', Validators.required]
     });
 
     this.catchService.catches$
@@ -69,6 +74,9 @@ export class AddCatchComponent {
     const newCatch: CrtCatchInput = {
       fishType: this.catchForm.value.fishType,
       fishWeight: parseFloat(this.catchForm.value.weight),
+      fishLength: parseFloat(this.catchForm.value.length),
+      bait: this.catchForm.value.bait,
+      date: this.dateService.getTodayAsIsoDate(),
       user: {
         userId: this.user.userId,
         email: this.user.email,
@@ -82,7 +90,7 @@ export class AddCatchComponent {
 
     try {
       await this.catchService.addCatch(newCatch);
-      this.catchForm.reset(); // Återställ formuläret
+      this.catchForm.reset();
       this.closeDialog();
     } catch (error) {
       console.error('Error adding catch:', error);
