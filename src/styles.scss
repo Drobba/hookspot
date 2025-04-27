@@ -15,3 +15,53 @@
   // .leaflet-control-zoom {
   //   margin-bottom: 70px !important;
   // }
+
+/* Fullscreen dialog styles for mobile */
+@media screen and (max-width: 767px) {
+  .fullscreen-mobile-dialog {
+    .mat-mdc-dialog-container {
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    .mat-mdc-dialog-surface {
+      border-radius: 0 !important;
+    }
+
+    .mdc-dialog__surface {
+      border-radius: 0 !important;
+    }
+
+    .mdc-dialog__container {
+      border-radius: 0 !important;
+    }
+
+    // Remove backdrop color
+    & + .cdk-overlay-backdrop {
+      background: white;
+    }
+  }
+
+  // Ensure content takes full height
+  .mat-mdc-dialog-content {
+    max-height: 100vh !important;
+    height: 100vh !important;
+  }
+}
+
+/* Desktop dialog styles */
+@media screen and (min-width: 768px) {
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-dialog-surface {
+    border-radius: 12px !important;
+  }
+
+  .mdc-dialog__surface {
+    border-radius: 12px !important;
+  }
+}

@@ -1,0 +1,126 @@
+:host {
+  display: block;
+  
+  @media screen and (max-width: 767px) {
+    height: 100vh;
+    
+    ::ng-deep {
+      .mat-horizontal-stepper-wrapper {
+        height: 100vh;
+      }
+      
+      .mat-horizontal-content-container {
+        height: calc(100vh - 150px); // Account for header and stepper header
+        overflow-y: auto;
+      }
+
+      // Remove border radius for mobile view
+      .mat-dialog-container {
+        border-radius: 0 !important;
+      }
+    }
+  }
+  
+  ::ng-deep {
+    .mat-horizontal-stepper-header-container {
+      margin-bottom: 20px;
+    }
+
+    .mat-step-header {
+      &.mat-step-header-ripple {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    .mat-step-icon {
+      background-color: #9CA3AF; // Gray color for inactive steps
+      
+      .mat-step-icon-content {
+        color: white; // Make number white for better contrast on both colors
+      }
+    }
+
+    .mat-step-icon-selected,
+    .mat-step-icon-state-done,
+    .mat-step-icon-state-edit {
+      background-color: rgb(0 75 73) !important; // Primary color for active/completed steps
+      
+      .mat-step-icon-content {
+        color: white !important; // Ensure white text on primary background
+      }
+    }
+
+    // Update the step header text colors
+    .mat-step-label {
+      color: #9CA3AF;
+      
+      &.mat-step-label-selected {
+        color: rgb(0 75 73);
+      }
+    }
+  }
+}
+
+#catch-location-map {
+  position: relative;
+  z-index: 0;
+  
+  .leaflet-container {
+    border-radius: 0;
+  }
+
+  // Hide all Leaflet controls and attribution
+  .leaflet-control-container {
+    display: none;
+  }
+}
+
+// Ensure marker stays above map
+.map-container {
+  position: relative;
+
+  .centered-marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    pointer-events: none;
+    
+    fa-icon {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    }
+  }
+}
+
+::ng-deep {
+  .fish-marker {
+    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1));
+  }
+}
+
+// Marker animation
+.location-marker {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.image-upload-area {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  
+  &:hover:not(.has-image) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  &.has-image {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}

@@ -1,27 +1,42 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { Catch, CrtCatchInput } from '../../models/catch';
 import { CatchService } from '../../services/catch.service';
 import { DateService } from '../../services/date.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth.service';
+import { MapService } from '../../services/map.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faLocationPin, faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatStepperModule } from '@angular/material/stepper';
+import * as L from 'leaflet';
+import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-add-catch',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, FontAwesomeModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    FormsModule, 
+    MatButtonModule, 
+    MatCardModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatSelectModule, 
+    FontAwesomeModule,
+    MatStepperModule,
+    MatDialogModule
+  ],
   templateUrl: './add-catch.component.html',
   styleUrls: ['./add-catch.component.scss'],
 })
@@ -29,17 +44,37 @@ export class AddCatchComponent {
   private catchService = inject(CatchService);
   private authService = inject(AuthService);
   private dateService = inject(DateService);
+  private mapService = inject(MapService);
+  private storage = inject(Storage);
   private dialogRef = inject(MatDialogRef<AddCatchComponent>);
+  
   closeIcon = faTimes;
+  locationIcon = faLocationPin;
+  imageIcon = faImage;
 
   user?: User | null;
   catches: Catch[] = [];
   availableFishes: string[] = ['Gädda', 'Abborre', 'Gös', 'Regnbågslax', 'Röding', 'Lax', 'Öring'];
 
-  // Reactive Form
+  // Map related properties
+  private map?: L.Map;
+  selectedLocation?: { lat: number; lng: number };
+
+  // Image upload related properties
+  selectedImage: File | null = null;
+  selectedImageUrl: string | null = null;
+  isUploading = false;
+
+  // Forms for both steps
+  locationForm: FormGroup;
   catchForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
+    // Initialize both forms
+    this.locationForm = this.fb.group({
+      location: [null, Validators.required]
+    });
+
     this.catchForm = this.fb.group({
       fishType: ['', Validators.required],
       weight: ['', [Validators.required, Validators.min(0.1)]],
@@ -56,9 +91,60 @@ export class AddCatchComponent {
       .subscribe((user) => (this.user = user));
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.initMap();
+    }, 0);
+  }
+
+  private initMap(): void {
+    this.map = this.mapService.initMap('catch-location-map', {
+      zoomControl: false,
+    }, false);
+
+    // Set map to current location and update form
+    this.mapService.setMapToCurrentLocation(this.map).subscribe(location => {
+      this.selectedLocation = location;
+      this.locationForm.patchValue({
+        location: this.selectedLocation
+      });
+    });
+
+    // Update location when map moves
+    this.map.on('moveend', () => {
+      if (this.map) {
+        const center = this.map.getCenter();
+        this.selectedLocation = { lat: center.lat, lng: center.lng };
+        
+        // Update form
+        this.locationForm.patchValue({
+          location: this.selectedLocation
+        });
+      }
+    });
+  }
+
+  async onFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedImage = input.files[0];
+      // Create a preview URL
+      this.selectedImageUrl = URL.createObjectURL(this.selectedImage);
+    }
+  }
+
+  private async uploadImage(file: File): Promise<string> {
+    const timestamp = new Date().getTime();
+    const filePath = `catches/${this.user?.userId}/${timestamp}_${file.name}`;
+    const fileRef = ref(this.storage, filePath);
+    
+    await uploadBytes(fileRef, file);
+    return await getDownloadURL(fileRef);
+  }
+
   async addItem(): Promise<void> {
-    if (this.catchForm.invalid) {
-      console.error('Formuläret är ogiltigt.');
+    if (this.catchForm.invalid || !this.selectedLocation) {
+      console.error('Form is invalid or location not selected');
       return;
     }
 
@@ -66,57 +152,49 @@ export class AddCatchComponent {
       return;
     }
 
-    const position = await this.getCurrentLocation();
-    if (!position) {
-      return;
-    }
-
-    const newCatch: CrtCatchInput = {
-      fishType: this.catchForm.value.fishType,
-      fishWeight: parseFloat(this.catchForm.value.weight),
-      fishLength: parseFloat(this.catchForm.value.length),
-      bait: this.catchForm.value.bait,
-      date: this.dateService.getTodayAsIsoDate(),
-      user: {
-        userId: this.user.userId,
-        email: this.user.email,
-        userName: this.user.userName,
-      },
-      location: {
-        lat: position.latitude,
-        lng: position.longitude,
-      },
-    };
-
     try {
+      this.isUploading = true;
+      let imageUrl: string | undefined;
+
+      if (this.selectedImage) {
+        imageUrl = await this.uploadImage(this.selectedImage);
+      }
+
+      const newCatch: CrtCatchInput = {
+        fishType: this.catchForm.value.fishType,
+        fishWeight: parseFloat(this.catchForm.value.weight),
+        fishLength: parseFloat(this.catchForm.value.length),
+        bait: this.catchForm.value.bait,
+        date: this.dateService.getTodayAsIsoDate(),
+        user: {
+          userId: this.user.userId,
+          email: this.user.email,
+          userName: this.user.userName,
+        },
+        location: this.selectedLocation,
+        imageUrl
+      };
+
       await this.catchService.addCatch(newCatch);
       this.catchForm.reset();
       this.closeDialog();
     } catch (error) {
       console.error('Error adding catch:', error);
-      this.closeDialog();
+    } finally {
+      this.isUploading = false;
     }
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  removeImage(): void {
+    this.selectedImage = null;
+    this.selectedImageUrl = null;
   }
 
-  private getCurrentLocation(): Promise<GeolocationCoordinates | null> {
-    return new Promise((resolve) => {
-      if (!navigator.geolocation) {
-        console.error('Geolocation stöds inte av webbläsaren.');
-        resolve(null);
-      } else {
-        navigator.geolocation.getCurrentPosition(
-          (position) => resolve(position.coords),
-          (error) => {
-            console.error('Geolocation error:', error);
-            resolve(null);
-          }
-        );
-      }
-    });
+  closeDialog(): void {
+    if (this.selectedImageUrl) {
+      URL.revokeObjectURL(this.selectedImageUrl);
+    }
+    this.dialogRef.close();
   }
 }
 

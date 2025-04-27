@@ -10,6 +10,7 @@ export interface Catch {
     bait: string,
     date: string,
     location: Location,
+    imageUrl?: string, // Optional URL to the uploaded image
 }
 
 export type CrtCatchInput = Omit<Catch, 'catchId'>

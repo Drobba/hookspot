@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-map',
@@ -10,8 +11,13 @@ import { Catch } from '../../models/catch';
 })
 export class MapComponent implements OnInit {
   private map: L.Map | undefined;
+  private readonly defaultCenter: L.LatLngTuple = [60.212664, 16.811447];
+  private readonly defaultZoom = 11;
 
-  constructor(private catchService: CatchService) {}
+  constructor(
+    private catchService: CatchService,
+    private mapService: MapService
+  ) {}
 
   ngOnInit(): void {
     this.initMap();
@@ -23,14 +29,10 @@ export class MapComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map', {
-      center: [60.212664, 16.811447],
-      zoom: 11,
-    });
-
-    L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=DGFPXsZXReirjtp4BE3s', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.map);
+    this.map = this.mapService.initMap('map');
+    
+    // Set map to current location
+    this.mapService.setMapToCurrentLocation(this.map).subscribe();
   }
 
   private addMarkers(catches: Catch[]): void {
@@ -64,7 +66,7 @@ export class MapComponent implements OnInit {
       const popupContent = `
         <div class="catch-popup">
           <div class="catch-header">
-            <img src="${iconUrl}" alt="${catchItem.fishType}" class="fish-image"/>
+            <img src="${catchItem.imageUrl || iconUrl}" alt="${catchItem.fishType}" class="fish-image"/>
             <h3 class="user-name">${catchItem.user.userName}</h3>
           </div>
           <div class="catch-details">
