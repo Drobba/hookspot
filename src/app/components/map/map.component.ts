@@ -66,7 +66,10 @@ export class MapComponent implements OnInit {
       const popupContent = `
         <div class="catch-popup">
           <div class="catch-header">
-            <img src="${catchItem.imageUrl || iconUrl}" alt="${catchItem.fishType}" class="fish-image"/>
+            <span class="custom-close-button">&times;</span>
+            <div class="image-container">
+              <img src="${catchItem.imageUrl || iconUrl}" alt="${catchItem.fishType}" class="fish-image"/>
+            </div>
             <h3 class="user-name">${catchItem.user.userName}</h3>
           </div>
           <div class="catch-details">
@@ -99,6 +102,14 @@ export class MapComponent implements OnInit {
         className: 'custom-popup',
         maxWidth: 300,
         minWidth: 300
+      }).on('popupopen', (e) => {
+        const popup = e.popup;
+        const closeButton = popup.getElement()?.querySelector('.custom-close-button');
+        if (closeButton) {
+          closeButton.addEventListener('click', () => {
+            popup.close();
+          });
+        }
       });
     });
   }

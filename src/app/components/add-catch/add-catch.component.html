@@ -51,7 +51,7 @@
 
     <!-- Step 2: Catch Details -->
     <mat-step [stepControl]="catchForm">
-      <form [formGroup]="catchForm">
+      <form [formGroup]="catchForm" class="pb-16">
         <ng-template matStepLabel>Add Details</ng-template>
         
         <!-- Fish type selection -->
@@ -127,34 +127,48 @@
             />
             
             <ng-container *ngIf="!selectedImageUrl">
-              <fa-icon [icon]="imageIcon" class="text-3xl text-gray-400 mb-2"></fa-icon>
-              <p class="text-gray-600">Klicka eller dra en bild hit</p>
-              <p class="text-sm text-gray-500">JPG, PNG eller GIF (max 10MB)</p>
+              <div class="upload-instructions">
+                <fa-icon [icon]="imageIcon" class="text-3xl text-gray-400 mb-2"></fa-icon>
+                <p class="text-gray-600">Klicka eller dra en bild hit</p>
+                <p class="text-sm text-gray-500">JPG, PNG eller GIF (max 10MB)</p>
+              </div>
             </ng-container>
             
-            <div *ngIf="selectedImageUrl" class="relative">
-              <img [src]="selectedImageUrl" alt="Preview" class="max-h-48 mx-auto rounded-lg shadow-sm"/>
+            <div *ngIf="selectedImageUrl" class="image-preview-container">
+              <img 
+                [src]="selectedImageUrl" 
+                alt="Preview" 
+                (mousedown)="startImageDrag($event)"
+                #previewImage
+              />
             </div>
           </div>
         </div>
 
         <!-- Navigation buttons -->
-        <div class="flex justify-between mt-4">
-          <button 
-            mat-button 
-            matStepperPrevious
-            class="text-gray-500"
-          >
-            Back
-          </button>
-          <button 
-            mat-flat-button 
-            (click)="addItem()" 
-            [disabled]="catchForm.invalid"
-            class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
-          >
-            Add
-          </button>
+        <div class="action-buttons">
+          <div class="flex justify-between">
+            <button 
+              mat-button 
+              matStepperPrevious
+              class="text-gray-500"
+            >
+              Back
+            </button>
+            <button 
+              mat-flat-button 
+              (click)="addItem()" 
+              [disabled]="catchForm.invalid || (spinnerService.isLoading$ | async)"
+              class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 min-w-[80px]"
+            >
+              <ng-container *ngIf="!(spinnerService.isLoading$ | async); else loadingSpinner">
+                Add
+              </ng-container>
+              <ng-template #loadingSpinner>
+                <mat-spinner diameter="20" class="mx-auto"></mat-spinner>
+              </ng-template>
+            </button>
+          </div>
         </div>
       </form>
     </mat-step>

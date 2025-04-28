@@ -1,27 +1,18 @@
 :host {
   display: block;
   
-  @media screen and (max-width: 767px) {
-    height: 100vh;
-    
-    ::ng-deep {
-      .mat-horizontal-stepper-wrapper {
-        height: 100vh;
-      }
-      
-      .mat-horizontal-content-container {
-        height: calc(100vh - 150px); // Account for header and stepper header
-        overflow-y: auto;
-      }
-
-      // Remove border radius for mobile view
-      .mat-dialog-container {
-        border-radius: 0 !important;
-      }
-    }
-  }
-  
   ::ng-deep {
+    .mat-dialog-container {
+      max-height: 90vh;
+      overflow: hidden;
+    }
+
+    .mat-horizontal-content-container {
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-bottom: 70px;
+    }
+
     .mat-horizontal-stepper-header-container {
       margin-bottom: 20px;
     }
@@ -122,5 +113,42 @@
   
   &.has-image {
     background-color: rgba(0, 0, 0, 0.02);
+
+    .image-preview-container {
+      width: 300px;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 8px;
+      background-color: #f3f4f6;
+
+      img {
+        position: absolute;
+        height: auto;
+        width: 100%;
+        transform: translateY(0);
+        cursor: ns-resize;
+        user-select: none;
+      }
+    }
   }
+}
+
+.upload-instructions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+}
+
+// Add sticky footer for action buttons
+.action-buttons {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0 -16px -16px -16px;
+  z-index: 1;
 }

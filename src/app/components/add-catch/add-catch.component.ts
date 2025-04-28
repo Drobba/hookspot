@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { Catch, CrtCatchInput } from '../../models/catch';
 import { CatchService } from '../../services/catch.service';
 import { DateService } from '../../services/date.service';
@@ -18,8 +18,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { faTimes, faLocationPin, faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as L from 'leaflet';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   selector: 'app-add-catch',
@@ -35,7 +37,8 @@ import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage
     MatSelectModule, 
     FontAwesomeModule,
     MatStepperModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './add-catch.component.html',
   styleUrls: ['./add-catch.component.scss'],
@@ -47,6 +50,7 @@ export class AddCatchComponent {
   private mapService = inject(MapService);
   private storage = inject(Storage);
   private dialogRef = inject(MatDialogRef<AddCatchComponent>);
+  public spinnerService = inject(SpinnerService);
   
   closeIcon = faTimes;
   locationIcon = faLocationPin;
@@ -68,6 +72,13 @@ export class AddCatchComponent {
   // Forms for both steps
   locationForm: FormGroup;
   catchForm: FormGroup;
+
+  @ViewChild('previewImage') previewImage!: ElementRef;
+  
+  private isDragging = false;
+  private startY = 0;
+  private currentY = 0;
+  private maxDrag = 0;
 
   constructor(private fb: FormBuilder) {
     // Initialize both forms
@@ -124,22 +135,55 @@ export class AddCatchComponent {
     });
   }
 
-  async onFileSelected(event: Event): Promise<void> {
+  startImageDrag(event: MouseEvent) {
+    if (!this.previewImage) return;
+    
+    this.isDragging = true;
+    this.startY = event.clientY - this.currentY;
+    
+    // Beräkna max dragavstånd baserat på bildens höjd
+    const img = this.previewImage.nativeElement;
+    const containerHeight = img.parentElement.offsetHeight;
+    this.maxDrag = Math.max(0, img.offsetHeight - containerHeight);
+    
+    document.addEventListener('mousemove', this.handleImageDrag);
+    document.addEventListener('mouseup', this.stopImageDrag);
+  }
+
+  private handleImageDrag = (event: MouseEvent) => {
+    if (!this.isDragging) return;
+    
+    event.preventDefault();
+    
+    // Beräkna ny Y-position med begränsningar
+    this.currentY = event.clientY - this.startY;
+    this.currentY = Math.min(0, Math.max(-this.maxDrag, this.currentY));
+    
+    const img = this.previewImage.nativeElement;
+    img.style.transform = `translateY(${this.currentY}px)`;
+  }
+
+  private stopImageDrag = () => {
+    this.isDragging = false;
+    document.removeEventListener('mousemove', this.handleImageDrag);
+    document.removeEventListener('mouseup', this.stopImageDrag);
+  }
+
+  onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedImage = input.files[0];
-      // Create a preview URL
+      // Återställ dragposition när ny bild väljs
+      this.currentY = 0;
+      // Skapa förhandsvisnings-URL
       this.selectedImageUrl = URL.createObjectURL(this.selectedImage);
     }
   }
 
-  private async uploadImage(file: File): Promise<string> {
-    const timestamp = new Date().getTime();
-    const filePath = `catches/${this.user?.userId}/${timestamp}_${file.name}`;
-    const fileRef = ref(this.storage, filePath);
-    
-    await uploadBytes(fileRef, file);
-    return await getDownloadURL(fileRef);
+  removeImage(): void {
+    this.selectedImage = null;
+    this.selectedImageUrl = null;
+    this.currentY = 0;
   }
 
   async addItem(): Promise<void> {
@@ -153,6 +197,7 @@ export class AddCatchComponent {
     }
 
     try {
+      this.spinnerService.showSpinner();
       this.isUploading = true;
       let imageUrl: string | undefined;
 
@@ -160,6 +205,7 @@ export class AddCatchComponent {
         imageUrl = await this.uploadImage(this.selectedImage);
       }
 
+      // Bygg newCatch utan imageUrl om den är undefined
       const newCatch: CrtCatchInput = {
         fishType: this.catchForm.value.fishType,
         fishWeight: parseFloat(this.catchForm.value.weight),
@@ -172,7 +218,7 @@ export class AddCatchComponent {
           userName: this.user.userName,
         },
         location: this.selectedLocation,
-        imageUrl
+        ...(imageUrl ? { imageUrl } : {}) // Lägg bara till imageUrl om det finns
       };
 
       await this.catchService.addCatch(newCatch);
@@ -182,12 +228,8 @@ export class AddCatchComponent {
       console.error('Error adding catch:', error);
     } finally {
       this.isUploading = false;
+      this.spinnerService.hideSpinner();
     }
-  }
-
-  removeImage(): void {
-    this.selectedImage = null;
-    this.selectedImageUrl = null;
   }
 
   closeDialog(): void {
@@ -195,6 +237,15 @@ export class AddCatchComponent {
       URL.revokeObjectURL(this.selectedImageUrl);
     }
     this.dialogRef.close();
+  }
+
+  private async uploadImage(file: File): Promise<string> {
+    const timestamp = new Date().getTime();
+    const filePath = `catches/${this.user?.userId}/${timestamp}_${file.name}`;
+    const fileRef = ref(this.storage, filePath);
+    
+    await uploadBytes(fileRef, file);
+    return await getDownloadURL(fileRef);
   }
 }
 
