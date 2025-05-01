@@ -44,10 +44,23 @@
     </div>
   </div>
 
-  <!-- Filters -->
-  <div class="flex gap-4 items-center bg-white rounded-xl p-4 shadow-md border border-gray-100">
-    <fa-icon [icon]="filterIcon" class="text-xl text-primary"></fa-icon>
-    <mat-form-field>
+  <!-- Filter Toggle Button (endast på mobil) -->
+  <button
+    class="flex items-center gap-2 md:hidden mb-2 px-4 py-2 rounded bg-primary text-white"
+    (click)="showFilters = !showFilters"
+  >
+    <fa-icon [icon]="filterIcon"></fa-icon>
+    {{ showFilters ? 'Dölj filter' : 'Visa filter' }}
+  </button>
+
+  <!-- Filtreringssektion: synlig på desktop, eller om showFilters är true på mobil -->
+  <div
+    [@expandCollapse]="showFilters || isDesktop ? 'open' : 'closed'"
+    class="overflow-hidden flex-col gap-2 md:gap-4 items-stretch bg-white rounded-xl p-4 shadow-md border border-gray-100 md:flex-row md:items-center"
+    [ngClass]="{'hidden': !showFilters && !isDesktop, 'flex': showFilters || isDesktop, 'md:flex': true}"
+  >
+    <fa-icon [icon]="filterIcon" class="text-xl text-primary md:block hidden"></fa-icon>
+    <mat-form-field class="w-full md:w-auto">
       <mat-label>Select Team</mat-label>
       <mat-select [(ngModel)]="selectedTeam" (ngModelChange)="onFilterChange()">
         <mat-option [value]="">All Teams</mat-option>
@@ -57,7 +70,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="w-full md:w-auto">
       <mat-label>Select Species</mat-label>
       <mat-select [(ngModel)]="selectedSpecies" (ngModelChange)="onFilterChange()">
         <mat-option [value]="">All Species</mat-option>
@@ -67,7 +80,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="w-full md:w-auto">
       <mat-label>Select Year</mat-label>
       <mat-select [(ngModel)]="selectedYear" (ngModelChange)="onFilterChange()">
         <mat-option [value]="">All Years</mat-option>

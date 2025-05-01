@@ -12,6 +12,7 @@ import { Catch } from '../../models/catch';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TeamSerivce } from '../../services/team.service';
 import { Team } from '../../models/team';
+import { expandCollapseAnimation } from '../../animations/expand-collapse.animation';
 
 interface UserStat {
   userName: string;
@@ -32,7 +33,8 @@ interface UserStat {
     FormsModule
   ],
   templateUrl: './leaderboard.component.html',
-  styleUrls: ['./leaderboard.component.scss']
+  styleUrls: ['./leaderboard.component.scss'],
+  animations: [expandCollapseAnimation]
 })
 export class LeaderboardComponent {
   displayedColumns: string[] = ['userName', 'fishType', 'fishLength', 'fishWeight', 'bait', 'date'];
@@ -78,6 +80,8 @@ export class LeaderboardComponent {
   dataSource: Catch[] = [];
   private catchService = inject(CatchService);
   private teamService = inject(TeamSerivce);
+
+  showFilters = false;
 
   constructor() {
     // Subscribe to catches
@@ -209,5 +213,9 @@ export class LeaderboardComponent {
 
       return speciesMatch && yearMatch && teamMatch;
     });
+  }
+
+  get isDesktop(): boolean {
+    return window.innerWidth >= 768;
   }
 }
