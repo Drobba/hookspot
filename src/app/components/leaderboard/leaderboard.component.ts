@@ -37,7 +37,7 @@ interface UserStat {
   animations: [expandCollapseAnimation]
 })
 export class LeaderboardComponent {
-  displayedColumns: string[] = ['userName', 'fishType', 'fishLength', 'fishWeight', 'bait', 'date'];
+  displayedColumns: string[] = ['rank', 'userName', 'fishType', 'fishWeight', 'fishLength', 'bait', 'date'];
   
   // Icons
   fishIcon = faFish;
@@ -200,19 +200,24 @@ export class LeaderboardComponent {
 
   // Filter function
   get filteredData(): Catch[] {
-    return this.dataSource.filter(record => {
-      const speciesMatch = !this.selectedSpecies || record.fishType === this.selectedSpecies;
-      const yearMatch = !this.selectedYear || new Date(record.date).getFullYear() === this.selectedYear;
-      
-      // Team filter
-      const teamMatch = !this.selectedTeam || 
-        this.teams.find(team => 
-          team.teamId === this.selectedTeam && 
-          team.members?.some(member => member.userId === record.user.userId)
-        );
-
-      return speciesMatch && yearMatch && teamMatch;
-    });
+    return this.dataSource
+      .filter(record => {
+        const speciesMatch = !this.selectedSpecies || record.fishType === this.selectedSpecies;
+        const yearMatch = !this.selectedYear || new Date(record.date).getFullYear() === this.selectedYear;
+        // Team filter
+        const teamMatch = !this.selectedTeam || 
+          this.teams.find(team => 
+            team.teamId === this.selectedTeam && 
+            team.members?.some(member => member.userId === record.user.userId)
+          );
+        return speciesMatch && yearMatch && teamMatch;
+      })
+      .sort((a, b) => {
+        if (b.fishWeight !== a.fishWeight) {
+          return b.fishWeight - a.fishWeight; // Störst vikt först
+        }
+        return b.fishLength - a.fishLength; // Om samma vikt, störst längd först
+      });
   }
 
   get isDesktop(): boolean {

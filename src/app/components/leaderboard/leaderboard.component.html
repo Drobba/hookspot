@@ -1,11 +1,11 @@
-<div class="w-full max-w-5xl mx-auto p-4 space-y-6">
+<div class="w-full max-w-5xl mx-auto space-y-6 pb-24 md:pb-32 md:p-4 p-2">
   <!-- Header Section -->
   <div class="flex flex-col space-y-2">
     <h1 class="text-3xl font-bold text-primary flex items-center gap-2">
       <fa-icon [icon]="trophyIcon"></fa-icon>
       Leaderboard
     </h1>
-    <p class="text-gray-600">Track the most impressive catches from our community</p>
+    <p class="text-gray-600">Battle for the top—track this season's catch leaders</p>
   </div>
 
   <!-- Stats Cards -->
@@ -13,7 +13,7 @@
     <div class="bg-white rounded-xl p-4 shadow-md border border-gray-100">
       <div class="flex items-center justify-between">
         <div class="space-y-1">
-          <p class="text-gray-500 text-sm">Most Active Angler</p>
+          <p class="text-gray-500 text-sm">Catch Champion</p>
           <p class="text-lg font-bold text-primary">{{mostCatches.userName}}</p>
           <p class="text-sm text-gray-600">{{mostCatches.value}}</p>
         </div>
@@ -24,22 +24,22 @@
     <div class="bg-white rounded-xl p-4 shadow-md border border-gray-100">
       <div class="flex items-center justify-between">
         <div class="space-y-1">
-          <p class="text-gray-500 text-sm">Heaviest Average</p>
+          <p class="text-gray-500 text-sm">Weight Champion</p>
           <p class="text-lg font-bold text-primary">{{heaviestAvg.userName}}</p>
           <p class="text-sm text-gray-600">{{heaviestAvg.value}}</p>
         </div>
-        <fa-icon [icon]="medalIcon" class="text-2xl text-primary opacity-80"></fa-icon>
+        <fa-icon [icon]="crownIcon" class="text-2xl text-amber-500"></fa-icon>
       </div>
     </div>
     
     <div class="bg-white rounded-xl p-4 shadow-md border border-gray-100">
       <div class="flex items-center justify-between">
         <div class="space-y-1">
-          <p class="text-gray-500 text-sm">Longest Average</p>
+          <p class="text-gray-500 text-sm">Length Champion</p>
           <p class="text-lg font-bold text-primary">{{longestAvg.userName}}</p>
           <p class="text-sm text-gray-600">{{longestAvg.value}}</p>
         </div>
-        <fa-icon [icon]="awardIcon" class="text-2xl text-primary opacity-80"></fa-icon>
+        <fa-icon [icon]="crownIcon" class="text-2xl text-amber-500"></fa-icon>
       </div>
     </div>
   </div>
@@ -95,14 +95,28 @@
   <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
     <div class="max-h-[500px] overflow-auto">
       <table mat-table [dataSource]="filteredData" class="w-full">
+        <!-- Rank Column -->
+        <ng-container matColumnDef="rank">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600">#</th>
+          <td mat-cell *matCellDef="let catch; let i = index" class="p-4">
+            <span class="rank-cell">
+              <span [ngClass]="{
+                'medal-emoji': i === 0 || i === 1 || i === 2
+              }">
+                <ng-container *ngIf="i === 0">🥇</ng-container>
+                <ng-container *ngIf="i === 1">🥈</ng-container>
+                <ng-container *ngIf="i === 2">🥉</ng-container>
+                <ng-container *ngIf="i > 2">{{i + 1}}</ng-container>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+
         <!-- Name Column -->
         <ng-container matColumnDef="userName">
           <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> Angler </th>
           <td mat-cell *matCellDef="let catch" class="p-4"> 
-            <div class="flex items-center gap-2">
-              <fa-icon [icon]="fishIcon" class="text-primary text-sm"></fa-icon>
-              {{catch.user.userName}}
-            </div>
+            {{catch.user.userName}}
           </td>
         </ng-container>
 
@@ -112,26 +126,20 @@
           <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishType}} </td>
         </ng-container>
 
-        <!-- Length Column -->
-        <ng-container matColumnDef="fishLength">
-          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> 
-            <div class="flex items-center gap-1">
-              <fa-icon [icon]="rulerIcon" class="text-sm"></fa-icon>
-              Length
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishLength}} cm </td>
-        </ng-container>
-
         <!-- Weight Column -->
         <ng-container matColumnDef="fishWeight">
           <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600">
-            <div class="flex items-center gap-1">
-              <fa-icon [icon]="scaleIcon" class="text-sm"></fa-icon>
-              Weight
-            </div>
+            Weight
           </th>
           <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishWeight}} kg </td>
+        </ng-container>
+
+        <!-- Length Column -->
+        <ng-container matColumnDef="fishLength">
+          <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600"> 
+            Length
+          </th>
+          <td mat-cell *matCellDef="let catch" class="p-4"> {{catch.fishLength}} cm </td>
         </ng-container>
 
         <!-- Bait Column -->
@@ -143,16 +151,13 @@
         <!-- Date Column -->
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef class="text-left p-4 font-medium text-gray-600">
-            <div class="flex items-center gap-1">
-              <fa-icon [icon]="calendarIcon" class="text-sm"></fa-icon>
-              Date
-            </div>
+            Date
           </th>
           <td mat-cell *matCellDef="let catch" class="p-4 text-gray-500"> {{catch.date | date:'MMM d, y'}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="bg-gray-50"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index" 
             class="border-t border-gray-100 hover:bg-gray-50 transition-colors duration-150"></tr>
       </table>
     </div>
