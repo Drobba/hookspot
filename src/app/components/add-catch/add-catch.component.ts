@@ -135,28 +135,42 @@ export class AddCatchComponent {
     });
   }
 
-  startImageDrag(event: MouseEvent) {
+  startImageDrag(event: MouseEvent | TouchEvent) {
     if (!this.previewImage) return;
     
-    this.isDragging = true;
-    this.startY = event.clientY - this.currentY;
+    // Prevent default scrolling behavior for touch events
+    if ('touches' in event) {
+      event.preventDefault();
+    }
     
-    // Beräkna max dragavstånd baserat på bildens höjd
+    this.isDragging = true;
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+    this.startY = clientY - this.currentY;
+    
+    // Calculate max drag distance based on image height
     const img = this.previewImage.nativeElement;
     const containerHeight = img.parentElement.offsetHeight;
     this.maxDrag = Math.max(0, img.offsetHeight - containerHeight);
     
-    document.addEventListener('mousemove', this.handleImageDrag);
-    document.addEventListener('mouseup', this.stopImageDrag);
+    if ('touches' in event) {
+      document.addEventListener('touchmove', this.handleImageDrag, { passive: false });
+      document.addEventListener('touchend', this.stopImageDrag);
+    } else {
+      document.addEventListener('mousemove', this.handleImageDrag);
+      document.addEventListener('mouseup', this.stopImageDrag);
+    }
   }
 
-  private handleImageDrag = (event: MouseEvent) => {
+  private handleImageDrag = (event: MouseEvent | TouchEvent) => {
     if (!this.isDragging) return;
     
-    event.preventDefault();
+    // Always prevent default for touch events to stop scrolling
+    if ('touches' in event) {
+      event.preventDefault();
+    }
     
-    // Beräkna ny Y-position med begränsningar
-    this.currentY = event.clientY - this.startY;
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+    this.currentY = clientY - this.startY;
     this.currentY = Math.min(0, Math.max(-this.maxDrag, this.currentY));
     
     const img = this.previewImage.nativeElement;
@@ -167,6 +181,8 @@ export class AddCatchComponent {
     this.isDragging = false;
     document.removeEventListener('mousemove', this.handleImageDrag);
     document.removeEventListener('mouseup', this.stopImageDrag);
+    document.removeEventListener('touchmove', this.handleImageDrag);
+    document.removeEventListener('touchend', this.stopImageDrag);
   }
 
   onFileSelected(event: Event): void {

@@ -139,6 +139,7 @@
                 [src]="selectedImageUrl" 
                 alt="Preview" 
                 (mousedown)="startImageDrag($event)"
+                (touchstart)="startImageDrag($event)"
                 #previewImage
               />
             </div>

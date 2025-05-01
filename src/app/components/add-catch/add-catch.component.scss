@@ -64,6 +64,16 @@
   .leaflet-control-container {
     display: none;
   }
+
+  // Default height for desktop
+  height: 450px;
+}
+
+// Make map shorter on mobile
+@media (max-width: 600px) {
+  #catch-location-map {
+    height: 260px;
+  }
 }
 
 // Ensure marker stays above map
