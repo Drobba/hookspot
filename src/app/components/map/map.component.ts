@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
 import { MapService } from '../../services/map.service';
+import { getFishImagePath } from '../../utils/fish-image.util';
 
 @Component({
   selector: 'app-map',
@@ -11,7 +12,7 @@ import { MapService } from '../../services/map.service';
 })
 export class MapComponent implements OnInit {
   private map: L.Map | undefined;
-  private readonly defaultCenter: L.LatLngTuple = [60.212664, 16.811447];
+  private readonly defaultCenter: L.LatLngTuple = [60.212664, 16.811447]; //Stockholm
   private readonly defaultZoom = 11;
 
   constructor(
@@ -48,16 +49,27 @@ export class MapComponent implements OnInit {
       }
     });
 
-    const iconUrl = 'assets/Esox_lucius.png';
-    const customIcon = L.icon({
-      iconUrl: iconUrl,
-      iconSize: [60, 24],
-      iconAnchor: [30, 12],
-      popupAnchor: [0, -12],
-      className: 'fish-marker'
-    });
-    
     catches.forEach((catchItem) => {
+      let iconSize: [number, number] = [60, 40];
+      let iconAnchor: [number, number] = [30, 20];
+
+      if (catchItem.fishType === 'Gös' || catchItem.fishType === 'Abborre') {
+        iconSize = [45, 30]; 
+        iconAnchor = [22, 15];
+      } else if (catchItem.fishType === 'Gädda') {
+        iconSize = [60, 48]; 
+        iconAnchor = [30, 24];
+      }
+
+      const iconUrl = getFishImagePath(catchItem.fishType);
+      const customIcon = L.icon({
+        iconUrl: iconUrl,
+        iconSize: iconSize,
+        iconAnchor: iconAnchor,
+        popupAnchor: [0, -12],
+        className: 'fish-marker'
+      });
+      
       const marker = L.marker(
         [catchItem.location.lat, catchItem.location.lng],
         { icon: customIcon }

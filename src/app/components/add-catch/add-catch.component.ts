@@ -22,6 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as L from 'leaflet';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { SpinnerService } from '../../services/spinner.service';
+import { FishType } from '../../models/fish-type';
 
 @Component({
   selector: 'app-add-catch',
@@ -58,7 +59,7 @@ export class AddCatchComponent {
 
   user?: User | null;
   catches: Catch[] = [];
-  availableFishes: string[] = ['Gädda', 'Abborre', 'Gös', 'Regnbågslax', 'Röding', 'Lax', 'Öring'];
+  availableFishes = Object.values(FishType);
 
   // Map related properties
   private map?: L.Map;
