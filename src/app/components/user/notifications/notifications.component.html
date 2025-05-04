@@ -8,6 +8,19 @@
         <h2 class="text-lg font-semibold text-gray-700">Group Invitations</h2>
     </div>
 
+    <!-- 🔥 Tom-vy om inga invites finns -->
+    <ng-container *ngIf="invitations.length === 0">
+      <div class="empty-invites flex flex-col items-center justify-center mt-16">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" class="h-20 w-20 text-gray-300 mb-4">
+          <rect width="48" height="48" rx="12" fill="#e5e7eb"/>
+          <path d="M24 36a3 3 0 0 0 3-3h-6a3 3 0 0 0 3 3zm9-6V22a9 9 0 1 0-18 0v8l-2 2v1h22v-1l-2-2z" stroke="#9ca3af" stroke-width="2" fill="#fff"/>
+          <path d="M18 36h12" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="text-gray-500 font-semibold text-lg mb-1">No invitations yet!</div>
+        <div class="text-gray-400 text-sm text-center max-w-xs">You have no group invitations at the moment.<br>Invites from teams will show up here.</div>
+      </div>
+    </ng-container>
+
     <!-- 🔥 Invitations List -->
     <mat-card *ngFor="let invite of invitations" class="invite-card invitations-list w-full max-w-md mt-4">
         <div class="invite-content">

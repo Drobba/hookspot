@@ -86,4 +86,13 @@
     line-height: 1rem;
 }
 
+.empty-invites {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
 

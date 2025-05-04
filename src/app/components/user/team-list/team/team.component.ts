@@ -16,7 +16,9 @@ import { map, startWith, switchMap } from 'rxjs/operators';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/user';
 import { TeamRole } from '../../../../enums/team-role';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-teams',
@@ -28,13 +30,16 @@ import { ActivatedRoute } from '@angular/router';
     MatTableModule, 
     MatFormFieldModule, 
     MatInputModule, 
-    MatButtonModule
+    MatButtonModule,
+    FontAwesomeModule,
+    RouterLink
   ],
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss']
 })
 export class TeamComponent {
   teamId = input.required<string>();
+  public backIcon = faArrowLeftLong;
 
   private dialog = inject(MatDialog);
   private teamService = inject(TeamSerivce);

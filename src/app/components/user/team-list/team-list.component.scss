@@ -70,4 +70,13 @@
     border-radius: 0.75rem;
 } 
 
+.empty-teams {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
 

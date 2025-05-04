@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { User } from '../../models/user';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLocationDot, faCirclePlus, faStar, faUser, faTrophy  } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faCirclePlus, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { AddCatchComponent } from '../add-catch/add-catch.component';
 import { RouterLink } from '@angular/router';
@@ -23,9 +23,8 @@ export class HeaderComponent {
   
   public locationIcon = faLocationDot;
   public addCatchIcon = faCirclePlus;
-  public starIcon = faStar;
+  public starIcon = faTrophy;
   public userIcon = faUser;
-  public trophyIcon = faTrophy;
   user: User | undefined | null = undefined;
 
   /**

@@ -1,24 +1,24 @@
 <div class="text-white bg-primary h-full w-full flex justify-center">
   <div class="flex items-center justify-between w-[95%] lg:w-[30%]"> 
-    <div class="flex flex-col items-center" (click)="logOut()">
-      <fa-icon [icon]="trophyIcon" class="text-white text-xl"></fa-icon>
-      <span class="text-xs text-white">Contest</span>
-  </div>
-  <div class="flex flex-col items-center" routerLink="/map">
-    <fa-icon [icon]="locationIcon" class="text-white text-xl cursor-pointer"></fa-icon>
-    <span class="text-xs text-white">Map</span>
-</div>
-      <fa-icon [icon]="addCatchIcon" (click)="openFishRegisterDialog()" class="text-white text-4xl lg:text-3xl cursor-pointer"></fa-icon>
-      <div class="flex flex-col items-center cursor-pointer" routerLink="/leaderboard">
-        <fa-icon [icon]="starIcon" class="text-white text-xl"></fa-icon>
-        <span class="text-xs text-white">Leaderboard</span>
+    <div class="flex flex-col items-center">
+      <img src="assets/battle.svg" class="text-white text-xl w-6 h-6 object-contain mb-[2px] mt-[2px]" alt="Battle icon" />
+      <span class="text-xs text-white mt-[2px]">Battle</span>
+    </div>
+    <div class="flex flex-col items-center" routerLink="/map">
+      <fa-icon [icon]="locationIcon" class="text-white text-xl cursor-pointer"></fa-icon>
+      <span class="text-xs text-white">Map</span>
+    </div>
+    <fa-icon [icon]="addCatchIcon" (click)="openFishRegisterDialog()" class="text-white text-4xl lg:text-3xl cursor-pointer"></fa-icon>
+    <div class="flex flex-col items-center cursor-pointer" routerLink="/leaderboard">
+      <fa-icon [icon]="starIcon" class="text-white text-xl"></fa-icon>
+      <span class="text-xs text-white">Leaderboard</span>
     </div>
     <div class="flex flex-col items-center cursor-pointer" routerLink="/user">
       <fa-icon [icon]="userIcon"  class="text-white text-xl"></fa-icon>
       <span class="text-xs text-white">User</span>
-  </div>
-  <!-- <div (click)="logOut()">
-    Log out
-  </div> -->
+    </div>
+    <!-- <div (click)="logOut()">
+      Log out
+    </div> -->
   </div>
 </div>
