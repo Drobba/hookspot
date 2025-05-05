@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable } from 'rxjs';
 import { ViewChild } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
+import { FirebaseError } from '@angular/fire/app';
 
 @Component({
   selector: 'app-register',
@@ -74,9 +75,22 @@ export class RegisterComponent {
             this.formGroupDirective.resetForm();
           });
         },
-        error: () => {
+        error: (error) => {
           this.spinnerService.hideSpinner();
-          this.errorMessage = 'Registreringen misslyckades. Försök igen.';
+          
+          if (error && error instanceof FirebaseError) {
+            if (error.code === 'auth/email-already-in-use') {
+              this.errorMessage = 'E-postadressen används redan av ett annat konto.';
+            } else if (error.code === 'auth/weak-password') {
+              this.errorMessage = 'Lösenordet är för svagt. Använd minst 6 tecken.';
+            } else {
+              console.error('Firebase error:', error);
+              this.errorMessage = 'Registreringen misslyckades. Försök igen.';
+            }
+          } else {
+            console.error('Unknown error:', error);
+            this.errorMessage = 'Registreringen misslyckades. Försök igen.';
+          }
         },
       });
   }

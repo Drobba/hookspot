@@ -10,7 +10,7 @@ import {
   sendEmailVerification,
   user,
 } from '@angular/fire/auth';
-import { from, BehaviorSubject, Observable } from 'rxjs';
+import { from, BehaviorSubject, Observable, catchError } from 'rxjs';
 import { User } from '../models/user';
 import {
   Firestore,
@@ -72,28 +72,42 @@ export class AuthService {
   }
 
   register(email: string, userName: string, password: string): Observable<void> {
-    const promise = createUserWithEmailAndPassword(this.firebaseAuth, email, password)
-      .then(async (response) => {
-        // Uppdatera namn och skicka verifieringsmail
-        await updateProfile(response.user, { displayName: userName });
-        await sendEmailVerification(response.user);
+    return from(
+      createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+        .then(async (response) => {
+          try {
+            // Uppdatera namn och skicka verifieringsmail
+            await updateProfile(response.user, { displayName: userName });
+            await sendEmailVerification(response.user);
 
-        const userData: User = {
-          email: response.user.email!,
-          userName: userName,
-          userId: response.user.uid!,
-        };
+            const userData: User = {
+              email: response.user.email!,
+              userName: userName,
+              userId: response.user.uid!,
+            };
 
-        await this.saveUserToFirestore(userData);
+            await this.saveUserToFirestore(userData);
 
-        // ⚠️ Undvik blinkande header
-        this.isPostRegisterLogout = true;
-
-        await signOut(this.firebaseAuth);
-        this.setCurrentUser(null);
-      });
-
-    return from(promise);
+            // ⚠️ Undvik blinkande header
+            this.isPostRegisterLogout = true;
+            
+            // Logga ut användaren efter registrering
+            await signOut(this.firebaseAuth);
+            this.setCurrentUser(null);
+          } catch (error) {
+            console.error('Error during registration process:', error);
+            // Även om det blir fel i någon process efter att kontot skapats
+            // vill vi inte markera hela registreringen som misslyckad
+            // eftersom emailen redan är skickad
+          }
+        })
+    ).pipe(
+      catchError((error) => {
+        // Här fångar vi fel i själva konto-skapandet
+        console.error('Error creating account:', error);
+        throw error;
+      })
+    );
   }
 
   login(email: string, password: string): Observable<void> {
