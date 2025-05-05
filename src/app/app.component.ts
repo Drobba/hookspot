@@ -27,12 +27,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class AppComponent {
   authService = inject(AuthService);
   user?: User | null;
+  isAuthLoaded = false;
 
   constructor() {
-    this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => this.user = user);
+    this.authService.isAuthLoaded$.pipe(takeUntilDestroyed()).subscribe(loaded => {
+      this.isAuthLoaded = loaded;
+    });
+
+    this.authService.currentUser$.pipe(takeUntilDestroyed()).subscribe(user => {
+      this.user = user;
+    });
   }
 
   logout(): void {
     this.authService.logout();
   }
 }
+
+

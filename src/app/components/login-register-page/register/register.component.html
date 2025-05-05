@@ -58,5 +58,14 @@
       <span *ngIf="!(isLoading() | async)">Register</span>
     </button>
   </div>
+  <!-- Success message -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Error message -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
  
 </form>

@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  sendEmailVerification,
   user,
 } from '@angular/fire/auth';
 import { from, BehaviorSubject, Observable } from 'rxjs';
@@ -28,21 +29,36 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null | undefined>(undefined);
   currentUser$ = this.currentUserSubject.asObservable();
 
+  private isAuthLoadedSubject = new BehaviorSubject<boolean>(false);
+  isAuthLoaded$ = this.isAuthLoadedSubject.asObservable();
+
+  private isPostRegisterLogout = false;
+
   user$ = user(this.firebaseAuth);
 
   constructor() {
     this.user$.subscribe((firebaseUser) => {
-      if (firebaseUser) {
+      // ⚠️ Ignorera tillfällig inloggning efter registrering
+      if (this.isPostRegisterLogout) {
+        this.isPostRegisterLogout = false;
+        this.setCurrentUser(null);
+        this.isAuthLoadedSubject.next(true);
+        return;
+      }
+
+      // 👇 Endast verifierade användare tillåts vara "inloggade"
+      if (firebaseUser && firebaseUser.emailVerified) {
         const userData: User = {
           email: firebaseUser.email!,
           userName: firebaseUser.displayName!,
           userId: firebaseUser.uid!,
         };
         this.setCurrentUser(userData);
-        // this.saveUserToFirestore(userData);
       } else {
         this.setCurrentUser(null);
       }
+
+      this.isAuthLoadedSubject.next(true);
     });
   }
 
@@ -55,49 +71,38 @@ export class AuthService {
     }
   }
 
-  loginWithGoogle(): Observable<void> {
-    const provider = new GoogleAuthProvider();
-    const promise = signInWithPopup(this.firebaseAuth, provider).then(async (response) => {
-      const user = response.user;
-      if (user) {
-        const userData: User = {
-          email: user.email!,
-          userName: user.displayName!,
-          userId: user.uid!,
-        };
-        this.setCurrentUser(userData);
-        await this.saveUserToFirestore(userData);
-      }
-    });
-
-    return from(promise);
-  }
-
   register(email: string, userName: string, password: string): Observable<void> {
     const promise = createUserWithEmailAndPassword(this.firebaseAuth, email, password)
       .then(async (response) => {
+        // Uppdatera namn och skicka verifieringsmail
         await updateProfile(response.user, { displayName: userName });
-  
+        await sendEmailVerification(response.user);
+
         const userData: User = {
           email: response.user.email!,
-          userName: userName, // <-- direkt från input
+          userName: userName,
           userId: response.user.uid!,
         };
-  
-        this.setCurrentUser(userData);
+
         await this.saveUserToFirestore(userData);
+
+        // ⚠️ Undvik blinkande header
+        this.isPostRegisterLogout = true;
+
+        await signOut(this.firebaseAuth);
+        this.setCurrentUser(null);
       });
-  
+
     return from(promise);
   }
-  
-  
 
   login(email: string, password: string): Observable<void> {
     const promise = signInWithEmailAndPassword(this.firebaseAuth, email, password)
       .then(async (response) => {
         const user = response.user;
-        if (user) {
+
+        // 🛡️ Kontrollera verifiering
+        if (user && user.emailVerified) {
           const userData: User = {
             email: user.email!,
             userName: user.displayName!,
@@ -105,8 +110,35 @@ export class AuthService {
           };
           this.setCurrentUser(userData);
           await this.saveUserToFirestore(userData);
+        } else {
+          // Om användaren loggat in men ej verifierat
+          await signOut(this.firebaseAuth);
+          this.setCurrentUser(null);
+          throw new Error('E-post ej verifierad. Vänligen kontrollera din inkorg.');
         }
       });
+
+    return from(promise);
+  }
+
+  loginWithGoogle(): Observable<void> {
+    const provider = new GoogleAuthProvider();
+    const promise = signInWithPopup(this.firebaseAuth, provider).then(async (response) => {
+      const user = response.user;
+      if (user && user.emailVerified) {
+        const userData: User = {
+          email: user.email!,
+          userName: user.displayName!,
+          userId: user.uid!,
+        };
+        this.setCurrentUser(userData);
+        await this.saveUserToFirestore(userData);
+      } else {
+        await signOut(this.firebaseAuth);
+        this.setCurrentUser(null);
+        throw new Error('Verifiera din e-postadress innan du loggar in.');
+      }
+    });
 
     return from(promise);
   }

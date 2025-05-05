@@ -8,3 +8,30 @@
     justify-content: center;
     gap: 8px;
   }
+
+  .success-message {
+    margin-top: 16px;
+    font-size: 0.9rem;
+    padding: 14px 18px;
+    border-radius: 8px;
+    width: 100%;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    line-height: 1.4;
+    transition: all 0.3s ease;
+  }
+
+  .error-message {
+    margin-top: 16px;
+    font-size: 0.875rem;
+    padding: 14px 18px;
+    border-radius: 8px;
+    width: 100%;
+    background-color: #ffebee;
+    color: #c62828;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    line-height: 1.4;
+  }

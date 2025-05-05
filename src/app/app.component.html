@@ -1,11 +1,12 @@
-<div class="main-container relative flex flex-col min-h-screen overflow-auto">
+<!-- app.component.html -->
+<div *ngIf="isAuthLoaded" class="main-container relative flex flex-col min-h-screen overflow-auto">
   <div class="router-container flex-1">
     <router-outlet></router-outlet>
   </div>
-  
+
+  <!-- ✅ Header visas endast om användare är inloggad & verifierad -->
   <app-header
     *ngIf="user"
     class="w-full text-center h-[7.5%] md:h-[5.5%] min-h-[50px] fixed bottom-0 left-0 z-[9999]"
-  >
-  </app-header>
+  ></app-header>
 </div>
