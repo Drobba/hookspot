@@ -1,0 +1,32 @@
+<div class="catch-popup">
+  <div class="catch-header">
+    <span class="custom-close-button" (click)="onCloseClick($event)">&times;</span>
+    <div #imageContainer class="image-container">
+      <div class="skeleton-loader"></div>
+      <img #fishImage [src]="getImageSource()" [alt]="catchItem.fishType" class="fish-image" />
+    </div>
+    <h3 class="user-name">{{ catchItem.user.userName }}</h3>
+  </div>
+  <div class="catch-details">
+    <div class="detail-row">
+      <span class="label">Fiskart</span>
+      <span class="value">{{ catchItem.fishType }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Vikt</span>
+      <span class="value">{{ catchItem.fishWeight }} kg</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Längd</span>
+      <span class="value">{{ catchItem.fishLength }} cm</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Bete</span>
+      <span class="value">{{ catchItem.bait }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Datum</span>
+      <span class="value">{{ catchItem.date }}</span>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, ApplicationRef, ComponentRef, createComponent } from '@angular/core';
 import * as L from 'leaflet';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
 import { MapService } from '../../services/map.service';
 import { getFishImagePath } from '../../utils/fish-image.util';
+import { CatchPopupComponent } from '../catch-popup/catch-popup.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-map',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
@@ -17,7 +21,9 @@ export class MapComponent implements OnInit {
 
   constructor(
     private catchService: CatchService,
-    private mapService: MapService
+    private mapService: MapService,
+    private injector: Injector,
+    private appRef: ApplicationRef
   ) {}
 
   ngOnInit(): void {
@@ -75,39 +81,8 @@ export class MapComponent implements OnInit {
         { icon: customIcon }
       );
 
-      const popupContent = `
-        <div class="catch-popup">
-          <div class="catch-header">
-            <span class="custom-close-button">&times;</span>
-            <div class="image-container">
-              <img src="${catchItem.imageUrl || iconUrl}" alt="${catchItem.fishType}" class="fish-image"/>
-            </div>
-            <h3 class="user-name">${catchItem.user.userName}</h3>
-          </div>
-          <div class="catch-details">
-            <div class="detail-row">
-              <span class="label">Fiskart</span>
-              <span class="value">${catchItem.fishType}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Vikt</span>
-              <span class="value">${catchItem.fishWeight} kg</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Längd</span>
-              <span class="value">${catchItem.fishLength} cm</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Bete</span>
-              <span class="value">${catchItem.bait}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Datum</span>
-              <span class="value">${catchItem.date}</span>
-            </div>
-          </div>
-        </div>
-      `;
+      // Create popup content using the CatchPopupComponent
+      const popupContent = this.createPopupContent(catchItem);
 
       marker.addTo(this.map!).bindPopup(popupContent, {
         closeButton: false,
@@ -124,5 +99,34 @@ export class MapComponent implements OnInit {
         }
       });
     });
+  }
+
+  private createPopupContent(catchItem: Catch): HTMLElement {
+    // Create the component
+    const componentRef = createComponent(CatchPopupComponent, {
+      environmentInjector: this.appRef.injector,
+      elementInjector: this.injector
+    });
+    
+    // Set inputs
+    componentRef.instance.catchItem = catchItem;
+    
+    // Attach to the DOM and detect changes
+    this.appRef.attachView(componentRef.hostView);
+    componentRef.changeDetectorRef.detectChanges();
+    
+    // Get DOM element
+    const domElement = (componentRef.location.nativeElement as HTMLElement);
+    
+    // Listen for component destruction
+    const destroyComponent = () => {
+      this.appRef.detachView(componentRef.hostView);
+      componentRef.destroy();
+    };
+    
+    // Add event listener for popup close
+    document.addEventListener('popupClose', destroyComponent, { once: true });
+    
+    return domElement;
   }
 }
