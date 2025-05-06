@@ -40,22 +40,24 @@
     }
 
   </mat-form-field>
-  <button mat-flat-button type="submit" [disabled]="isLoading() | async" class="custom-button mt-[5%]">
-    <mat-spinner *ngIf="isLoading() | async" [diameter]="20"></mat-spinner>
-    <span *ngIf="!(isLoading() | async)">Sign in</span>
+  <button mat-flat-button type="submit" [disabled]="isFormLoading() | async" class="custom-button mt-[5%]">
+    <mat-spinner *ngIf="isFormLoading() | async" [diameter]="20"></mat-spinner>
+    <span *ngIf="!(isFormLoading() | async)">Sign in</span>
   </button>
-
-  <div class="relative flex justify-center my-4">
-    <span class="mx-4 text-sm" style="color: rgb(94, 108, 132);">
-      Eller fortsätt med
-    </span>
-  </div>
-
-  <button mat-flat-button (click)="onGoogleLogin()" [disabled]="isLoading() | async" class="custom-button">
-    <mat-spinner *ngIf="isLoading() | async" [diameter]="20"></mat-spinner>
-    <fa-icon class="mr-3" [icon]="faGoogle"></fa-icon>
-    <span *ngIf="!(isLoading() | async)">Google</span>
-  </button>
-  
 </form>
+
+<div class="relative flex justify-center my-4">
+  <span class="mx-4 text-sm" style="color: rgb(94, 108, 132);">
+    Eller fortsätt med
+  </span>
+</div>
+
+<button mat-flat-button (click)="onGoogleLogin($event)" [disabled]="isGoogleLoading() | async" class="custom-button w-[100%]">
+  @if (isGoogleLoading() | async) {
+    <mat-spinner [diameter]="20"></mat-spinner>
+  } @else {
+    <fa-icon class="mr-3" [icon]="faGoogle"></fa-icon>
+    <span>Google</span>
+  }
+</button>
 
