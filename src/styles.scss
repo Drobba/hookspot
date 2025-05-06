@@ -3,6 +3,27 @@
 @import "../src/app/styles/tailwind.scss";
 @import "../src/app/styles/leaflet-custom.scss";
 
+/* Fix for mobile viewport issues */
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  overscroll-behavior-y: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* For iOS Safari - fix for 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  body, html {
+    height: -webkit-fill-available;
+  }
+}
+
 .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #e0e0e0; /* Grå färg */
   }
