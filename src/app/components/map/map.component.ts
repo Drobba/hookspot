@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ApplicationRef, ComponentRef, createComponent } from '@angular/core';
+import { Component, OnInit, Injector, ApplicationRef, ComponentRef, createComponent, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
@@ -14,10 +14,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private map: L.Map | undefined;
   private readonly defaultCenter: L.LatLngTuple = [60.212664, 16.811447]; //Stockholm
   private readonly defaultZoom = 11;
+  private resizeObserver: ResizeObserver | null = null;
 
   constructor(
     private catchService: CatchService,
@@ -27,12 +28,40 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initMap();
+    // Map initialization moved to AfterViewInit
+  }
 
-    // Subscribe to catches from CatchService
-    this.catchService.catches$.subscribe((catches: Catch[]) => {
-      this.addMarkers(catches);
-    });
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.initMap();
+      
+      // Create a ResizeObserver to handle map sizing when container changes
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.map) {
+          this.map.invalidateSize();
+        }
+      });
+      
+      const mapElement = document.getElementById('map');
+      if (mapElement) {
+        this.resizeObserver.observe(mapElement);
+      }
+      
+      // Subscribe to catches from CatchService
+      this.catchService.catches$.subscribe((catches: Catch[]) => {
+        this.addMarkers(catches);
+      });
+    }, 100); // Small delay to ensure DOM is ready
+  }
+  
+  ngOnDestroy(): void {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    
+    if (this.map) {
+      this.map.remove();
+    }
   }
 
   private initMap(): void {
