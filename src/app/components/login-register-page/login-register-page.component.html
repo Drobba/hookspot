@@ -1,16 +1,21 @@
-<div class="login-container h-full flex justify-center items-center bg-login-bg bg-cover bg-center">
+<div class="login-container h-full flex justify-center items-center bg-white">
     <!-- <div class="login-form w-[50%] h-[50%] bg-slate-200"></div> -->
-    <mat-card class="w-[100%] h-[85%] lg:w-[25%] lg:h-[85%] xl:w-[30%] xl:h-[90%] 2xl:w-[25%] 2xl:h-[60%] bg-slate-100 flex flex-col items-center overflow-auto min-h-[65%]">
-      <mat-tab-group dynamicHeight class="w-[80%] mt-[6%]">
-        <mat-tab class="text-lg" label="Logga in"
-          ><mat-card-content class="mt-[6%]">
-            <app-login class="w-[100%]"></app-login> </mat-card-content
-        ></mat-tab>
-        <mat-tab label="Registrera">
-          <mat-card-content class="mt-[6%]">
-            <app-register class="w-[100%]"></app-register>
-          </mat-card-content>
-        </mat-tab>
-      </mat-tab-group>
+    <mat-card class="mobile-full-height w-[100%] h-auto lg:w-[25%] lg:h-auto xl:w-[30%] xl:h-auto 2xl:w-[25%] 2xl:h-auto bg-white flex flex-col items-center justify-center overflow-visible min-h-[500px] py-4">
+      <div class="login-content flex flex-col items-center justify-center w-full">
+        <div class="logo-container flex justify-center mt-2 mb-2">
+          <img src="assets/hookspot-logo.png" alt="Hookspot Logo" class="w-[60%]">
+        </div>
+        <mat-tab-group dynamicHeight class="w-[80%]">
+          <mat-tab class="text-lg" label="Logga in"
+            ><mat-card-content class="mt-[6%] mb-8">
+              <app-login class="w-[100%]"></app-login> </mat-card-content
+          ></mat-tab>
+          <mat-tab label="Registrera">
+            <mat-card-content class="mt-[6%] mb-8">
+              <app-register class="w-[100%]"></app-register>
+            </mat-card-content>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
     </mat-card>
   </div>
