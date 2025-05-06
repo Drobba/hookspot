@@ -1,47 +1,14 @@
 .router-container {
   display: block;
   position: relative;
-  height: calc(100vh - 50px); // Changed from 100% to 100vh for viewport height
-  padding-bottom: 60px; // Add padding to account for the fixed header
+  height: calc(100% - 50px); // Account for fixed header
   overflow: auto;
 }
 
-// Default for regular components
-::ng-deep .router-container > :not(app-map):not(app-user) {
-  width: 100%;
-  min-height: fit-content;
-}
-
-// Special handling for map component
-::ng-deep app-map {
-  position: absolute !important;
-  height: 100% !important;
-  width: 100% !important;
-  top: 0;
-  left: 0;
-  right: 0; 
-  bottom: 0;
-  z-index: 0;
-}
-
-// Special handling for user component
-::ng-deep app-user {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+::ng-deep .router-container > * {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  background-color: #f3f4f6; /* Match app background */
-}
-
-// Override min-h-screen inside user component
-::ng-deep app-user .min-h-screen {
-  min-height: 0 !important;
-  height: auto !important;
+  width: 100%;
+  height: 100%;
 }
 
 // :host {
