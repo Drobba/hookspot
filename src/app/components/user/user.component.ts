@@ -38,7 +38,7 @@ export class UserComponent {
   public readonly title = 'Settings';
 
   public settingsMenuItems: SettingMenuItem[] = [
-    { icon: this.userIcon, label: 'User', path: 'profile'},
+    // { icon: this.userIcon, label: 'User', path: 'profile'},
     { icon: this.teamsIcon, label: 'Teams', path: 'teams'},
     { icon: this.notificationIcon, label: 'Notifications', path: 'notifications'},
   ]

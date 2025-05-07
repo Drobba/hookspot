@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeftLong, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TeamSerivce } from '../../../services/team.service';
@@ -27,6 +27,7 @@ import { lastValueFrom } from 'rxjs';
 })
 export class TeamListComponent {
     public backIcon = faArrowLeftLong;
+    public teamsIcon = faPeopleGroup;
     private dialog = inject(MatDialog);
     private teamService = inject(TeamSerivce);
     public teams: Team[] = [];
