@@ -9,7 +9,7 @@ export class CatchInfoPopupService {
   private appRef = inject(ApplicationRef);
   private injector = inject(Injector);
 
-  createCatchInfoPopup(catchItem: Catch): HTMLElement {
+  createCatchInfoPopup(catchItem: Catch): { element: HTMLElement, componentRef: ComponentRef<CatchPopupComponent> } {
     // Create the component
     const componentRef = createComponent(CatchPopupComponent, {
       environmentInjector: this.appRef.injector,
@@ -29,10 +29,10 @@ export class CatchInfoPopupService {
     componentRef.changeDetectorRef.detectChanges();
     
     // Get DOM element
-    return componentRef.location.nativeElement as HTMLElement;
+    return { element: componentRef.location.nativeElement as HTMLElement, componentRef };
   }
 
-  private destroyPopup(componentRef: ComponentRef<CatchPopupComponent>): void {
+  public destroyPopup(componentRef: ComponentRef<CatchPopupComponent>): void {
     this.appRef.detachView(componentRef.hostView);
     componentRef.destroy();
   }

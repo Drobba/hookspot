@@ -80,14 +80,19 @@ export class MapComponent implements OnInit {
         { icon: customIcon }
       );
 
-      // Create popup content using the CatchInfoPopupService
-      const popupContent = this.catchInfoPopupService.createCatchInfoPopup(catchItem);
+      // Skapa popup och få både element och componentRef
+      const { element, componentRef } = this.catchInfoPopupService.createCatchInfoPopup(catchItem);
 
-      marker.addTo(this.map!).bindPopup(popupContent, {
+      marker.addTo(this.map!).bindPopup(element, {
         closeButton: false,
         className: 'custom-popup',
         maxWidth: 300,
         minWidth: 300
+      });
+
+      // Städa upp Angular-komponenten när popupen stängs av Leaflet
+      marker.on('popupclose', () => {
+        this.catchInfoPopupService.destroyPopup(componentRef);
       });
     });
   }
