@@ -1,10 +1,10 @@
-import { Component, OnInit, Injector, ApplicationRef, ComponentRef, createComponent } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
 import { MapService } from '../../services/map.service';
 import { getFishImagePath } from '../../utils/fish-image.util';
-import { CatchPopupComponent } from '../catch-popup/catch-popup.component';
+import { CatchInfoPopupService } from '../../services/catch-info-popup.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -22,8 +22,7 @@ export class MapComponent implements OnInit {
   constructor(
     private catchService: CatchService,
     private mapService: MapService,
-    private injector: Injector,
-    private appRef: ApplicationRef
+    private catchInfoPopupService: CatchInfoPopupService
   ) {}
 
   ngOnInit(): void {
@@ -81,47 +80,15 @@ export class MapComponent implements OnInit {
         { icon: customIcon }
       );
 
-      // Create popup content using the CatchPopupComponent
-      const popupContent = this.createPopupContent(catchItem);
+      // Create popup content using the CatchInfoPopupService
+      const popupContent = this.catchInfoPopupService.createCatchInfoPopup(catchItem);
 
       marker.addTo(this.map!).bindPopup(popupContent, {
         closeButton: false,
         className: 'custom-popup',
         maxWidth: 300,
         minWidth: 300
-      }).on('popupopen', (e) => {
-        const popup = e.popup;
-        const closeButton = popup.getElement()?.querySelector('.custom-close-button');
-        if (closeButton) {
-          closeButton.addEventListener('click', () => {
-            popup.close();
-          });
-        }
       });
     });
-  }
-
-  private createPopupContent(catchItem: Catch): HTMLElement {
-    // Create the component
-    const componentRef = createComponent(CatchPopupComponent, {
-      environmentInjector: this.appRef.injector,
-      elementInjector: this.injector
-    });
-    
-    // Set inputs
-    componentRef.instance.catchItem = catchItem;
-    
-    // Subscribe to close event
-    componentRef.instance.close.subscribe(() => {
-      this.appRef.detachView(componentRef.hostView);
-      componentRef.destroy();
-    });
-    
-    // Attach to the DOM and detect changes
-    this.appRef.attachView(componentRef.hostView);
-    componentRef.changeDetectorRef.detectChanges();
-    
-    // Get DOM element
-    return componentRef.location.nativeElement as HTMLElement;
   }
 }
