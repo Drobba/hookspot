@@ -24,8 +24,7 @@ export class CatchPopupComponent {
     this.isImageLoaded = true;
   }
 
-  onCloseClick(event: Event): void {
-    event.stopPropagation();
+  onCloseClick(): void {
     this.close.emit();
   }
 }
