@@ -1,9 +1,9 @@
 <div class="catch-popup">
   <div class="catch-header">
     <span class="custom-close-button" (click)="onCloseClick($event)">&times;</span>
-    <div #imageContainer class="image-container">
+    <div class="image-container" [class.image-loaded]="isImageLoaded">
       <div class="skeleton-loader"></div>
-      <img #fishImage [src]="getImageSource()" [alt]="catchItem.fishType" class="fish-image" />
+      <img [src]="getImageSource()" [alt]="catchItem.fishType" class="fish-image" (load)="onImageLoad()" />
     </div>
     <h3 class="user-name">{{ catchItem.user.userName }}</h3>
   </div>

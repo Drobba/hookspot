@@ -111,22 +111,17 @@ export class MapComponent implements OnInit {
     // Set inputs
     componentRef.instance.catchItem = catchItem;
     
+    // Subscribe to close event
+    componentRef.instance.close.subscribe(() => {
+      this.appRef.detachView(componentRef.hostView);
+      componentRef.destroy();
+    });
+    
     // Attach to the DOM and detect changes
     this.appRef.attachView(componentRef.hostView);
     componentRef.changeDetectorRef.detectChanges();
     
     // Get DOM element
-    const domElement = (componentRef.location.nativeElement as HTMLElement);
-    
-    // Listen for component destruction
-    const destroyComponent = () => {
-      this.appRef.detachView(componentRef.hostView);
-      componentRef.destroy();
-    };
-    
-    // Add event listener for popup close
-    document.addEventListener('popupClose', destroyComponent, { once: true });
-    
-    return domElement;
+    return componentRef.location.nativeElement as HTMLElement;
   }
 }
