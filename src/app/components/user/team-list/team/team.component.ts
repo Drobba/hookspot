@@ -19,6 +19,10 @@ import { TeamRole } from '../../../../enums/team-role';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { CatchService } from '../../../../services/catch.service';
+import { Catch } from '../../../../models/catch';
+import { getFishImagePath } from '../../../../utils/fish-image.util';
+import { FishType } from '../../../../models/fish-type';
 
 @Component({
   selector: 'app-teams',
@@ -45,6 +49,7 @@ export class TeamComponent {
   private teamService = inject(TeamSerivce);
   private userService = inject(UserService);
   private route = inject(ActivatedRoute);
+  private catchService = inject(CatchService);
   
   currentTeam?: Team;
   users: User[] = [];
@@ -52,6 +57,8 @@ export class TeamComponent {
   filteredOptions: Observable<User[]>;
   dataSource: Member[] = [];
   displayedColumns: string[] = ['name', 'role', 'joinDate'];
+  teamCatches: Catch[] = [];
+  visibleCatchRows = 3;
 
   TeamRole = TeamRole; // Make enum available in template
 
@@ -74,6 +81,7 @@ export class TeamComponent {
       if (team) {
         this.currentTeam = team;
         this.dataSource = team.members || [];
+        this.updateTeamCatches();
       }
     });
 
@@ -89,6 +97,13 @@ export class TeamComponent {
           : [];
       })
     );
+
+    // Prenumerera på alla catches och filtrera ut teamets fångster
+    this.catchService.catches$
+      .pipe(takeUntilDestroyed())
+      .subscribe(catches => {
+        this.updateTeamCatches(catches);
+      });
   }
 
   private _filter(value: string): User[] {
@@ -117,5 +132,37 @@ export class TeamComponent {
 
   displayUserFn(user: User | null): string {
     return user?.userName || '';
+  }
+
+  updateTeamCatches(catches?: Catch[]) {
+    if (!this.currentTeam || !this.currentTeam.members) {
+      this.teamCatches = [];
+      return;
+    }
+    const memberIds = this.currentTeam.members.map(m => m.userId);
+    const allCatches = catches ?? [];
+    this.teamCatches = allCatches
+      .filter(c => memberIds.includes(c.user.userId) && !!c.imageUrl)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
+
+  getFishImagePath(fishType: FishType) {
+    return getFishImagePath(fishType);
+  }
+
+  getCatchImageSource(catchItem: Catch): string {
+    return catchItem.imageUrl || getFishImagePath(catchItem.fishType);
+  }
+
+  get visibleCatchesCount() {
+    return this.visibleCatchRows * 2; // 2 bilder per rad
+  }
+
+  get visibleTeamCatches() {
+    return this.teamCatches.slice(0, this.visibleCatchesCount);
+  }
+
+  showMoreCatches() {
+    this.visibleCatchRows += 3;
   }
 }

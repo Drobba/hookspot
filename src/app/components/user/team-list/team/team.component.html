@@ -61,5 +61,30 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50 transition"></tr>
     </table>
   </div>
+
+  <!-- Sektiondelare och rubrik -->
+  <div class="section-divider">
+    <div class="divider-line"></div>
+    <div class="divider-title">
+      <span>Latest Team Catches</span>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Team Catches Grid -->
+  <div *ngIf="visibleTeamCatches.length > 0" class="team-catches-grid mt-8">
+    <div *ngFor="let catch of visibleTeamCatches" class="catch-card">
+      <img [src]="getCatchImageSource(catch)" alt="Fish" class="catch-img" />
+      <div class="catch-info">
+        <span class="catch-length">{{ catch.fishWeight }} kg</span>
+        <span class="catch-date">{{ catch.date | date:'dd MMM' }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="show-more-catches-wrapper" *ngIf="teamCatches.length > visibleTeamCatches.length">
+    <div class="show-more-catches-link" (click)="showMoreCatches()">
+      Show more catches
+    </div>
+  </div>
 </div>
   
