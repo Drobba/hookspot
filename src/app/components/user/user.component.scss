@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+}
+
+.w-full {
+  min-height: 0; // This ensures flex children can shrink below their content size
+}

@@ -1,11 +1,13 @@
-<div class="w-full h-full bg-gray-100 flex flex-col overflow-hidden">
+<div class="w-full h-full bg-gray-100 flex flex-col overflow-auto">
+    <!-- Visa headern överst på profilsidan -->
     <app-user-profile-header
+      *ngIf="showSettings"
       [userName]="user?.userName"
       [email]="user?.email"
       [avatarUrl]="'assets/man-user.svg'">
     </app-user-profile-header>
 
-    <div *ngIf="showSettings" class="flex-1 flex flex-col items-center p-6 gap-2 w-full">
+    <div *ngIf="showSettings" class="flex flex-col items-center p-6 gap-2 w-full">
         <h3 class="text-lg font-semibold text-gray-700 w-full max-w-md text-left">{{title}}</h3>
 
         <app-settings-item 
@@ -23,7 +25,16 @@
         </div>
     </div>
 
-    <div class="flex-1 bg-gray-100 p-2 flex flex-col items-center mb-16 overflow-x-hidden">
+    <!-- Scrollområdet: header + innehåll på undersidor -->
+    <div class="flex-1 bg-gray-100 overflow-x-hidden overflow-y-auto flex flex-col">
+        <ng-container *ngIf="!showSettings">
+            <app-user-profile-header
+              [userName]="user?.userName"
+              [email]="user?.email"
+              [avatarUrl]="'assets/man-user.svg'"
+              class="w-full mb-6"
+            ></app-user-profile-header>
+        </ng-container>
         <div class="self-center w-full max-w-md">
             <router-outlet></router-outlet>
         </div>

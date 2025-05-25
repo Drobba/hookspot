@@ -28,12 +28,12 @@
     </mat-form-field>
   
     <button mat-flat-button color="primary" class="rounded-xl !h-10 !text-sm" (click)="sendInvite()">
-      Send invite
+      Add
     </button>
   </div>
   
-  <div class="max-h-[320px] overflow-auto shadow-lg mobile-scroll">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full rounded-lg overflow-hidden shadow-lg">
+  <div class="max-h-[320px] overflow-auto shadow-lg mobile-scroll table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
       
       <!-- Name Column -->
       <ng-container matColumnDef="name">

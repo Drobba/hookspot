@@ -37,6 +37,10 @@ export class UserComponent {
 
   public readonly title = 'Settings';
 
+  getHeaderClass(): string {
+    return !this.showSettings ? 'mb-6' : '';
+  }
+
   public settingsMenuItems: SettingMenuItem[] = [
     // { icon: this.userIcon, label: 'User', path: 'profile'},
     { icon: this.teamsIcon, label: 'Teams', path: 'teams'},
