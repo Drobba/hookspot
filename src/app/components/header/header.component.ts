@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [FontAwesomeModule, MatDialogModule, AddCatchComponent, RouterLink],
   templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
   private authService = inject(AuthService);

@@ -38,10 +38,12 @@ export const routes: Routes = [
   {
     path: 'addCatch',
     component: AddCatchComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'user',
     component: UserComponent,
+    canActivate: [authGuard],
     children: [
       {path: 'profile', component: UserSettingsComponent},
       {
