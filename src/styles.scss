@@ -68,6 +68,10 @@ body {
     max-height: 100vh !important;
     height: 100vh !important;
   }
+
+  .main-container {
+    min-height: 150vh;
+  }
 }
 
 /* Desktop dialog styles */
