@@ -1,18 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLinkActive } from '@angular/router';
 import { User } from '../../models/user';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLocationDot, faCirclePlus, faTrophy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { AddCatchComponent } from '../add-catch/add-catch.component';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FontAwesomeModule, MatDialogModule, AddCatchComponent, RouterLink],
+  imports: [FontAwesomeModule, MatDialogModule, AddCatchComponent, RouterLink, CommonModule, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
@@ -22,10 +23,7 @@ export class HeaderComponent {
   private dialog = inject(MatDialog);
   private readonly dialogId = 'add-catch-dialog';
   
-  public locationIcon = faLocationDot;
   public addCatchIcon = faCirclePlus;
-  public starIcon = faTrophy;
-  public userIcon = faUser;
   user: User | undefined | null = undefined;
 
   /**
@@ -64,4 +62,9 @@ export class HeaderComponent {
     this.authService.logout();
     this.router.navigateByUrl('/login');
   }
+
+  
 }
+
+
+

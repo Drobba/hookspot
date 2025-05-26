@@ -1,13 +1,25 @@
 <div class="text-white bg-primary h-full w-full flex justify-center">
   <div class="flex items-center w-[95%] lg:w-[30%]">
-    <div class="flex-1 flex flex-col items-center cursor-pointer">
-      <img src="assets/battle.svg" class="text-white text-xl w-6 h-6 object-contain mb-[2px] mt-[2px]" alt="Battle icon" />
-      <span class="text-xs text-white mt-[2px]">Battle</span>
+    <div class="flex-1 flex flex-col items-center cursor-pointer"
+         routerLink="/battle"
+         routerLinkActive
+         #rlaBattle="routerLinkActive">
+      <img [src]="rlaBattle.isActive ? 'assets/battle-active.svg' : 'assets/battle-inactive.svg'"
+           alt="Battle icon"
+           class="w-6 h-6 object-contain" />
+      <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaBattle.isActive }">Battle</span>
     </div>
-    <div class="flex-1 flex flex-col items-center cursor-pointer" routerLink="/map">
-      <fa-icon [icon]="locationIcon" class="text-white text-xl"></fa-icon>
-      <span class="text-xs text-white">Map</span>
+    
+    <div class="flex-1 flex flex-col items-center cursor-pointer"
+         routerLink="/map"
+         routerLinkActive
+         #rla="routerLinkActive">
+      <img [src]="rla.isActive ? 'assets/map-active.svg' : 'assets/map-inactive.svg'"
+           alt="Map icon"
+           class="w-6 h-6 object-contain" />
+      <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rla.isActive }">Map</span>
     </div>
+
     <div class="flex-1 flex flex-col items-center relative -mt-6 z-10" (click)="openFishRegisterDialog()">
       <div class="rounded-full border border-primary p-[6px] bg-primary">
         <fa-icon [icon]="addCatchIcon" class="text-white text-4xl"></fa-icon>
@@ -15,15 +27,24 @@
       <span class="text-xs text-white mt-[1px] leading-none">Add catch</span>
     </div>
     
-    
-    
-    <div class="flex-1 flex flex-col items-center cursor-pointer" routerLink="/leaderboard">
-      <fa-icon [icon]="starIcon" class="text-white text-xl"></fa-icon>
-      <span class="text-xs text-white">Stats</span>
+    <div class="flex-1 flex flex-col items-center cursor-pointer" 
+         routerLink="/leaderboard"
+         routerLinkActive
+         #rlaLeaderboard="routerLinkActive">
+      <img [src]="rlaLeaderboard.isActive ? 'assets/trophy-active.svg' : 'assets/trophy-inactive.svg'"
+           alt="Trophy icon"
+           class="w-6 h-6 object-contain" />
+      <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaLeaderboard.isActive }">Stats</span>
     </div>
-    <div class="flex-1 flex flex-col items-center cursor-pointer" routerLink="/user">
-      <fa-icon [icon]="userIcon" class="text-white text-xl"></fa-icon>
-      <span class="text-xs text-white">User</span>
+
+    <div class="flex-1 flex flex-col items-center cursor-pointer" 
+         routerLink="/user"
+         routerLinkActive
+         #rlaUser="routerLinkActive">
+      <img [src]="rlaUser.isActive ? 'assets/user-active.svg' : 'assets/user-inactive.svg'"
+           alt="User icon"
+           class="w-6 h-6 object-contain" />
+      <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaUser.isActive }">User</span>
     </div>
   </div>
 </div>
