@@ -21,6 +21,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 import { CatchService } from '../../../../services/catch.service';
 import { Catch } from '../../../../models/catch';
+import { ImageGalleryComponent } from '../../../common/image-gallery/image-gallery.component';
 import { getFishImagePath } from '../../../../utils/fish-image.util';
 import { FishType } from '../../../../models/fish-type';
 
@@ -36,7 +37,8 @@ import { FishType } from '../../../../models/fish-type';
     MatInputModule, 
     MatButtonModule,
     FontAwesomeModule,
-    RouterLink
+    RouterLink,
+    ImageGalleryComponent
   ],
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss']

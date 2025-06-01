@@ -1,0 +1,31 @@
+<div class="section-divider">
+  <div class="divider-line"></div>
+  <div class="divider-title">
+    <span>{{ title }}</span>
+  </div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- Image Gallery Grid -->
+<div *ngIf="visibleCatches.length > 0" class="gallery-grid mt-8">
+  <div *ngFor="let catch of visibleCatches" class="gallery-card">
+    <div class="image-container" [class.image-loaded]="isImageLoaded(catch.catchId)">
+      <div class="skeleton-loader"></div>
+      <img 
+        [src]="getCatchImageSource(catch)" 
+        [alt]="catch.fishType" 
+        class="gallery-img" 
+        (load)="onImageLoad(catch.catchId)" 
+      />
+    </div>
+    <div class="gallery-info">
+      <span class="gallery-weight">{{ catch.fishWeight }} kg</span>
+      <span class="gallery-date">{{ catch.date | date:'dd MMM' }}</span>
+    </div>
+  </div>
+</div>
+<div class="show-more-wrapper" *ngIf="catches.length > visibleCatches.length">
+  <div class="show-more-link" (click)="showMoreCatches()">
+    Show more
+  </div>
+</div> 
