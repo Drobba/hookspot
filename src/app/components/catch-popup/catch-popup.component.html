@@ -2,7 +2,7 @@
   <div class="catch-header">
     <span class="custom-close-button" (click)="onCloseClick()">&times;</span>
     <div class="image-container" [class.image-loaded]="isImageLoaded">
-      <div class="skeleton-loader"></div>
+      <app-skeleton-loader *ngIf="!isImageLoaded"></app-skeleton-loader>
       <img [src]="getImageSource()" [alt]="catchItem.fishType" class="fish-image" (load)="onImageLoad()" />
     </div>
     <h3 class="user-name">{{ catchItem.user.userName }}</h3>

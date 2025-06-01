@@ -2,11 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Catch } from '../../models/catch';
 import { getFishImagePath } from '../../utils/fish-image.util';
+import { SkeletonLoaderComponent } from '../common/skeleton-loader/skeleton-loader.component';
 
 @Component({
   selector: 'app-catch-popup',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SkeletonLoaderComponent],
   templateUrl: './catch-popup.component.html',
   styleUrl: './catch-popup.component.scss'
 })

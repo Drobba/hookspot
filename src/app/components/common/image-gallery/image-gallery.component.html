@@ -10,7 +10,7 @@
 <div *ngIf="visibleCatches.length > 0" class="gallery-grid mt-8">
   <div *ngFor="let catch of visibleCatches" class="gallery-card">
     <div class="image-container" [class.image-loaded]="isImageLoaded(catch.catchId)">
-      <div class="skeleton-loader"></div>
+      <app-skeleton-loader *ngIf="!isImageLoaded(catch.catchId)"></app-skeleton-loader>
       <img 
         [src]="getCatchImageSource(catch)" 
         [alt]="catch.fishType" 
