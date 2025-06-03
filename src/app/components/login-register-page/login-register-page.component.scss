@@ -48,37 +48,24 @@
   // Mobile-specific styles
   @media screen and (max-width: 768px) {
     .login-container {
-      min-height: 100vh;
-      height: auto;
+      height: 100vh;
       padding: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     .mobile-full-height {
+      height: 100vh !important;
       min-height: 100vh !important;
-      height: auto !important;
       width: 100% !important;
       border-radius: 0 !important;
       box-shadow: none !important;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start !important;
-      padding: 1rem 0;
+      justify-content: center !important;
     }
 
     .login-content {
       flex: 0 1 auto;
-      height: auto;
-      overflow: visible;
-      padding-bottom: 2rem;
-    }
-
-    ::ng-deep .mat-mdc-tab-body-wrapper {
-      overflow: visible !important;
-    }
-
-    ::ng-deep .mat-mdc-tab-body-content {
-      overflow: visible !important;
+      max-height: 80vh;
+      overflow: auto;
     }
   }
