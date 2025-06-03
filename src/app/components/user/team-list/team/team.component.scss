@@ -27,8 +27,8 @@
 /* Table container with proper height and scroll behavior */
 .max-h-\[320px\] {
   @media (max-width: 768px) {
-    max-height: 60vh;
-    -webkit-overflow-scrolling: touch;
+    max-height: none;
+    overflow: visible;
   }
 }
 
@@ -38,7 +38,8 @@
   overscroll-behavior: contain;
   
   @media (max-width: 768px) {
-    max-height: 55vh;
+    max-height: none;
+    overflow: visible;
     padding-bottom: 1rem;
   }
 }
@@ -53,8 +54,8 @@
   padding: 0;
 
   @media (max-width: 768px) {
-    max-height: 60vh;
-    -webkit-overflow-scrolling: touch;
+    max-height: none;
+    overflow: visible;
   }
 }
 
