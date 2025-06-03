@@ -3,12 +3,17 @@
   position: relative;
   height: calc(100% - 50px); // Account for fixed header
   overflow: auto;
+  -webkit-overflow-scrolling: touch; /* Improves scroll behavior on iOS */
+  overscroll-behavior: contain; /* Prevents scroll chaining */
 }
 
 ::ng-deep .router-container > * {
   position: absolute;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 // :host {
