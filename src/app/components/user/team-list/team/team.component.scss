@@ -193,4 +193,11 @@ tr:hover {
   }
 }
 
+.gallery-wrapper {
+  @media (max-width: 768px) {
+    min-height: 80vh;
+    margin-bottom: 2.5rem;
+  }
+}
+
   
