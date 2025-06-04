@@ -1,0 +1,26 @@
+.my-catches-header {
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  padding: 1rem;
+  padding-bottom: 5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-wrapper {
+  @media (max-width: 768px) {
+    min-height: 100vh;
+    margin-bottom: 4rem;
+  }
+} 

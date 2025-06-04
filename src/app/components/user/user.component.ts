@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router'; // ✅ Importera Router och NavigationEnd
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faUser, faPeopleGroup, faBell, faArrowRightFromBracket, faAngleRight, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPeopleGroup, faBell, faArrowRightFromBracket, faAngleRight, faFish, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SettingsItemComponent } from '../common/settings-item/settings-item.component';
@@ -25,6 +25,7 @@ export class UserComponent {
   public readonly notificationIcon = faBell;
   public readonly logoutIcon = faArrowRightFromBracket;
   public readonly angleRightIcon = faAngleRight;
+  public readonly catchesIcon = faFish;
 
   private router = inject(Router);
   private authService = inject(AuthService);
@@ -35,14 +36,14 @@ export class UserComponent {
 
   showSettings: boolean = true;
 
-  public readonly title = 'Settings';
+  public readonly title = 'Account';
 
   getHeaderClass(): string {
     return !this.showSettings ? 'mb-6' : '';
   }
 
   public settingsMenuItems: SettingMenuItem[] = [
-    // { icon: this.userIcon, label: 'User', path: 'profile'},
+    { icon: this.catchesIcon, label: 'My Catches', path: 'my-catches'},
     { icon: this.teamsIcon, label: 'Teams', path: 'teams'},
     { icon: this.notificationIcon, label: 'Notifications', path: 'notifications'},
   ]

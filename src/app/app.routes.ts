@@ -9,6 +9,7 @@ import { UserSettingsComponent } from './components/user/user-settings/user-sett
 import { TeamComponent } from './components/user/team-list/team/team.component';
 import { NotificationsComponent } from './components/user/notifications/notifications.component';
 import { TeamListComponent } from './components/user/team-list/team-list.component';
+import { MyCatchesComponent } from './components/user/my-catches/my-catches.component';
 
 
 export const routes: Routes = [
@@ -54,6 +55,7 @@ export const routes: Routes = [
         ]
       },
       {path: 'notifications', component: NotificationsComponent},
+      {path: 'my-catches', component: MyCatchesComponent},
     ]
   }
   // {

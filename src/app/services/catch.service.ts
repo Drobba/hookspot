@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, query, where, getDocs, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs, addDoc, deleteDoc, doc } from '@angular/fire/firestore';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { User } from '../models/user';
 import { Catch, CrtCatchInput } from '../models/catch';
@@ -125,6 +125,18 @@ export class CatchService {
       } catch (error) {
         console.error('Error loading catches:', error);
         this.catchesSubject.next([]);
+      }
+    }
+
+    /**
+     * Tar bort en catch från Firestore och uppdaterar listan
+     */
+    async deleteCatch(catchId: string): Promise<void> {
+      try {
+        await deleteDoc(doc(this.firestore, 'catches', catchId));
+        await this.updateCatches();
+      } catch (error) {
+        console.error('Error deleting catch:', error);
       }
     }
 }

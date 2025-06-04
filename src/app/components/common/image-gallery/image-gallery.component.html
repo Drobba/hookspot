@@ -17,6 +17,20 @@
         class="gallery-img" 
         (load)="onImageLoad(catch.catchId)" 
       />
+      <!-- Vertikal trepunktsmeny med custom SVG -->
+      <button *ngIf="showDelete" class="ellipsis-btn" (click)="openMenu(catch.catchId, $event)" title="Visa meny">
+        <svg class="ellipsis-svg" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="6" r="1.3" fill="currentColor"/>
+          <circle cx="11" cy="11" r="1.3" fill="currentColor"/>
+          <circle cx="11" cy="16" r="1.3" fill="currentColor"/>
+        </svg>
+      </button>
+      <div *ngIf="openMenuCatchId === catch.catchId" class="card-menu">
+        <button class="menu-item delete" (click)="onDeleteCatch(catch.catchId)">
+          <fa-icon [icon]="trashIcon" class="menu-trash"></fa-icon>
+          Ta bort
+        </button>
+      </div>
     </div>
     <div class="gallery-info">
       <span class="gallery-weight">{{ catch.fishWeight }} kg</span>

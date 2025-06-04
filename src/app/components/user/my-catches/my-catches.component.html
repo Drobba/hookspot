@@ -1,0 +1,12 @@
+<div class="w-full max-w-md flex items-center justify-center mb-4 relative">
+  <a routerLink="/user" class="absolute left-0 text-gray-700 hover:text-gray-900 cursor-pointer">
+    <fa-icon [icon]="backIcon" class="text-lg"></fa-icon>
+  </a>
+</div>
+
+<app-image-gallery 
+  [title]="'My Catches'"
+  [catches]="myCatches"
+  [showDelete]="true"
+  (deleteCatch)="onDeleteCatch($event)">
+</app-image-gallery> 
