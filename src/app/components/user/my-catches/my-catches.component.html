@@ -4,9 +4,11 @@
   </a>
 </div>
 
-<app-image-gallery 
-  [title]="'My Catches'"
-  [catches]="myCatches"
-  [showDelete]="true"
-  (deleteCatch)="onDeleteCatch($event)">
-</app-image-gallery> 
+<div class="gallery-wrapper">
+  <app-image-gallery 
+    [title]="'My Catches'"
+    [catches]="myCatches"
+    [showDelete]="true"
+    (deleteCatch)="onDeleteCatch($event)">
+  </app-image-gallery>
+</div> 
