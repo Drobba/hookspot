@@ -61,7 +61,10 @@ export class MyCatchesComponent {
         message: 'Är du säker på att du vill ta bort denna fångst?',
         confirmText: 'Ta bort',
         cancelText: 'Avbryt'
-      }
+      },
+      panelClass: 'confirm-modal-dialog',
+      maxWidth: '90vw',
+      maxHeight: '50vh'
     });
     const confirmed = await dialogRef.afterClosed().toPromise();
     if (confirmed) {

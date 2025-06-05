@@ -2,7 +2,10 @@
 <mat-dialog-content>
   <p>{{ data.message }}</p>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">{{ data.cancelText || 'Avbryt' }}</button>
-  <button mat-flat-button color="warn" (click)="onConfirm()">{{ data.confirmText || 'Ta bort' }}</button>
+<mat-dialog-actions align="center" class="confirm-actions">
+  <button mat-button (click)="onCancel()" class="cancel-btn">{{ data.cancelText || 'Avbryt' }}</button>
+  <button mat-flat-button color="warn" (click)="onConfirm()"
+    class="delete-btn bg-[rgb(211,47,47)] text-white rounded-lg hover:bg-[rgb(183,28,28)] min-w-[120px] px-6 py-2">
+    {{ data.confirmText || 'Ta bort' }}
+  </button>
 </mat-dialog-actions> 
