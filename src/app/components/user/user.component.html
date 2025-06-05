@@ -4,7 +4,7 @@
       *ngIf="showSettings"
       [userName]="user?.userName"
       [email]="user?.email"
-      [avatarUrl]="'assets/man-user.svg'">
+      [avatarUrl]="'assets/user-default.png'">
     </app-user-profile-header>
 
     <div *ngIf="showSettings" class="flex flex-col items-center p-6 gap-2 w-full">
@@ -31,7 +31,7 @@
             <app-user-profile-header
               [userName]="user?.userName"
               [email]="user?.email"
-              [avatarUrl]="'assets/man-user.svg'"
+              [avatarUrl]="'assets/user-default.png'"
               class="w-full mb-6"
             ></app-user-profile-header>
         </ng-container>
