@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, getDocs, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, collectionData, doc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
 import { CollectionReference } from 'firebase/firestore';
@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { Invite } from '../models/invite';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InviteStatus } from '../enums/invite-status';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -74,4 +75,15 @@ export class UserService {
     }
   }
   
+  async uploadAvatar(userId: string, file: File): Promise<string> {
+    const storage = getStorage();
+    const filePath = `avatars/${userId}/${Date.now()}_${file.name}`;
+    const storageRef = ref(storage, filePath);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    // Uppdatera användarens avatarUrl i Firestore
+    const userRef = doc(this.firestore, `users/${userId}`);
+    await updateDoc(userRef, { avatarUrl: downloadURL });
+    return downloadURL;
+  }
 }

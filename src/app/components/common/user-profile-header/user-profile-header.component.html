@@ -1,7 +1,8 @@
 <div class="bg-primary flex flex-col justify-center items-center py-10">
-    <div class="profile-img-wrapper">
+    <div class="profile-img-wrapper" (click)="onAvatarClick()" style="cursor:pointer;">
         <img [src]="avatarUrl" [alt]="userName" 
             class="h-32 mt-2 rounded-full shadow-lg">
+        <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" style="display:none;" />
     </div>
     
     <div class="text-white text-center mt-4">

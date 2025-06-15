@@ -37,7 +37,7 @@ export class AuthService {
   user$ = user(this.firebaseAuth);
 
   constructor() {
-    this.user$.subscribe((firebaseUser) => {
+    this.user$.subscribe(async (firebaseUser) => {
       // ⚠️ Ignorera tillfällig inloggning efter registrering
       if (this.isPostRegisterLogout) {
         this.isPostRegisterLogout = false;
@@ -48,10 +48,14 @@ export class AuthService {
 
       // 👇 Endast verifierade användare tillåts vara "inloggade"
       if (firebaseUser && firebaseUser.emailVerified) {
+        const userRef = doc(this.firestore, `users/${firebaseUser.uid}`);
+        const docSnap = await getDoc(userRef);
+        const data = docSnap.data();
         const userData: User = {
           email: firebaseUser.email!,
           userName: firebaseUser.displayName!,
           userId: firebaseUser.uid!,
+          avatarUrl: data ? data['avatarUrl'] : undefined
         };
         this.setCurrentUser(userData);
       } else {
