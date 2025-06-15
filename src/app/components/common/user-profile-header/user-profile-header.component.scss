@@ -1,0 +1,22 @@
+.profile-img-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 126px;
+  height: 126px;
+  border-radius: 50%;
+  background: transparent;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px 0 rgba(60,60,60,0.10);
+  margin: 0 auto;
+}
+
+.profile-img-wrapper img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #e4e6eb;
+  box-shadow: none;
+  margin: 0;
+}

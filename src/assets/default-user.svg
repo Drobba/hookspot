@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="60" fill="#E4E6EB"/>
+  <!-- Head -->
+  <circle cx="60" cy="48" r="24" fill="#8A8D91"/>
+  <!-- Shoulders/body, nu nuddar den nedre kanten -->
+  <ellipse cx="60" cy="104" rx="38" ry="28" fill="#8A8D91"/>
+</svg> 

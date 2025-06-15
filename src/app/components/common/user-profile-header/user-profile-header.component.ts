@@ -11,6 +11,6 @@ import { CommonModule } from '@angular/common';
 export class UserProfileHeaderComponent {
   @Input() userName?: string;
   @Input() email?: string;
-  @Input() avatarUrl: string = 'assets/man-user.svg';
+  @Input() avatarUrl: string = 'assets/default-user.svg';
 
 }
