@@ -2,6 +2,9 @@
     <div class="profile-img-wrapper" (click)="onAvatarClick()" style="cursor:pointer;">
         <img [src]="avatarUrl" [alt]="userName" 
             class="h-32 mt-2 rounded-full shadow-lg">
+        <div class="edit-badge">
+            <fa-icon [icon]="editIcon" class="text-white text-xs"></fa-icon>
+        </div>
         <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" style="display:none;" />
     </div>
     

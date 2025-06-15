@@ -1,11 +1,13 @@
 import { Component, Input, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../services/user.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-profile-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './user-profile-header.component.html',
   styleUrl: './user-profile-header.component.scss'
 })
@@ -17,6 +19,7 @@ export class UserProfileHeaderComponent {
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   private userService = inject(UserService);
+  readonly editIcon = faPen;
 
   onAvatarClick() {
     this.fileInput.nativeElement.click();

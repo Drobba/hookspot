@@ -9,6 +9,11 @@
   border: 3px solid #fff;
   box-shadow: 0 2px 8px 0 rgba(60,60,60,0.10);
   margin: 0 auto;
+  position: relative;
+
+  &:hover .edit-overlay {
+    opacity: 1;
+  }
 }
 
 .profile-img-wrapper img {
@@ -19,4 +24,51 @@
   background: #e4e6eb;
   box-shadow: none;
   margin: 0;
+}
+
+.edit-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.edit-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: rgba(37,99,90,0.85); /* semi-transparent primary */
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 4px 16px 0 rgba(60,60,60,0.18);
+  cursor: pointer;
+  transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  padding: 0;
+}
+
+.edit-badge fa-icon {
+  font-size: 1.1rem;
+  color: #fff;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.edit-badge:hover {
+  background: rgba(37,99,90,1);
+  box-shadow: 0 6px 20px 0 rgba(60,60,60,0.22);
 }
