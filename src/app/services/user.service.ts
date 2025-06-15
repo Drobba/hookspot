@@ -8,6 +8,7 @@ import { Invite } from '../models/invite';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InviteStatus } from '../enums/invite-status';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,6 @@ export class UserService {
       }
     });
     this.loadUsers();
-    console.log('Här är invites!', this.invites$);
   }
 
   private loadUsers() {
@@ -81,9 +81,18 @@ export class UserService {
     const storageRef = ref(storage, filePath);
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
-    // Uppdatera användarens avatarUrl i Firestore
+    
+    // Update user's avatarUrl in Firestore
     const userRef = doc(this.firestore, `users/${userId}`);
     await updateDoc(userRef, { avatarUrl: downloadURL });
+
+    // Update current user data in AuthService
+    const currentUser = await firstValueFrom(this.authService.currentUser$);
+    if (currentUser) {
+      const updatedUser = { ...currentUser, avatarUrl: downloadURL };
+      this.authService.setCurrentUser(updatedUser);
+    }
+
     return downloadURL;
   }
 }

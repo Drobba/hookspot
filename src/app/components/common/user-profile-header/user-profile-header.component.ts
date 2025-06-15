@@ -25,8 +25,22 @@ export class UserProfileHeaderComponent {
   async onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file && this.userId) {
-      const url = await this.userService.uploadAvatar(this.userId, file);
-      this.avatarUrl = url;
+      try {
+        // Update UI immediately with a temporary URL for the file
+        const tempUrl = URL.createObjectURL(file);
+        this.avatarUrl = tempUrl;
+        
+        // Upload the file in the background
+        const url = await this.userService.uploadAvatar(this.userId, file);
+        this.avatarUrl = url;
+      } catch (error) {
+        console.error('Error uploading avatar:', error);
+        // Restore previous URL on error
+        this.avatarUrl = this.avatarUrl;
+      } finally {
+        // Clean up the temporary URL
+        URL.revokeObjectURL(this.avatarUrl);
+      }
     }
   }
 }
