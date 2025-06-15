@@ -57,11 +57,23 @@
 }
 
 /* Mobile scroll improvements */
-.mobile-scroll {
+.mobile-scroll, .table-responsive {
+  overflow-x: auto;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  
-  @media (max-width: 768px) {
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  touch-action: pan-x;
+}
+
+.mobile-scroll {
+  overflow-y: auto;
+  max-height: 55vh;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .mobile-scroll {
     max-height: 55vh;
     padding-bottom: 1rem;
   }
@@ -101,4 +113,15 @@
   border: 3px solid #fff;
   box-shadow: 0 2px 8px 0 rgba(60,60,60,0.13);
   flex-shrink: 0;
+}
+
+/* Ensure table is wide enough for horizontal scroll */
+.mat-mdc-table, table {
+  min-width: 600px;
+}
+
+.table-horizontal-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
