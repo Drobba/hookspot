@@ -13,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TeamSerivce } from '../../services/team.service';
 import { Team } from '../../models/team';
 import { expandCollapseAnimation } from '../../animations/expand-collapse.animation';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
 
 interface UserStat {
   userName: string;
@@ -80,6 +82,8 @@ export class LeaderboardComponent {
   dataSource: Catch[] = [];
   private catchService = inject(CatchService);
   private teamService = inject(TeamSerivce);
+  private userService = inject(UserService);
+  users: User[] = [];
 
   showFilters = false;
 
@@ -98,6 +102,13 @@ export class LeaderboardComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(teams => {
         this.teams = teams;
+      });
+
+    // Subscribe to users
+    this.userService.users$
+      .pipe(takeUntilDestroyed())
+      .subscribe(users => {
+        this.users = users;
       });
   }
 
@@ -222,5 +233,15 @@ export class LeaderboardComponent {
 
   get isDesktop(): boolean {
     return window.innerWidth >= 768;
+  }
+
+  getAvatarUrl(userId: string): string {
+    const user = this.users.find(u => u.userId === userId);
+    return user?.avatarUrl || 'assets/default-user.svg';
+  }
+
+  getAvatarUrlByUserName(userName: string): string {
+    const user = this.users.find(u => u.userName === userName);
+    return user?.avatarUrl || 'assets/default-user.svg';
   }
 }

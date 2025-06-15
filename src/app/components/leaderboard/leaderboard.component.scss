@@ -66,3 +66,39 @@
     padding-bottom: 1rem;
   }
 }
+
+.avatar-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.avatar-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e4e6eb;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px 0 rgba(60,60,60,0.10);
+  flex-shrink: 0;
+}
+
+.avatar-username {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+}
+
+.avatar-champion {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e4e6eb;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px 0 rgba(60,60,60,0.13);
+  flex-shrink: 0;
+}
