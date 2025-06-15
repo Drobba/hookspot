@@ -66,12 +66,6 @@
   touch-action: pan-x;
 }
 
-.mobile-scroll {
-  overflow-y: auto;
-  max-height: 55vh;
-  padding-bottom: 1rem;
-}
-
 @media (max-width: 768px) {
   .mobile-scroll {
     max-height: 55vh;
@@ -118,10 +112,4 @@
 /* Ensure table is wide enough for horizontal scroll */
 .mat-mdc-table, table {
   min-width: 600px;
-}
-
-.table-horizontal-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
 }
