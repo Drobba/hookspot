@@ -39,7 +39,7 @@ interface UserStat {
   animations: [expandCollapseAnimation]
 })
 export class LeaderboardComponent {
-  displayedColumns: string[] = ['rank', 'userName', 'fishType', 'fishWeight', 'fishLength', 'bait', 'date'];
+  displayedColumns: string[] = ['rank', 'userName', 'fishWeight', 'fishLength', 'fishType', 'bait', 'date'];
   
   // Icons
   fishIcon = faFish;
