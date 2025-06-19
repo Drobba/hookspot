@@ -1,1 +1,17 @@
-<div id="map" class="h-full w-full"></div>
+<div id="map" class="h-full w-full">
+  <div class="filter-button-container" *ngIf="showFilterButton">
+    <button class="filter-button" (click)="onFilterClick()">
+      <fa-icon [icon]="filterIcon"></fa-icon>
+    </button>
+  </div>
+  
+  <div class="filter-status" *ngIf="currentFilter && showFilterButton">
+    <div class="filter-info">
+      <fa-icon [icon]="filterBadgeIcon" class="filter-badge-icon"></fa-icon>
+      <span class="filter-text">{{ getMonthName(currentFilter.startMonth) }} - {{ getMonthName(currentFilter.endMonth) }}</span>
+      <button class="clear-filter-btn" (click)="clearFilter()" aria-label="Rensa filter">
+        ×
+      </button>
+    </div>
+  </div>
+</div>

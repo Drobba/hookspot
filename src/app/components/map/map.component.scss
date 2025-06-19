@@ -7,6 +7,125 @@
   #map {
     height: 100%;
     width: 100%;
+    position: relative;
+  }
+
+  .filter-button-container {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 48px;
+    height: 88px;
+    pointer-events: none;
+    z-index: 1001;
+  }
+
+  .filter-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    color: var(--sys-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    position: absolute;
+    left: 60px;
+    top: 18px;
+    z-index: 1001;
+    margin: 0;
+  }
+
+  .filter-button:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .filter-button:active {
+    transform: scale(0.95);
+  }
+
+  .filter-button fa-icon {
+    font-size: 22px;
+    color: var(--sys-primary);
+  }
+
+  .filter-button {
+    pointer-events: auto;
+  }
+
+  .filter-status {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    pointer-events: none;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .filter-info {
+    background: #004a42;
+    border-radius: 9999px;
+    padding: 8px 16px;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: auto;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px);
+    }
+  }
+
+  .filter-badge-icon {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+  }
+
+  .filter-text {
+    font-size: 0.813rem;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+  }
+
+  .clear-filter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    line-height: 1;
+    padding: 0;
+    margin-left: 4px;
+    margin-right: -4px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      transform: scale(1.1);
+    }
   }
 
   ::ng-deep {
@@ -32,5 +151,12 @@
 
     .fish-marker {
       filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1));
+    }
+
+    .leaflet-control-zoom {
+      position: absolute !important;
+      left: 10px !important;
+      top: 10px !important;
+      z-index: 1000;
     }
   }

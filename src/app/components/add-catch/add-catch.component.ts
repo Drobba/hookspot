@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Catch, CrtCatchInput } from '../../models/catch';
 import { CatchService } from '../../services/catch.service';
 import { DateService } from '../../services/date.service';
@@ -23,6 +23,7 @@ import * as L from 'leaflet';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { SpinnerService } from '../../services/spinner.service';
 import { FishType } from '../../models/fish-type';
+import { DialogStateService } from '../../services/dialog-state.service';
 
 @Component({
   selector: 'app-add-catch',
@@ -44,7 +45,7 @@ import { FishType } from '../../models/fish-type';
   templateUrl: './add-catch.component.html',
   styleUrls: ['./add-catch.component.scss'],
 })
-export class AddCatchComponent {
+export class AddCatchComponent implements OnDestroy {
   private catchService = inject(CatchService);
   private authService = inject(AuthService);
   private dateService = inject(DateService);
@@ -52,6 +53,7 @@ export class AddCatchComponent {
   private storage = inject(Storage);
   private dialogRef = inject(MatDialogRef<AddCatchComponent>);
   public spinnerService = inject(SpinnerService);
+  private dialogState = inject(DialogStateService);
   
   closeIcon = faTimes;
   locationIcon = faLocationPin;
@@ -101,6 +103,8 @@ export class AddCatchComponent {
     this.authService.currentUser$
       .pipe(takeUntilDestroyed())
       .subscribe((user) => (this.user = user));
+
+    this.dialogState.addCatchDialogOpen$.next(true);
   }
 
   ngAfterViewInit() {
@@ -240,6 +244,7 @@ export class AddCatchComponent {
 
       await this.catchService.addCatch(newCatch);
       this.catchForm.reset();
+      this.dialogState.addCatchDialogOpen$.next(false);
       this.closeDialog();
     } catch (error) {
       console.error('Error adding catch:', error);
@@ -253,6 +258,7 @@ export class AddCatchComponent {
     if (this.selectedImageUrl) {
       URL.revokeObjectURL(this.selectedImageUrl);
     }
+    this.dialogState.addCatchDialogOpen$.next(false);
     this.dialogRef.close();
   }
 
@@ -263,6 +269,10 @@ export class AddCatchComponent {
     
     await uploadBytes(fileRef, file);
     return await getDownloadURL(fileRef);
+  }
+
+  ngOnDestroy(): void {
+    this.dialogState.addCatchDialogOpen$.next(false);
   }
 }
 
