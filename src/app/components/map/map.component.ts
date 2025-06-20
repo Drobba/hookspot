@@ -73,7 +73,7 @@ export class MapComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = this.mapService.initMap('map');
+    this.map = this.mapService.initMap('map', { zoomControl: false });
     this.mapService.setMapToCurrentLocation(this.map).subscribe();
     if (this.filteredCatches.length > 0) {
       this.addMarkers(this.filteredCatches);
