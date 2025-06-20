@@ -8,20 +8,25 @@
 
   <h2>Filter Catches</h2>
 
-  <div class="slider-labels">
-    <span class="slider-label" [style.left.%]="getThumbPosition(rangeStart)">{{ getMonthName(rangeStart) }}</span>
-    <span class="slider-label" [style.left.%]="getThumbPosition(rangeEnd)">{{ getMonthName(rangeEnd) }}</span>
-  </div>
-  <mat-slider [min]="0" [max]="11">
-    <input [(ngModel)]="rangeStart" matSliderStartThumb>
-    <input [(ngModel)]="rangeEnd" matSliderEndThumb>
-  </mat-slider>
+  <!-- Month Slider -->
+  <app-range-slider
+    [config]="monthSliderConfig"
+    (startValueChange)="monthStart = $event"
+    (endValueChange)="monthEnd = $event"
+  ></app-range-slider>
+
+  <!-- Weight Slider -->
+  <app-range-slider
+    [config]="weightSliderConfig"
+    (startValueChange)="weightStart = $event"
+    (endValueChange)="weightEnd = $event"
+  ></app-range-slider>
 
   <div class="filter-actions">
     <button 
       mat-button 
       (click)="resetFilter()"
-      class="clear-btn text-gray-600 hover:text-gray-800 font-medium"
+      class="clear-btn text-[var(--sys-primary)] font-medium"
     >
       Clear
     </button>

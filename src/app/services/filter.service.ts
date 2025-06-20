@@ -1,28 +1,39 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Month } from '../enums/month';
+import { Weight } from '../enums/weight';
 
 export interface MonthFilter {
   startMonth: Month;
   endMonth: Month;
 }
 
+export interface WeightFilter {
+  startWeight: Weight;
+  endWeight: Weight;
+}
+
+export interface FilterSettings {
+  monthFilter?: MonthFilter;
+  weightFilter?: WeightFilter;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
-  private currentFilterSubject = new BehaviorSubject<MonthFilter | null>(null);
-  public currentFilter$ = this.currentFilterSubject.asObservable();
+  private filterSettingsSubject = new BehaviorSubject<FilterSettings | null>(null);
+  public filterSettings$ = this.filterSettingsSubject.asObservable();
 
-  applyFilter(filter: MonthFilter): void {
-    this.currentFilterSubject.next(filter);
+  applyFilter(filter: FilterSettings): void {
+    this.filterSettingsSubject.next(filter);
   }
 
   clearFilter(): void {
-    this.currentFilterSubject.next(null);
+    this.filterSettingsSubject.next(null);
   }
 
-  getCurrentFilter(): MonthFilter | null {
-    return this.currentFilterSubject.value;
+  getFilterSettings(): FilterSettings | null {
+    return this.filterSettingsSubject.value;
   }
 } 

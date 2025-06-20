@@ -1,0 +1,23 @@
+<div class="filter-section" *ngIf="config">
+  <p class="filter-label-header">{{ config.header }}</p>
+  <div class="slider-labels">
+    <span class="slider-label" [style.left.%]="getThumbPosition(config.startValue)">
+      {{ config.formatLabel(config.startValue) }}
+    </span>
+    <span class="slider-label" [style.left.%]="getThumbPosition(config.endValue)">
+      {{ config.formatLabel(config.endValue) }}
+    </span>
+  </div>
+  <mat-slider [min]="min" [max]="max">
+    <input
+      [ngModel]="config.startValue"
+      (ngModelChange)="startValueChange.emit($event)"
+      matSliderStartThumb
+    />
+    <input
+      [ngModel]="config.endValue"
+      (ngModelChange)="endValueChange.emit($event)"
+      matSliderEndThumb
+    />
+  </mat-slider>
+</div> 

@@ -12,8 +12,9 @@ import { DialogStateService } from '../../services/dialog-state.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterCatchComponent } from '../filter-catch/filter-catch.component';
-import { FilterService, MonthFilter } from '../../services/filter.service';
+import { FilterService, FilterSettings } from '../../services/filter.service';
 import { Month, getMonthName } from '../../enums/month';
+import { Weight, getWeightName } from '../../enums/weight';
 import { combineLatest, map } from 'rxjs';
 
 @Component({
@@ -42,7 +43,7 @@ export class MapComponent implements OnInit {
   private filterService = inject(FilterService);
   
   filteredCatches: Catch[] = [];
-  currentFilter: MonthFilter | null = null;
+  filterSettings: FilterSettings | null = null;
 
   constructor() {
     this.dialogState.addCatchDialogOpen$
@@ -53,11 +54,11 @@ export class MapComponent implements OnInit {
 
     combineLatest([
       this.catchService.catches$,
-      this.filterService.currentFilter$
+      this.filterService.filterSettings$
     ]).pipe(
       takeUntilDestroyed(),
       map(([catches, filter]) => {
-        this.currentFilter = filter;
+        this.filterSettings = filter;
         return this.filterCatches(catches, filter);
       })
     ).subscribe(filteredCatches => {
@@ -80,21 +81,35 @@ export class MapComponent implements OnInit {
     }
   }
 
-
-  private filterCatches(catches: Catch[], filter: MonthFilter | null): Catch[] {
+  private filterCatches(catches: Catch[], filter: FilterSettings | null): Catch[] {
     if (!filter) return catches;
 
     return catches.filter(catchItem => {
-      const catchDate = new Date(catchItem.date);
-      const catchMonth = catchDate.getMonth() as Month;
-      
-      // Handle ranges that span across new year (e.g., Nov-Jan)
-      if (filter.startMonth <= filter.endMonth) {
-        return catchMonth >= filter.startMonth && catchMonth <= filter.endMonth;
-      } else {
-        // Range spans across new year (e.g., Nov-Jan)
-        return catchMonth >= filter.startMonth || catchMonth <= filter.endMonth;
+      let matchesMonth = true;
+      let matchesWeight = true;
+
+      // Check month filter
+      if (filter.monthFilter) {
+        const catchDate = new Date(catchItem.date);
+        const catchMonth = catchDate.getMonth() as Month;
+        
+        // Handle ranges that span across new year (e.g., Nov-Jan)
+        if (filter.monthFilter.startMonth <= filter.monthFilter.endMonth) {
+          matchesMonth = catchMonth >= filter.monthFilter.startMonth && catchMonth <= filter.monthFilter.endMonth;
+        } else {
+          // Range spans across new year (e.g., Nov-Jan)
+          matchesMonth = catchMonth >= filter.monthFilter.startMonth || catchMonth <= filter.monthFilter.endMonth;
+        }
       }
+
+      // Check weight filter
+      if (filter.weightFilter) {
+        const catchWeight = catchItem.fishWeight;
+        matchesWeight = catchWeight >= filter.weightFilter.startWeight && catchWeight <= filter.weightFilter.endWeight;
+      }
+
+      // Both conditions must be met (AND logic)
+      return matchesMonth && matchesWeight;
     });
   }
 
@@ -104,6 +119,33 @@ export class MapComponent implements OnInit {
 
   getMonthName(monthIndex: Month): string {
     return getMonthName(monthIndex);
+  }
+
+  getWeightName(weightValue: Weight): string {
+    return getWeightName(weightValue);
+  }
+
+  getFilterDisplayText(): string {
+    if (!this.filterSettings) return '';
+    
+    const parts: string[] = [];
+    
+    if (this.filterSettings.monthFilter) {
+      parts.push(`${this.getMonthName(this.filterSettings.monthFilter.startMonth)} - ${this.getMonthName(this.filterSettings.monthFilter.endMonth)}`);
+    }
+    
+    if (this.filterSettings.weightFilter) {
+      parts.push(`${this.getWeightName(this.filterSettings.weightFilter.startWeight)} - ${this.getWeightName(this.filterSettings.weightFilter.endWeight)}`);
+    }
+    
+    return parts.join(' • ');
+  }
+
+  hasActiveFilters(): boolean {
+    return this.filterSettings !== null && (
+      this.filterSettings.monthFilter !== undefined || 
+      this.filterSettings.weightFilter !== undefined
+    );
   }
 
   private addMarkers(catches: Catch[]): void {
@@ -152,7 +194,6 @@ export class MapComponent implements OnInit {
         maxWidth: 300,
         minWidth: 300
       });
-
 
       marker.on('popupclose', () => {
         this.catchInfoPopupService.destroyPopup(componentRef);
