@@ -16,6 +16,7 @@ export interface WeightFilter {
 export interface FilterSettings {
   monthFilter?: MonthFilter;
   weightFilter?: WeightFilter;
+  showOnlyMyCatches?: boolean;
 }
 
 @Injectable({

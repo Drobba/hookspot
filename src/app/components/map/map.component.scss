@@ -94,6 +94,36 @@
     }
   }
 
+  // Responsive adjustments for mobile
+@media (max-width: 767px) {
+  .filter-container {
+    left: 5px;
+    right: 5px;
+    top: 5px;
+  }
+
+  .filter-status {
+    flex-grow: 1; 
+    min-width: 0; 
+  }
+
+  .filter-info {
+    padding: 6px 12px;
+    width: 100%;
+  }
+
+  .filter-text {
+    white-space: normal; 
+    font-size: 0.75rem; 
+    line-height: 1.3;
+    flex-grow: 1;
+  }
+
+  .clear-filter-btn {
+    flex-shrink: 0;
+  }
+}
+
   ::ng-deep {
     .leaflet-popup {
       margin-bottom: 0;

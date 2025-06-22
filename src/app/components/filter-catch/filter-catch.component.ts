@@ -1,8 +1,10 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { DialogStateService } from '../../services/dialog-state.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FilterService, FilterSettings } from '../../services/filter.service';
 import { Month, getMonthName } from '../../enums/month';
 import { Weight, getWeightName } from '../../enums/weight';
@@ -15,8 +17,10 @@ import { RangeSliderComponent, RangeSliderConfig } from '../common/range-slider/
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatDialogModule,
     MatButtonModule,
+    MatSlideToggleModule,
     FontAwesomeModule,
     RangeSliderComponent,
   ],
@@ -39,6 +43,9 @@ export class FilterCatchComponent implements OnDestroy {
   weightStart = Weight.ONE;
   weightEnd = Weight.TWENTY_FIVE;
   private weightOptions: number[] = Object.values(Weight).filter(v => typeof v === 'number') as number[];
+
+  // Show only my catches toggle state
+  showOnlyMyCatches = false;
 
   // Slider Configurations
   get monthSliderConfig(): RangeSliderConfig {
@@ -77,6 +84,9 @@ export class FilterCatchComponent implements OnDestroy {
         this.weightStart = filterSettings.weightFilter.startWeight;
         this.weightEnd = filterSettings.weightFilter.endWeight;
       }
+      if (filterSettings.showOnlyMyCatches !== undefined) {
+        this.showOnlyMyCatches = filterSettings.showOnlyMyCatches;
+      }
     }
   }
 
@@ -94,6 +104,7 @@ export class FilterCatchComponent implements OnDestroy {
         startWeight: Weight.ONE,
         endWeight: Weight.TWENTY_FIVE,
       },
+      showOnlyMyCatches: false,
     };
   }
 
@@ -126,6 +137,10 @@ export class FilterCatchComponent implements OnDestroy {
       };
     }
 
+    if (this.showOnlyMyCatches !== defaults.showOnlyMyCatches) {
+      filterSettings.showOnlyMyCatches = this.showOnlyMyCatches;
+    }
+
     this.filterService.applyFilter(filterSettings);
     this.close();
   }
@@ -136,6 +151,7 @@ export class FilterCatchComponent implements OnDestroy {
     this.monthEnd = defaults.monthFilter.endMonth;
     this.weightStart = defaults.weightFilter.startWeight;
     this.weightEnd = defaults.weightFilter.endWeight;
+    this.showOnlyMyCatches = defaults.showOnlyMyCatches;
     this.filterService.clearFilter();
     this.close();
   }

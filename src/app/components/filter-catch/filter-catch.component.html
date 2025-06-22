@@ -6,7 +6,7 @@
     <fa-icon [icon]="closeIcon" class="text-xl"></fa-icon>
   </button>
 
-  <h2>Filter Catches</h2>
+  <h2 class="">Filter Catches</h2>
 
   <!-- Month Slider -->
   <app-range-slider
@@ -21,6 +21,17 @@
     (startValueChange)="weightStart = $event"
     (endValueChange)="weightEnd = $event"
   ></app-range-slider>
+
+  <!-- Show Only My Catches Toggle -->
+  <div class="toggle-section">
+    <mat-slide-toggle
+      [(ngModel)]="showOnlyMyCatches"
+      class="my-catches-toggle"
+      color="primary"
+    >
+      Show only my catches
+    </mat-slide-toggle>
+  </div>
 
   <div class="filter-actions">
     <button 

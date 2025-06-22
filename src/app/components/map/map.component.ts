@@ -16,6 +16,8 @@ import { FilterService, FilterSettings } from '../../services/filter.service';
 import { Month, getMonthName } from '../../enums/month';
 import { Weight, getWeightName } from '../../enums/weight';
 import { combineLatest, map } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-map',
@@ -41,9 +43,11 @@ export class MapComponent implements OnInit {
   private dialogState = inject(DialogStateService);
   private dialog = inject(MatDialog);
   private filterService = inject(FilterService);
+  private authService = inject(AuthService);
   
   filteredCatches: Catch[] = [];
   filterSettings: FilterSettings | null = null;
+  user: User | null = null;
 
   constructor() {
     this.dialogState.addCatchDialogOpen$
@@ -54,11 +58,13 @@ export class MapComponent implements OnInit {
 
     combineLatest([
       this.catchService.catches$,
-      this.filterService.filterSettings$
+      this.filterService.filterSettings$,
+      this.authService.currentUser$
     ]).pipe(
       takeUntilDestroyed(),
-      map(([catches, filter]) => {
+      map(([catches, filter, user]) => {
         this.filterSettings = filter;
+        this.user = user || null;
         return this.filterCatches(catches, filter);
       })
     ).subscribe(filteredCatches => {
@@ -87,6 +93,7 @@ export class MapComponent implements OnInit {
     return catches.filter(catchItem => {
       let matchesMonth = true;
       let matchesWeight = true;
+      let matchesUser = true;
 
       // Check month filter
       if (filter.monthFilter) {
@@ -108,8 +115,13 @@ export class MapComponent implements OnInit {
         matchesWeight = catchWeight >= filter.weightFilter.startWeight && catchWeight <= filter.weightFilter.endWeight;
       }
 
-      // Both conditions must be met (AND logic)
-      return matchesMonth && matchesWeight;
+      // Check user filter
+      if (filter.showOnlyMyCatches && this.user) {
+        matchesUser = catchItem.user.userId === this.user.userId;
+      }
+
+      // All conditions must be met (AND logic)
+      return matchesMonth && matchesWeight && matchesUser;
     });
   }
 
@@ -137,6 +149,10 @@ export class MapComponent implements OnInit {
     if (this.filterSettings.weightFilter) {
       parts.push(`${this.getWeightName(this.filterSettings.weightFilter.startWeight)} - ${this.getWeightName(this.filterSettings.weightFilter.endWeight)}`);
     }
+
+    if (this.filterSettings.showOnlyMyCatches) {
+      parts.push('My catches only');
+    }
     
     return parts.join(' • ');
   }
@@ -144,7 +160,8 @@ export class MapComponent implements OnInit {
   hasActiveFilters(): boolean {
     return this.filterSettings !== null && (
       this.filterSettings.monthFilter !== undefined || 
-      this.filterSettings.weightFilter !== undefined
+      this.filterSettings.weightFilter !== undefined ||
+      this.filterSettings.showOnlyMyCatches === true
     );
   }
 

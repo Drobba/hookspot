@@ -1,6 +1,7 @@
 .filter-label-header {
   font-size: 0.875rem; /* 14px */
-  color: #6b7280; /* gray-500 */
+  color: var(--sys-primary);
+  font-weight: 500;
   margin-bottom: 1.5rem;
   text-align: center;
 }

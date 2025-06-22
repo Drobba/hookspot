@@ -51,9 +51,14 @@ h2 {
   font-weight: 500;
   text-align: center;
   margin-top: 1.2rem;
-  margin-bottom: 2.2rem;
+  margin-bottom: 3rem;
   letter-spacing: 0.5px;
   color: #1f2937;
+}
+
+app-range-slider {
+  display: block;
+  margin-bottom: 3rem;
 }
 
 .filter-label-header {
@@ -150,12 +155,47 @@ mat-slider {
 }
 
 .filter-actions {
-  margin-top: 2rem;
+  margin-top: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 24px 24px 24px;
   width: 100%;
+}
+
+.toggle-section {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.my-catches-toggle {
+  width: 100%;
+
+  // Overrides Angular Material's CSS custom properties for theming
+  // Active (checked) state
+  --mat-mdc-slide-toggle-selected-handle-color: var(--sys-primary);
+  --mat-mdc-slide-toggle-selected-icon-color: white;
+  --mat-mdc-slide-toggle-selected-track-color: var(--sys-primary);
+  --mat-mdc-slide-toggle-selected-track-opacity: 0.5;
+
+  // Inactive (unchecked) state
+  --mat-mdc-slide-toggle-unselected-handle-color: #757575;
+  --mat-mdc-slide-toggle-unselected-track-color: #e0e0e0;
+
+  ::ng-deep {
+    .mdc-form-field {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mdc-form-field > label {
+      color: #1f2937;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+  }
 }
 
 .clear-btn {
