@@ -151,7 +151,7 @@ export class MapComponent implements OnInit {
     }
 
     if (this.filterSettings.showOnlyMyCatches) {
-      parts.push('My catches only');
+      parts.push('My catches');
     }
     
     return parts.join(' • ');
