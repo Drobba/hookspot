@@ -38,11 +38,31 @@
     max-width: 100vw;
     height: 100vh;
     border-radius: 0;
-    padding: 2rem 1rem;
+    padding: 0.7rem 0.2rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+  }
+
+  h2 {
+    margin-top: 0.2rem;
+    margin-bottom: 0.7rem;
+    font-size: 1.05rem;
+  }
+
+  app-range-slider {
+    margin-bottom: 1rem;
+  }
+
+  .toggle-section {
+    width: 100%;
+    margin-bottom: 0.7rem;
+  }
+
+  .filter-actions {
+    margin-top: 0.7rem;
+    padding: 0 4px 8px 4px;
   }
 }
 
@@ -53,19 +73,19 @@ h2 {
   margin-top: 1.2rem;
   margin-bottom: 3rem;
   letter-spacing: 0.5px;
-  color: #1f2937;
+  color: var(--sys-primary, #00564d);
 }
 
 app-range-slider {
   display: block;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
-.filter-label-header {
-  font-size: 0.875rem; /* 14px */
-  color: #6b7280; /* gray-500 */
-  margin-bottom: 1.5rem;
-  text-align: center;
+.filter-label-header,
+app-range-slider .filter-label-header,
+app-range-slider label,
+.filter-section label {
+  color: #6b7280 !important;
 }
 
 .filter-section {
