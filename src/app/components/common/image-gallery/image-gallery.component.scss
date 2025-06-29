@@ -221,4 +221,9 @@
 .menu-trash {
   color: var(--sys-error);
   font-size: 1.1rem;
+}
+
+.gallery-img.harr-img {
+  object-fit: contain !important;
+  background: #f3f4f6;
 } 

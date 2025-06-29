@@ -1,6 +1,6 @@
 import { User } from "./user";
 import { Location } from "./location";
-import { FishType } from "./fish-type";
+import { FishType } from "../enums/fish-type";
 
 export interface Catch {
     user: User,

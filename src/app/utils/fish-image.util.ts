@@ -1,4 +1,4 @@
-import { FishType } from '../models/fish-type';
+import { FishType } from '../enums/fish-type';
 
 /**
  * Returns the image path for a given fish type.
@@ -23,6 +23,8 @@ export function getFishImagePath(fishType: FishType): string {
       return 'assets/rainbow-trout.png';
     case 'Öring':
       return 'assets/trout.png';
+    case 'Harr':
+      return 'assets/Harr.png';
     default:
       return 'assets/default-fish.png';
   }

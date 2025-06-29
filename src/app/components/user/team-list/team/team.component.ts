@@ -23,7 +23,7 @@ import { CatchService } from '../../../../services/catch.service';
 import { Catch } from '../../../../models/catch';
 import { ImageGalleryComponent } from '../../../common/image-gallery/image-gallery.component';
 import { getFishImagePath } from '../../../../utils/fish-image.util';
-import { FishType } from '../../../../models/fish-type';
+import { FishType } from '../../../../enums/fish-type';
 
 @Component({
   selector: 'app-teams',

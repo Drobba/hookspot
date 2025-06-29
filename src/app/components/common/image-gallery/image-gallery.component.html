@@ -15,6 +15,7 @@
         [src]="getCatchImageSource(catch)" 
         [alt]="catch.fishType" 
         class="gallery-img" 
+        [ngClass]="{'harr-img': catch.fishType === 'Harr'}"
         (load)="onImageLoad(catch.catchId)" 
       />
       <!-- Vertikal trepunktsmeny med custom SVG -->

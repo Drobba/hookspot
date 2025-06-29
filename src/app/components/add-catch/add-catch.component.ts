@@ -22,7 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import * as L from 'leaflet';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { SpinnerService } from '../../services/spinner.service';
-import { FishType } from '../../models/fish-type';
+import { FishType } from '../../enums/fish-type';
 import { DialogStateService } from '../../services/dialog-state.service';
 
 @Component({

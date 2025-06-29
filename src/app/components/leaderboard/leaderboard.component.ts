@@ -15,6 +15,7 @@ import { Team } from '../../models/team';
 import { expandCollapseAnimation } from '../../animations/expand-collapse.animation';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
+import { FishType } from '../../enums/fish-type';
 
 interface UserStat {
   userName: string;
@@ -58,7 +59,7 @@ export class LeaderboardComponent {
   selectedTeam: string = '';
 
   // Filter options
-  species: string[] = ['Gädda', 'Abborre', 'Gös', 'Regnbågslax', 'Röding', 'Lax', 'Öring'];
+  species: string[] = Object.values(FishType);
   years: number[] = [];
   teams: Team[] = [];
 
