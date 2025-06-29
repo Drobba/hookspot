@@ -59,7 +59,7 @@ export class LeaderboardComponent {
   selectedTeam: string = '';
 
   // Filter options
-  species: string[] = Object.values(FishType);
+  species: FishType[] = Object.values(FishType);
   years: number[] = [];
   teams: Team[] = [];
 
