@@ -1,5 +1,19 @@
 import { FishType } from '../enums/fish-type';
 
+
+const fishImagePaths: Record<FishType, string> = {
+  Gädda: 'assets/pike.png',
+  Gös: 'assets/zander.png',
+  Abborre: 'assets/perch.png',
+  Lax: 'assets/salmon.png',
+  Röding: 'assets/char.png',
+  Regnbågslax: 'assets/rainbow-trout.png',
+  Öring: 'assets/trout.png',
+  Harr: 'assets/Harr.png',
+  Sej: 'assets/pollock.png',
+  Makrill: 'assets/mackerel.png',
+};
+
 /**
  * Returns the image path for a given fish type.
  *
@@ -8,28 +22,5 @@ import { FishType } from '../enums/fish-type';
  *          If the fish type is not recognized, returns the default fish image path.
  */
 export function getFishImagePath(fishType: FishType): string {
-  switch (fishType) {
-    case 'Gädda':
-      return 'assets/pike.png';
-    case 'Gös':
-      return 'assets/zander.png';
-    case 'Abborre':
-      return 'assets/perch.png';
-    case 'Lax':
-      return 'assets/salmon.png';
-    case 'Röding':
-      return 'assets/char.png';
-    case 'Regnbågslax':
-      return 'assets/rainbow-trout.png';
-    case 'Öring':
-      return 'assets/trout.png';
-    case 'Harr':
-      return 'assets/Harr.png';
-    case 'Sej':
-      return 'assets/pollock.png';
-    case 'Makrill':
-      return 'assets/mackerel.png';
-    default:
-      return 'assets/default-fish.png';
-  }
-} 
+  return fishImagePaths[fishType] ?? 'assets/default-fish.png';
+}
