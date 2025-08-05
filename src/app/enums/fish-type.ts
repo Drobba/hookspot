@@ -6,5 +6,7 @@ export enum FishType {
   Röding = 'Röding',
   Lax = 'Lax',
   Öring = 'Öring',
-  Harr = 'Harr'
+  Harr = 'Harr',
+  Sej = 'Sej',
+  Makrill = 'Makrill',
 } 

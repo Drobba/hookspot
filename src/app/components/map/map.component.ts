@@ -187,6 +187,9 @@ export class MapComponent implements OnInit {
       } else if (catchItem.fishType === 'Gädda') {
         iconSize = [60, 48]; 
         iconAnchor = [30, 24];
+      } else if (catchItem.fishType === 'Makrill') {
+        iconSize = [60, 50]; 
+        iconAnchor = [30, 25];
       }
 
       const iconUrl = getFishImagePath(catchItem.fishType);

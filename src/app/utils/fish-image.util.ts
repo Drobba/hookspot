@@ -25,6 +25,10 @@ export function getFishImagePath(fishType: FishType): string {
       return 'assets/trout.png';
     case 'Harr':
       return 'assets/Harr.png';
+    case 'Sej':
+      return 'assets/pollock.png';
+    case 'Makrill':
+      return 'assets/mackerel.png';
     default:
       return 'assets/default-fish.png';
   }
