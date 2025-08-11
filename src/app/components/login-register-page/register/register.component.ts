@@ -52,9 +52,9 @@ export class RegisterComponent {
     this.successMessage = null;
     this.errorMessage = null;
   
-    // Om formuläret är ogiltigt – visa fel och avbryt
+    // If the form is invalid – show error and abort
     if (this.form.invalid) {
-      this.errorMessage = 'Vänligen fyll i alla obligatoriska fält.';
+      this.errorMessage = 'Please fill in all required fields.';
       this.spinnerService.hideSpinner();
       return;
     }
@@ -66,10 +66,10 @@ export class RegisterComponent {
       .subscribe({
         next: () => {
           this.spinnerService.hideSpinner();
-          this.successMessage = 'Ditt konto är skapat. Kolla din mejl och klicka på verifieringslänken innan du kan logga in.';
+                    this.successMessage = 'Your account has been created. Check your email and click the verification link before you can log in.';
           this.errorMessage = null;
-  
-          // Rensa formstatus och innehåll utan att trigga valideringsfel
+
+          // Reset form status and content without triggering validation errors
           this.isSubmitted = false;
           setTimeout(() => {
             this.formGroupDirective.resetForm();
@@ -80,16 +80,16 @@ export class RegisterComponent {
           
           if (error && error instanceof FirebaseError) {
             if (error.code === 'auth/email-already-in-use') {
-              this.errorMessage = 'E-postadressen används redan av ett annat konto.';
+              this.errorMessage = 'This email address is already in use by another account.';
             } else if (error.code === 'auth/weak-password') {
-              this.errorMessage = 'Lösenordet är för svagt. Använd minst 6 tecken.';
+              this.errorMessage = 'The password is too weak. Use at least 6 characters.';
             } else {
               console.error('Firebase error:', error);
-              this.errorMessage = 'Registreringen misslyckades. Försök igen.';
+              this.errorMessage = 'Registration failed. Please try again.';
             }
           } else {
             console.error('Unknown error:', error);
-            this.errorMessage = 'Registreringen misslyckades. Försök igen.';
+            this.errorMessage = 'Registration failed. Please try again.';
           }
         },
       });

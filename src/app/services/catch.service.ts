@@ -4,7 +4,7 @@ import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { User } from '../models/user';
 import { Catch, CrtCatchInput } from '../models/catch';
 import { AuthService } from './auth.service';
-import { TeamSerivce } from './team.service';
+import { TeamService } from './team.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
@@ -23,7 +23,7 @@ export class CatchService {
     // Injectable dependencies
     private firestore = inject(Firestore);
     private authService = inject(AuthService);
-    private teamService = inject(TeamSerivce);
+    private teamService = inject(TeamService);
     private user?: User | null;
 
     constructor() {

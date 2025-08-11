@@ -1,3 +1,6 @@
+/**
+ * Service for managing loading spinner state across the application.
+ */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 

@@ -1,3 +1,6 @@
+/**
+ * Service for managing map operations including initialization, geolocation, and map positioning.
+ */
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { Observable, from } from 'rxjs';

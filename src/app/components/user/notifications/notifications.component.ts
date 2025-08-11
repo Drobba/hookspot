@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { Invite } from '../../../models/invite';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TeamSerivce } from '../../../services/team.service';
+import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-notifications',
@@ -21,7 +21,7 @@ export class NotificationsComponent {
   public backIcon = faArrowLeftLong;
 
   private userService = inject(UserService);
-  private teamService = inject(TeamSerivce);
+  private teamService = inject(TeamService);
   public invitations: Invite[] = [];
 
   constructor() {

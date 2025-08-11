@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CatchService } from '../../services/catch.service';
 import { Catch } from '../../models/catch';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TeamSerivce } from '../../services/team.service';
+import { TeamService } from '../../services/team.service';
 import { Team } from '../../models/team';
 import { expandCollapseAnimation } from '../../animations/expand-collapse.animation';
 import { UserService } from '../../services/user.service';
@@ -39,7 +39,9 @@ interface UserStat {
   styleUrls: ['./leaderboard.component.scss'],
   animations: [expandCollapseAnimation]
 })
-export class LeaderboardComponent {
+export class LeaderboardComponent implements OnInit {
+  private static readonly DESKTOP_BREAKPOINT = 768;
+  
   displayedColumns: string[] = ['rank', 'userName', 'fishWeight', 'fishLength', 'fishType', 'bait', 'date'];
   
   // Icons
@@ -54,14 +56,17 @@ export class LeaderboardComponent {
   filterIcon = faFilter;
 
   // Filters
-  selectedSpecies: string = '';
+  selectedSpecies: FishType | '' = '';
   selectedYear: number = new Date().getFullYear();
-  selectedTeam: string = '';
+  selectedTeam: string | '' = '';
 
   // Filter options
   species: FishType[] = Object.values(FishType);
   years: number[] = [];
   teams: Team[] = [];
+  
+  // Performance optimization for team filtering
+  private teamMemberIds = new Set<string>();
 
   // User Stats
   mostCatches: UserStat = {
@@ -82,7 +87,7 @@ export class LeaderboardComponent {
   
   dataSource: Catch[] = [];
   private catchService = inject(CatchService);
-  private teamService = inject(TeamSerivce);
+  private teamService = inject(TeamService);
   private userService = inject(UserService);
   users: User[] = [];
 
@@ -103,6 +108,7 @@ export class LeaderboardComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(teams => {
         this.teams = teams;
+        this.updateTeamMemberIds();
       });
 
     // Subscribe to users
@@ -114,7 +120,7 @@ export class LeaderboardComponent {
   }
 
   // Watch for filter changes and update stats
-  ngOnInit() {
+  ngOnInit(): void {
     // Initial stats update
     this.updateStats();
   }
@@ -124,23 +130,37 @@ export class LeaderboardComponent {
     this.updateStats();
   }
 
-  private updateStats() {
-    const filteredCatches = this.filteredData;
-    if (filteredCatches.length === 0) {
-      this.resetStats();
-      return;
-    }
+  private updateStats(): void {
+    try {
+      const filteredCatches = this.filteredData;
+      if (filteredCatches.length === 0) {
+        this.resetStats();
+        return;
+      }
 
-    // Group catches by user
-    const userCatches = filteredCatches.reduce((acc, curr) => {
+      const userCatches = this.groupCatchesByUser(filteredCatches);
+      this.updateMostCatches(userCatches);
+      this.updateHeaviestAverage(userCatches);
+      this.updateLongestAverage(userCatches);
+    } catch (error) {
+      console.error('Error updating stats:', error);
+      this.resetStats();
+    }
+  }
+
+  private groupCatchesByUser(catches: Catch[]): Record<string, Catch[]> {
+    const userCatches: Record<string, Catch[]> = {};
+    
+    return catches.reduce((acc, curr) => {
       if (!acc[curr.user.userName]) {
         acc[curr.user.userName] = [];
       }
       acc[curr.user.userName].push(curr);
       return acc;
-    }, {} as { [key: string]: Catch[] });
+    }, userCatches);
+  }
 
-    // Calculate most catches
+  private updateMostCatches(userCatches: Record<string, Catch[]>): void {
     let maxCatches = 0;
     let mostActiveName = '';
     Object.entries(userCatches).forEach(([userName, catches]) => {
@@ -154,8 +174,9 @@ export class LeaderboardComponent {
       value: `${maxCatches} catches`,
       count: maxCatches
     };
+  }
 
-    // Calculate heaviest average
+  private updateHeaviestAverage(userCatches: Record<string, Catch[]>): void {
     let maxWeightAvg = 0;
     let heaviestName = '';
     Object.entries(userCatches).forEach(([userName, catches]) => {
@@ -169,8 +190,9 @@ export class LeaderboardComponent {
       userName: heaviestName,
       value: `${maxWeightAvg.toFixed(1)} kg avg`
     };
+  }
 
-    // Calculate longest average
+  private updateLongestAverage(userCatches: Record<string, Catch[]>): void {
     let maxLengthAvg = 0;
     let longestName = '';
     Object.entries(userCatches).forEach(([userName, catches]) => {
@@ -184,6 +206,15 @@ export class LeaderboardComponent {
       userName: longestName,
       value: `${maxLengthAvg.toFixed(0)} cm avg`
     };
+  }
+
+  private updateTeamMemberIds(): void {
+    this.teamMemberIds.clear();
+    this.teams.forEach(team => {
+      team.members?.forEach(member => {
+        this.teamMemberIds.add(member.userId);
+      });
+    });
   }
 
   private resetStats() {
@@ -218,22 +249,19 @@ export class LeaderboardComponent {
         const yearMatch = !this.selectedYear || new Date(record.date).getFullYear() === this.selectedYear;
         // Team filter
         const teamMatch = !this.selectedTeam || 
-          this.teams.find(team => 
-            team.teamId === this.selectedTeam && 
-            team.members?.some(member => member.userId === record.user.userId)
-          );
+          this.teamMemberIds.has(record.user.userId);
         return speciesMatch && yearMatch && teamMatch;
       })
       .sort((a, b) => {
         if (b.fishWeight !== a.fishWeight) {
-          return b.fishWeight - a.fishWeight; // Störst vikt först
+          return b.fishWeight - a.fishWeight; // Heaviest weight first
         }
-        return b.fishLength - a.fishLength; // Om samma vikt, störst längd först
+        return b.fishLength - a.fishLength; // If same weight, longest length first
       });
   }
 
   get isDesktop(): boolean {
-    return window.innerWidth >= 768;
+    return window.innerWidth >= LeaderboardComponent.DESKTOP_BREAKPOINT;
   }
 
   getAvatarUrl(userId: string): string {

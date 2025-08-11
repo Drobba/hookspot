@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { TeamSerivce } from '../../../../services/team.service';
+import { TeamService } from '../../../../services/team.service';
 import { Team } from '../../../../models/team';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Member } from '../../../../models/member';
@@ -48,7 +48,7 @@ export class TeamComponent {
   public backIcon = faArrowLeftLong;
 
   private dialog = inject(MatDialog);
-  private teamService = inject(TeamSerivce);
+  private teamService = inject(TeamService);
   private userService = inject(UserService);
   private route = inject(ActivatedRoute);
   private catchService = inject(CatchService);

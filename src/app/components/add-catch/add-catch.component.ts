@@ -194,9 +194,9 @@ export class AddCatchComponent implements OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedImage = input.files[0];
-      // Återställ dragposition när ny bild väljs
+      // Reset drag position when new image is selected
       this.currentY = 0;
-      // Skapa förhandsvisnings-URL
+      // Create preview URL
       this.selectedImageUrl = URL.createObjectURL(this.selectedImage);
     }
   }
@@ -226,7 +226,7 @@ export class AddCatchComponent implements OnDestroy {
         imageUrl = await this.uploadImage(this.selectedImage);
       }
 
-      // Bygg newCatch utan imageUrl om den är undefined
+      // Build newCatch without imageUrl if it's undefined
       const newCatch: CrtCatchInput = {
         fishType: this.catchForm.value.fishType,
         fishWeight: parseFloat(this.catchForm.value.weight),
@@ -239,7 +239,7 @@ export class AddCatchComponent implements OnDestroy {
           userName: this.user.userName,
         },
         location: this.selectedLocation,
-        ...(imageUrl ? { imageUrl } : {}) // Lägg bara till imageUrl om det finns
+        ...(imageUrl ? { imageUrl } : {}) // Only add imageUrl if it exists
       };
 
       await this.catchService.addCatch(newCatch);

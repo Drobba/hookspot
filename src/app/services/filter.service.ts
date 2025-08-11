@@ -1,3 +1,6 @@
+/**
+ * Service for managing catch filtering settings including month, weight, and user-specific filters.
+ */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Month } from '../enums/month';

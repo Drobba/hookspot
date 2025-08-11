@@ -38,7 +38,7 @@ export class AuthService {
 
   constructor() {
     this.user$.subscribe(async (firebaseUser) => {
-      // ⚠️ Ignorera tillfällig inloggning efter registrering
+      // Ignore temporary login after registration
       if (this.isPostRegisterLogout) {
         this.isPostRegisterLogout = false;
         this.setCurrentUser(null);
@@ -46,7 +46,7 @@ export class AuthService {
         return;
       }
 
-      // 👇 Endast verifierade användare tillåts vara "inloggade"
+      // Only verified users are allowed to be "logged in"
       if (firebaseUser && firebaseUser.emailVerified) {
         const userRef = doc(this.firestore, `users/${firebaseUser.uid}`);
         const docSnap = await getDoc(userRef);
@@ -79,35 +79,34 @@ export class AuthService {
     return from(
       createUserWithEmailAndPassword(this.firebaseAuth, email, password)
         .then(async (response) => {
-          try {
-            // Uppdatera namn och skicka verifieringsmail
-            await updateProfile(response.user, { displayName: userName });
-            await sendEmailVerification(response.user);
+                  try {
+          // Update name and send verification email
+          await updateProfile(response.user, { displayName: userName });
+          await sendEmailVerification(response.user);
 
-            const userData: User = {
-              email: response.user.email!,
-              userName: userName,
-              userId: response.user.uid!,
-            };
+          const userData: User = {
+            email: response.user.email!,
+            userName: userName,
+            userId: response.user.uid!,
+          };
 
-            await this.saveUserToFirestore(userData);
+          await this.saveUserToFirestore(userData);
 
-            // ⚠️ Undvik blinkande header
-            this.isPostRegisterLogout = true;
-            
-            // Logga ut användaren efter registrering
-            await signOut(this.firebaseAuth);
-            this.setCurrentUser(null);
-          } catch (error) {
-            console.error('Error during registration process:', error);
-            // Även om det blir fel i någon process efter att kontot skapats
-            // vill vi inte markera hela registreringen som misslyckad
-            // eftersom emailen redan är skickad
-          }
+          // Avoid flickering header
+          this.isPostRegisterLogout = true;
+          
+          // Log out user after registration
+          await signOut(this.firebaseAuth);
+          this.setCurrentUser(null);
+        } catch (error) {
+          console.error('Error during registration process:', error);
+          // Even if there's an error in some process after the account is created
+          // mark the entire registration as failed since the email has already been sent
+        }
         })
     ).pipe(
       catchError((error) => {
-        // Här fångar vi fel i själva konto-skapandet
+        // Catch errors in the actual account creation
         console.error('Error creating account:', error);
         throw error;
       })
@@ -119,7 +118,7 @@ export class AuthService {
       .then(async (response) => {
         const user = response.user;
 
-        // 🛡️ Kontrollera verifiering
+        // Check verification
         if (user && user.emailVerified) {
           const userData: User = {
             email: user.email!,
@@ -129,10 +128,10 @@ export class AuthService {
           this.setCurrentUser(userData);
           await this.saveUserToFirestore(userData);
         } else {
-          // Om användaren loggat in men ej verifierat
+          // If user logged in but not verified
           await signOut(this.firebaseAuth);
           this.setCurrentUser(null);
-          throw new Error('E-post ej verifierad. Vänligen kontrollera din inkorg.');
+          throw new Error('Email not verified. Please check your inbox.');
         }
       });
 
@@ -154,7 +153,7 @@ export class AuthService {
       } else {
         await signOut(this.firebaseAuth);
         this.setCurrentUser(null);
-        throw new Error('Verifiera din e-postadress innan du loggar in.');
+        throw new Error('Verify your email address before logging in.');
       }
     });
 

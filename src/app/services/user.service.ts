@@ -1,3 +1,6 @@
+/**
+ * Service for managing user operations including profile updates, avatar uploads, and invite handling.
+ */
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, getDocs, collectionData, doc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';

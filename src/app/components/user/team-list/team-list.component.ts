@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeftLong, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TeamSerivce } from '../../../services/team.service';
+import { TeamService } from '../../../services/team.service';
 import { Team } from '../../../models/team';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTeamModalComponent } from '../../create-team-modal/create-team-modal.component';
@@ -29,7 +29,7 @@ export class TeamListComponent {
     public backIcon = faArrowLeftLong;
     public teamsIcon = faPeopleGroup;
     private dialog = inject(MatDialog);
-    private teamService = inject(TeamSerivce);
+    private teamService = inject(TeamService);
     public teams: Team[] = [];
   
     constructor() {

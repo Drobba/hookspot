@@ -1,3 +1,6 @@
+/**
+ * Service for managing team operations including creation, invites, and member management.
+ */
 import { Injectable, inject } from "@angular/core";
 import { Firestore, collection, addDoc, doc, setDoc, collectionGroup, getDocs, getDoc, updateDoc, query, where } from '@angular/fire/firestore';
 import { AuthService } from "./auth.service";
@@ -15,7 +18,7 @@ import { UserService } from "./user.service";
 @Injectable({
     providedIn: 'root'
 })
-export class TeamSerivce {
+export class TeamService {
     private firestore = inject(Firestore);
     private authService = inject(AuthService);
     private dateService = inject(DateService);
@@ -68,7 +71,7 @@ export class TeamSerivce {
     
       async updateTeams(): Promise<void> {
         if (!this.user) {
-          console.error('Ingen användare är inloggad.');
+          console.error('No user is logged in.');
           return;
         }
       
@@ -89,7 +92,7 @@ export class TeamSerivce {
               if (teamDocSnap.exists()) {
                 const teamData = teamDocSnap.data();
       
-                // 🔥 Hämta medlemmar i teamet
+                // Get team members
                 const membersSnapshot = await getDocs(collection(this.firestore, `teams/${teamId}/members`));
                 const members = membersSnapshot.docs.map(doc => ({
                   userId: doc.id,
@@ -99,7 +102,7 @@ export class TeamSerivce {
                 teams.push({
                   teamId,
                   ...teamData,
-                  members // 👈 lägg till medlemmar i team-objektet
+                  members // Add members to team object
                 } as Team);
               }
             }
@@ -107,7 +110,7 @@ export class TeamSerivce {
       
           this.teamsSubject.next(teams);
         } catch (error) {
-          console.error('Fel vid hämtning av teams:', error);
+          console.error('Error fetching teams:', error);
           this.teamsSubject.next([]);
         }
       }
