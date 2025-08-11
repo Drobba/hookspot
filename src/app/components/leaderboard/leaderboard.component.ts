@@ -238,11 +238,11 @@ export class LeaderboardComponent {
 
   getAvatarUrl(userId: string): string {
     const user = this.users.find(u => u.userId === userId);
-    return user?.avatarUrl || 'assets/default-user.svg';
+    return user?.avatarUrl || 'assets/app-images/default-user.svg';
   }
 
   getAvatarUrlByUserName(userName: string): string {
     const user = this.users.find(u => u.userName === userName);
-    return user?.avatarUrl || 'assets/default-user.svg';
+    return user?.avatarUrl || 'assets/app-images/default-user.svg';
   }
 }

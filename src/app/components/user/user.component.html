@@ -4,7 +4,7 @@
       *ngIf="showSettings"
       [userName]="user?.userName"
       [email]="user?.email"
-      [avatarUrl]="user?.avatarUrl || 'assets/default-user.svg'"
+      [avatarUrl]="user?.avatarUrl || 'assets/app-images/default-user.svg'"
       [userId]="user?.userId">
     </app-user-profile-header>
 
@@ -32,7 +32,7 @@
             <app-user-profile-header
               [userName]="user?.userName"
               [email]="user?.email"
-              [avatarUrl]="user?.avatarUrl || 'assets/default-user.svg'"
+              [avatarUrl]="user?.avatarUrl || 'assets/app-images/default-user.svg'"
               [userId]="user?.userId"
               class="w-full mb-6"
             ></app-user-profile-header>

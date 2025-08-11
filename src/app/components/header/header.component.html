@@ -5,7 +5,7 @@
        routerLink="/battle"
        routerLinkActive
        #rlaBattle="routerLinkActive">
-      <img [src]="rlaBattle.isActive ? 'assets/battle-active.svg' : 'assets/battle-inactive.svg'"
+      <img [src]="rlaBattle.isActive ? 'assets/nav-icons/battle-active.svg' : 'assets/nav-icons/battle-inactive.svg'"
        alt="Battle icon"
        class="w-6 h-6 object-contain" />
       <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaBattle.isActive }">Battle</span>
@@ -15,7 +15,7 @@
          routerLink="/map"
          routerLinkActive
          #rla="routerLinkActive">
-      <img [src]="rla.isActive ? 'assets/map-active.svg' : 'assets/map-inactive.svg'"
+      <img [src]="rla.isActive ? 'assets/nav-icons/map-active.svg' : 'assets/nav-icons/map-inactive.svg'"
            alt="Map icon"
            class="w-6 h-6 object-contain" />
       <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rla.isActive }">Map</span>
@@ -32,7 +32,7 @@
          routerLink="/leaderboard"
          routerLinkActive
          #rlaLeaderboard="routerLinkActive">
-      <img [src]="rlaLeaderboard.isActive ? 'assets/trophy-active.svg' : 'assets/trophy-inactive.svg'"
+      <img [src]="rlaLeaderboard.isActive ? 'assets/nav-icons/trophy-active.svg' : 'assets/nav-icons/trophy-inactive.svg'"
            alt="Trophy icon"
            class="w-6 h-6 object-contain" />
       <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaLeaderboard.isActive }">Stats</span>
@@ -42,7 +42,7 @@
          routerLink="/user"
          routerLinkActive
          #rlaUser="routerLinkActive">
-      <img [src]="rlaUser.isActive ? 'assets/user-active.svg' : 'assets/user-inactive.svg'"
+      <img [src]="rlaUser.isActive ? 'assets/nav-icons/user-active.svg' : 'assets/nav-icons/user-inactive.svg'"
            alt="User icon"
            class="w-6 h-6 object-contain" />
       <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaUser.isActive }">User</span>

@@ -2,16 +2,16 @@ import { FishType } from '../enums/fish-type';
 
 
 const fishImagePaths: Record<FishType, string> = {
-  Gädda: 'assets/pike.png',
-  Gös: 'assets/zander.png',
-  Abborre: 'assets/perch.png',
-  Lax: 'assets/salmon.png',
-  Röding: 'assets/char.png',
-  Regnbågslax: 'assets/rainbow-trout.png',
-  Öring: 'assets/trout.png',
-  Harr: 'assets/Harr.png',
-  Sej: 'assets/pollock.png',
-  Makrill: 'assets/mackerel.png',
+  Gädda: 'assets/fish-images/pike.png',
+  Gös: 'assets/fish-images/zander.png',
+  Abborre: 'assets/fish-images/perch.png',
+  Lax: 'assets/fish-images/salmon.png',
+  Röding: 'assets/fish-images/char.png',
+  Regnbågslax: 'assets/fish-images/rainbow-trout.png',
+  Öring: 'assets/fish-images/trout.png',
+  Harr: 'assets/fish-images/Harr.png',
+  Sej: 'assets/fish-images/pollock.png',
+  Makrill: 'assets/fish-images/mackerel.png',
 };
 
 /**

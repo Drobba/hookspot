@@ -14,7 +14,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 export class UserProfileHeaderComponent {
   @Input() userName?: string;
   @Input() email?: string;
-  @Input() avatarUrl: string = 'assets/default-user.svg';
+  @Input() avatarUrl: string = 'assets/app-images/default-user.svg';
   @Input() userId?: string;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
