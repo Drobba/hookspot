@@ -10,6 +10,7 @@ Built with **Angular** and **Firebase**.
 - Interactive maps powered by Leaflet & OpenStreetMap
 - Team-based competition mode
 - Create teams, invite friends, and share catches on live maps
+- **Responsive, mobile-first UI** optimized for phones and tablets
 - User authentication with personal profile and catch history
 
 ## Live Demo
