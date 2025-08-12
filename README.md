@@ -16,7 +16,7 @@ Built with **Angular** and **Firebase**.
 ## Tech Stack
 - **Frontend:** Angular, TypeScript, Leaflet, OpenStreetMap, Angular Material, Tailwind CSS
 - **Backend:** Firebase (Authentication, Firestore, Hosting)
-- 
+  
 ### Development server
 Run:
 ng serve
