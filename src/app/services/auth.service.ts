@@ -1,3 +1,7 @@
+/**
+ * Service for managing user authentication including registration, login (email/password and Google),
+ * logout, email verification, and user profile management with Firestore integration.
+ */
 import { Injectable, inject } from '@angular/core';
 import {
   Auth,

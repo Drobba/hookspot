@@ -5,7 +5,7 @@ export interface Team {
   teamId: string;
   name: string;
 
-  // Valfria – används t.ex. om du laddar team + medlemmar i en vy
+  // Optional – used e.g. when loading team + members in a view
   members?: Member[];
   invites?: Invite[];
 }

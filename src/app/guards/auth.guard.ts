@@ -1,3 +1,7 @@
+/**
+ * Route guard that protects routes by checking if the user is authenticated and has verified their email.
+ * Redirects unauthenticated users to login and logs out users with unverified emails.
+ */
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
@@ -18,12 +22,12 @@ export const authGuard: CanActivateFn = (route, state) => {
       }
 
       if (!firebaseUser.emailVerified) {
-        // Logga ut användaren om e-post inte är verifierad
+        // Log out the user if email is not verified
         authService.logout().subscribe(() => {
           router.navigate(['/login'], { 
             queryParams: { 
               error: 'email-not-verified',
-              message: 'Vänligen verifiera din e-postadress innan du fortsätter.'
+              message: 'Please verify your email address before continuing.'
             }
           });
         });

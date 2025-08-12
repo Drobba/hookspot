@@ -57,10 +57,10 @@ export class MyCatchesComponent {
   async onDeleteCatch(catchId: string) {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       data: {
-        title: 'Bekräfta borttagning',
-        message: 'Är du säker på att du vill ta bort denna fångst?',
-        confirmText: 'Ta bort',
-        cancelText: 'Avbryt'
+        title: 'Confirm deletion',
+        message: 'Are you sure you want to delete this catch?',
+        confirmText: 'Delete',
+        cancelText: 'Cancel'
       },
       panelClass: 'confirm-modal-dialog',
       maxWidth: '90vw',

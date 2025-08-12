@@ -1,3 +1,7 @@
+/**
+ * Service for date formatting and manipulation utilities.
+ * Provides methods to convert dates to ISO format strings for consistent date handling.
+ */
 import { Injectable } from '@angular/core';
 
 @Injectable({

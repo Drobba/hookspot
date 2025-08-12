@@ -1,3 +1,6 @@
+/**
+ * Service for managing global dialog state across the application.
+ */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 

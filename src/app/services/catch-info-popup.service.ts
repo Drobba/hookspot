@@ -1,3 +1,7 @@
+/**
+ * Service for dynamically creating and managing catch information popup components.
+ * Handles component lifecycle, DOM attachment/detachment, and cleanup for map markers.
+ */
 import { Injectable, ApplicationRef, ComponentRef, createComponent, Injector, inject } from '@angular/core';
 import { CatchPopupComponent } from '../components/catch-popup/catch-popup.component';
 import { Catch } from '../models/catch';
