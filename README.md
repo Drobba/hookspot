@@ -1,15 +1,15 @@
 # Hookspot 
 
-Gamified fishing catch tracker with live leaderboard, interactive maps, and team-based competition.  
+Gamified fishing catch tracker with live leaderboard, interactive maps, and team-based competition — built to engage anglers and promote outdoor activity.
 Built with **Angular** and **Firebase**.
 
 ## Features
-- Register fishing catches with detailed information and location spot
+- Register fishing catches with detailed information and exact location spot
 - Live leaderboard updates
 - Interactive maps powered by Leaflet & OpenStreetMap
 - Team-based competition mode
 - Create teams, invite friends, and share catches on live maps
-- User authentication and profile tracking
+- User authentication with personal profile and catch history
 
 ## Live Demo
 [https://www.hookspot.se/](https://www.hookspot.se/)
