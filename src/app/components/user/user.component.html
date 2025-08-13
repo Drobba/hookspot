@@ -8,8 +8,8 @@
       [userId]="user?.userId">
     </app-user-profile-header>
 
-    <div *ngIf="showSettings" class="flex flex-col items-center p-6 gap-2 w-full">
-        <h3 class="text-lg font-semibold text-gray-700 w-full max-w-md text-left">{{title}}</h3>
+    <div *ngIf="showSettings" class="flex flex-col items-center p-6 gap-2 w-full settings-container">
+        <h3 class="text-lg font-semibold text-gray-700 w-full max-w-md text-left title">{{title}}</h3>
 
         <app-settings-item 
         *ngFor="let item of settingsMenuItems"
@@ -20,14 +20,14 @@
         [badgeCount]="item.label === 'Notifications' ? pendingInviteCount : undefined">
        </app-settings-item>
 
-       <div class="w-full max-w-md bg-white flex items-center gap-4 px-4 py-3 rounded-xl shadow-sm cursor-pointer hover:bg-red-50 transition" (click)="logOut()">
+       <div class="w-full max-w-md bg-white flex items-center gap-4 px-4 py-3 rounded-xl shadow-sm cursor-pointer hover:bg-red-50 transition logout-button" (click)="logOut()">
          <fa-icon [icon]="logoutIcon" class="text-red-500 text-xl"></fa-icon>
          <span class="text-red-500 font-medium">Log out</span>
         </div>
     </div>
 
     <!-- Scrollområdet: header + innehåll på undersidor -->
-    <div class="flex-1 bg-gray-100 overflow-x-hidden overflow-y-auto flex flex-col">
+    <div class="flex-1 bg-gray-100 overflow-x-hidden overflow-y-auto flex flex-col main-content pb-24">
         <ng-container *ngIf="!showSettings">
             <app-user-profile-header
               [userName]="user?.userName"
@@ -37,7 +37,7 @@
               class="w-full mb-6"
             ></app-user-profile-header>
         </ng-container>
-        <div class="self-center w-full max-w-md">
+        <div class="self-center w-full max-w-md bottom-content">
             <router-outlet></router-outlet>
         </div>
     </div>

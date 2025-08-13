@@ -7,3 +7,28 @@
 .w-full {
   min-height: 0; // This ensures flex children can shrink below their content size
 }
+
+// Laptop screen styles (min-width: 769px)
+@media (min-width: 769px) {
+  .settings-container {
+    padding: 2rem;
+    gap: 1rem;
+  }
+  
+  .logout-button {
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  .title {
+    margin-bottom: 1.5rem;
+  }
+  
+  .bottom-content {
+    margin-bottom: 8rem;
+  }
+  
+  .main-content {
+    padding-bottom: 6rem;
+  }
+}
