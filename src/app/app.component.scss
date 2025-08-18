@@ -16,6 +16,94 @@
   overscroll-behavior: contain;
 }
 
+// Global dialog styles for better responsiveness
+::ng-deep {
+  .custom-dialog-container {
+    .mat-dialog-container {
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+    // Tablet styles (768px - 1023px)
+    &.tablet-dialog {
+      .mat-dialog-container {
+        max-width: 600px;
+        width: 100%;
+      }
+    }
+
+    // Laptop styles (1024px - 1439px)
+    &.laptop-dialog {
+      .mat-dialog-container {
+        max-width: 700px;
+        width: 100%;
+      }
+    }
+
+    // Fullscreen laptop styles (1024px - 1439px)
+    &.fullscreen-laptop-dialog {
+      .mat-dialog-container {
+        border-radius: 0;
+        max-width: 100vw;
+        max-height: 100vh;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
+    // Desktop styles (1440px+)
+    &.desktop-dialog {
+      .mat-dialog-container {
+        max-width: 800px;
+        width: 100%;
+      }
+    }
+
+    // Fullscreen mobile styles
+    &.fullscreen-mobile-dialog {
+      .mat-dialog-container {
+        border-radius: 0;
+        max-width: 100vw;
+        max-height: 100vh;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+  }
+
+  // Ensure dialog content is properly sized
+  .mat-dialog-content {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  // Responsive stepper for different screen sizes
+  .mat-horizontal-stepper-header-container {
+    padding: 0 16px;
+    
+    @media (min-width: 768px) {
+      padding: 0 24px;
+    }
+    
+    @media (min-width: 1024px) {
+      padding: 0 32px;
+    }
+  }
+
+  .mat-horizontal-content-container {
+    padding: 0 16px 24px 16px;
+    
+    @media (min-width: 768px) {
+      padding: 0 24px 32px 24px;
+    }
+    
+    @media (min-width: 1024px) {
+      padding: 0 32px 40px 32px;
+    }
+  }
+}
+
 // :host {
 //   display: block;
 //   height: 100%;

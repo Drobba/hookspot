@@ -1,6 +1,37 @@
 :host {
   display: block;
   
+  // Fullscreen styles for laptop screens
+  &.fullscreen-laptop-dialog {
+    height: 100vh;
+    width: 100vw;
+    
+    .container {
+      height: 100vh;
+      width: 100vw;
+      padding: 0;
+      max-width: 900px; // Reduced width to match container media query
+      margin: 0 auto; // Center the content
+    }
+    
+    #catch-location-map {
+      height: 50vh; // Increased height to match media query
+    }
+    
+    .mat-horizontal-content-container {
+      max-height: 85vh; // Increased to allow more content
+    }
+    
+    // Ensure proper spacing for fullscreen layout
+    .mat-horizontal-stepper-header-container {
+      margin-bottom: 16px;
+    }
+    
+    .mat-horizontal-content-container {
+      padding-bottom: 20px; // Reduced padding to fit content
+    }
+  }
+  
   ::ng-deep {
     .mat-dialog-container {
       max-height: 90vh;
@@ -65,8 +96,22 @@
     display: none;
   }
 
-  // Default height for desktop
-  height: 450px;
+  // Responsive heights for different screen sizes
+  height: 450px; // Default for desktop
+  
+  @media (min-width: 768px) and (max-width: 1023px) {
+    height: 400px; // Tablet
+  }
+  
+  @media (min-width: 1024px) and (max-width: 1439px) {
+    height: 50vh; // Laptop - increased height to use more space
+    max-width: 800px; // Reduce width on laptop screens
+    margin: 0 auto; // Center the map
+  }
+  
+  @media (min-width: 1440px) {
+    height: 500px; // Large desktop
+  }
 }
 
 // Make map shorter on mobile
@@ -125,7 +170,8 @@
     background-color: rgba(0, 0, 0, 0.02);
 
     .image-preview-container {
-      width: 300px;
+      width: 100%;
+      max-width: 300px;
       height: 200px;
       overflow: hidden;
       position: relative;
@@ -140,6 +186,14 @@
         cursor: ns-resize;
         user-select: none;
       }
+    }
+  }
+  
+  // Responsive adjustments for larger screens
+  @media (min-width: 1024px) {
+    &.has-image .image-preview-container {
+      max-width: 400px;
+      height: 250px;
     }
   }
 }
@@ -161,4 +215,60 @@
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   margin: 0 -16px -16px -16px;
   z-index: 1;
+  
+  // Responsive padding for larger screens
+  @media (min-width: 768px) {
+    padding: 20px;
+    margin: 0 -20px -20px -20px;
+  }
+  
+  @media (min-width: 1024px) {
+    padding: 24px;
+    margin: 0 -24px -24px -24px;
+  }
+}
+
+// Responsive container padding and width
+.container {
+  @media (min-width: 768px) {
+    padding: 0 8px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 1024px) {
+    padding: 0 12px;
+    max-width: 900px; // Reduced from 1200px to make content less wide on laptop
+    margin: 0 auto;
+  }
+}
+
+// Responsive form fields for better spacing on larger screens
+::ng-deep {
+  .mat-form-field {
+    @media (min-width: 1024px) {
+      margin-bottom: 20px;
+    }
+  }
+  
+  .mat-stepper-content {
+    @media (min-width: 1024px) {
+      padding: 0 8px;
+    }
+  }
+}
+
+// Form content wrapper for better organization
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  @media (min-width: 768px) {
+    gap: 20px;
+  }
+  
+  @media (min-width: 1024px) {
+    gap: 24px;
+  }
 }

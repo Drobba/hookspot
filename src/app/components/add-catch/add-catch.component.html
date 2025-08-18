@@ -1,4 +1,4 @@
-<div class="container p-0 flex flex-col items-center bg-white">
+<div class="container p-0 flex flex-col items-center bg-white" [class.fullscreen-laptop]="isFullscreenLaptop">
   <button 
     (click)="closeDialog()" 
     class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10"
@@ -54,94 +54,96 @@
       <form [formGroup]="catchForm" class="pb-16">
         <ng-template matStepLabel>Add Details</ng-template>
         
-        <!-- Fish type selection -->
-        <mat-form-field class="w-full">
-          <mat-label>Fiskart</mat-label>
-          <mat-select formControlName="fishType" required panelClass="custom-overlay-panel">
-            <mat-option *ngFor="let fish of availableFishes" [value]="fish">
-              {{ fish }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="form-content">
+          <!-- Fish type selection -->
+          <mat-form-field class="w-full">
+            <mat-label>Fiskart</mat-label>
+            <mat-select formControlName="fishType" required panelClass="custom-overlay-panel">
+              <mat-option *ngFor="let fish of availableFishes" [value]="fish">
+                {{ fish }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <!-- Weight input -->
-        <mat-form-field class="w-full">
-          <mat-label>Vikt (kg)</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="weight"
-            required
-            placeholder="Vikt i kg"
-          />
-        </mat-form-field>
-
-        <!-- Length input -->
-        <mat-form-field class="w-full">
-          <mat-label>Längd (cm)</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="length"
-            required
-            placeholder="Längd i cm"
-          />
-        </mat-form-field>
-
-        <!-- Bait input -->
-        <mat-form-field class="w-full">
-          <mat-label>Bete</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="bait"
-            required
-            placeholder="Ange bete"
-          />
-        </mat-form-field>
-
-        <!-- Image upload section -->
-        <div class="image-upload-section mt-4 mb-6">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-700 font-medium">Bild på fångsten</span>
-            <button 
-              *ngIf="selectedImageUrl"
-              type="button"
-              (click)="removeImage()"
-              class="text-red-500 hover:text-red-600"
-            >
-              Ta bort
-            </button>
-          </div>
-          
-          <div 
-            class="image-upload-area relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors"
-            [class.has-image]="selectedImageUrl"
-          >
+          <!-- Weight input -->
+          <mat-form-field class="w-full">
+            <mat-label>Vikt (kg)</mat-label>
             <input
-              type="file"
-              accept="image/*"
-              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              (change)="onFileSelected($event)"
-              [attr.disabled]="isUploading ? '' : null"
+              matInput
+              type="number"
+              formControlName="weight"
+              required
+              placeholder="Vikt i kg"
             />
+          </mat-form-field>
+
+          <!-- Length input -->
+          <mat-form-field class="w-full">
+            <mat-label>Längd (cm)</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="length"
+              required
+              placeholder="Längd i cm"
+            />
+          </mat-form-field>
+
+          <!-- Bait input -->
+          <mat-form-field class="w-full">
+            <mat-label>Bete</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="bait"
+              required
+              placeholder="Ange bete"
+            />
+          </mat-form-field>
+
+          <!-- Image upload section -->
+          <div class="image-upload-section mt-4 mb-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-700 font-medium">Bild på fångsten</span>
+              <button 
+                *ngIf="selectedImageUrl"
+                type="button"
+                (click)="removeImage()"
+                class="text-red-500 hover:text-red-600"
+              >
+                Ta bort
+              </button>
+            </div>
             
-            <ng-container *ngIf="!selectedImageUrl">
-              <div class="upload-instructions">
-                <fa-icon [icon]="imageIcon" class="text-3xl text-gray-400 mb-2"></fa-icon>
-                <p class="text-gray-600">Klicka eller dra en bild hit</p>
-                <p class="text-sm text-gray-500">JPG, PNG eller GIF (max 10MB)</p>
-              </div>
-            </ng-container>
-            
-            <div *ngIf="selectedImageUrl" class="image-preview-container">
-              <img 
-                [src]="selectedImageUrl" 
-                alt="Preview" 
-                (mousedown)="startImageDrag($event)"
-                (touchstart)="startImageDrag($event)"
-                #previewImage
+            <div 
+              class="image-upload-area relative border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors"
+              [class.has-image]="selectedImageUrl"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                (change)="onFileSelected($event)"
+                [attr.disabled]="isUploading ? '' : null"
               />
+              
+              <ng-container *ngIf="!selectedImageUrl">
+                <div class="upload-instructions">
+                  <fa-icon [icon]="imageIcon" class="text-3xl text-gray-400 mb-2"></fa-icon>
+                  <p class="text-gray-600">Klicka eller dra en bild hit</p>
+                  <p class="text-sm text-gray-500">JPG, PNG eller GIF (max 10MB)</p>
+                </div>
+              </ng-container>
+              
+              <div *ngIf="selectedImageUrl" class="image-preview-container">
+                <img 
+                  [src]="selectedImageUrl" 
+                  alt="Preview" 
+                  (mousedown)="startImageDrag($event)"
+                  (touchstart)="startImageDrag($event)"
+                  #previewImage
+                />
+              </div>
             </div>
           </div>
         </div>

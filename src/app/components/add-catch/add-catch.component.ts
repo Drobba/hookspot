@@ -76,6 +76,9 @@ export class AddCatchComponent implements OnDestroy {
   locationForm: FormGroup;
   catchForm: FormGroup;
 
+  // Fullscreen detection
+  isFullscreenLaptop = false;
+
   @ViewChild('previewImage') previewImage!: ElementRef;
   
   private isDragging = false;
@@ -95,6 +98,9 @@ export class AddCatchComponent implements OnDestroy {
       length: ['', [Validators.required, Validators.min(1)]],
       bait: ['', Validators.required]
     });
+
+    // Detect if this is a laptop screen for fullscreen mode
+    this.isFullscreenLaptop = window.innerWidth >= 1024 && window.innerWidth < 1440;
 
     this.catchService.catches$
       .pipe(takeUntilDestroyed())

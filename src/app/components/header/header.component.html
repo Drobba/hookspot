@@ -2,13 +2,11 @@
   <div class="flex items-center w-[95%] lg:w-[30%]">
 
     <div class="flex-1 flex flex-col items-center cursor-pointer"
-       routerLink="/battle"
-       routerLinkActive
-       #rlaBattle="routerLinkActive">
-      <img [src]="rlaBattle.isActive ? 'assets/nav-icons/battle-active.svg' : 'assets/nav-icons/battle-inactive.svg'"
-       alt="Battle icon"
-       class="w-6 h-6 object-contain" />
-      <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': rlaBattle.isActive }">Battle</span>
+       (click)="openFilterDialog()">
+      <img [src]="isFilterDialogOpen ? 'assets/nav-icons/sliders-active.svg' : 'assets/nav-icons/sliders-inactive.svg'"
+           alt="Filter icon"
+           class="w-6 h-6 object-contain" />
+      <span class="text-xs mt-[2px]" [ngClass]="{ 'font-medium': isFilterDialogOpen }">Filter</span>
      </div>
      
     <div class="flex-1 flex flex-col items-center cursor-pointer"

@@ -72,6 +72,43 @@
   }
 }
 
+// Laptop screen styles for fullscreen dialog
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .container {
+    padding-bottom: 20rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .filter-actions {
+    margin-top: 6rem;
+    padding-bottom: 4rem;
+    margin-bottom: 20rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+// Global styles for fullscreen laptop dialog
+:host-context(.fullscreen-laptop-dialog) {
+  .container {
+    padding-bottom: 20rem !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  .filter-actions {
+    margin-top: auto !important;
+    padding-bottom: 4rem !important;
+    margin-bottom: 20rem !important;
+  }
+}
+
 h2 {
   font-size: 1.5rem;
   font-weight: 500;

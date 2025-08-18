@@ -7,11 +7,8 @@ import { getFishImagePath } from '../../utils/fish-image.util';
 import { CatchInfoPopupService } from '../../services/catch-info-popup.service';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFilter, faSliders, faFunnelDollar } from '@fortawesome/free-solid-svg-icons';
 import { DialogStateService } from '../../services/dialog-state.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatDialog } from '@angular/material/dialog';
-import { FilterCatchComponent } from '../filter-catch/filter-catch.component';
 import { FilterService, FilterSettings } from '../../services/filter.service';
 import { Month, getMonthName } from '../../enums/month';
 import { Weight, getWeightName } from '../../enums/weight';
@@ -55,17 +52,10 @@ export class MapComponent implements OnInit {
   private readonly defaultCenter: L.LatLngTuple = MapComponent.DEFAULT_CENTER;
   private readonly defaultZoom = MapComponent.DEFAULT_ZOOM;
 
-  // Icons
-  filterIcon = faSliders;
-  filterBadgeIcon = faFunnelDollar;
-
-  showFilterButton = true;
-
   private catchService = inject(CatchService);
   private mapService = inject(MapService);
   private catchInfoPopupService = inject(CatchInfoPopupService);
   private dialogState = inject(DialogStateService);
-  private dialog = inject(MatDialog);
   private filterService = inject(FilterService);
   private authService = inject(AuthService);
   
@@ -77,7 +67,7 @@ export class MapComponent implements OnInit {
     this.dialogState.addCatchDialogOpen$
       .pipe(takeUntilDestroyed())
       .subscribe(isOpen => {
-        this.showFilterButton = !isOpen;
+        // No longer need to track dialog state for filter button visibility
       });
 
     combineLatest([
@@ -279,28 +269,6 @@ export class MapComponent implements OnInit {
       iconAnchor: fishIconConfig.anchor,
       popupAnchor: [0, -12],
       className: 'fish-marker'
-    });
-  }
-
-  /**
-   * Open the filter dialog with responsive sizing for mobile/desktop
-   */
-  onFilterClick(): void {
-    const isMobile = window.innerWidth < 768;
-    this.dialog.open(FilterCatchComponent, {
-      width: isMobile ? '100%' : '400px',
-      height: isMobile ? '100%' : 'auto',
-      maxWidth: '100%',
-      maxHeight: '100%',
-      panelClass: [
-        'custom-dialog-container',
-        isMobile ? 'fullscreen-mobile-dialog' : '',
-      ],
-      position: isMobile ? {
-        top: '0',
-        left: '0'
-      } : undefined,
-      disableClose: false
     });
   }
 }
